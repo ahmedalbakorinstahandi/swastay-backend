@@ -42,7 +42,7 @@ class AuthController extends Controller
             'data' => new UserResource($data['user']),
             'info' => [
                 'code_duration' => $data['minutes'],
-                'otp_expire_at' => $data['expire_at'],
+                'otp_expire_at' => $data['otp_expire_at'],
             ],
         ]);
     }
