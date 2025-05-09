@@ -14,15 +14,20 @@ abstract class BaseFormRequest extends FormRequest
     }
 
 
-    public function attributes(): array
+    public function attributes()
     {
         $attributes = trans('validation.attributes');
-        return is_array($attributes) ? $attributes : [];
+
+        return $attributes;
     }
 
-    public function messages(): array
+
+
+    public function messages()
     {
-        $messages = trans('validation');
-        return is_array($messages) ? $messages : [];
+        return trans('validation');
     }
+
+
+    
 }

@@ -164,6 +164,8 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
 
+    'phone' => 'The phone number you entered is invalid. Please enter a valid number.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -192,6 +194,6 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => include 'attributes.php',
 
 ];
