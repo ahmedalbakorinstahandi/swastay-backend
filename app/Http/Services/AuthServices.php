@@ -76,7 +76,7 @@ class AuthServices
 
         $user = User::where('country_code', $data['country_code'])
             ->where('phone_number', $data['phone_number'])
-            ->where('role', $data['role'])
+            ->where('role', 'user')
             ->first();
 
         if ($user) {
