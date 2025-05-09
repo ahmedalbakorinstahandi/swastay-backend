@@ -154,7 +154,10 @@ class AuthServices
             'otp_expire_at' => null,
         ]);
 
-        return $user;
+        return [
+            'user' => $user,
+            'token' => $user->createToken($user->first_name)->plainTextToken,
+        ];
     }
 
     public function forgotPassword($data)

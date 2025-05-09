@@ -72,6 +72,7 @@ class AuthController extends Controller
 
         return ResponseService::response([
             'status' => 200,
+            'access_token' => $data['token'],
             'message' => 'auth.otp_verified',
             'data' => new UserResource($data['user']),
         ]);
@@ -98,9 +99,9 @@ class AuthController extends Controller
 
         $this->authServices->logout($token);
 
-        return response()->json([
-            'success' => true,
-            'message' => trans('auth.user_logged_out_successfully'),
-        ], 200);
+        return ResponseService::response([
+            'status' => 200,
+            'message' => 'auth.user_logged_out_successfully',
+        ]);
     }
 }
