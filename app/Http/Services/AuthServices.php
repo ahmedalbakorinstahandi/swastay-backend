@@ -13,14 +13,17 @@ class AuthServices
     // login function with phone number
     public function login($data)
     {
-        $inputPhone = str_replace(' ', '', $data['phone']);
 
-        $user = User::whereRaw("REPLACE(CONCAT(country_code, phone_number), ' ', '') = ?", [$inputPhone])
+        $phoneParts = PhoneService::parsePhoneParts($data['phone']);
+
+        $countryCode = $phoneParts['country_code'];
+        $phoneNumber = $phoneParts['national_number'];
+        $user = User::where('country_code', $countryCode)
+            ->where('phone_number', $phoneNumber)
             ->where('role', $data['role'])
-            // ->where('status', 'active')
             ->where('phone_verified', true)
-            // ->where('is_verified', true)
             ->first();
+
 
         if (!$user) {
             MessageService::abort(
@@ -62,12 +65,6 @@ class AuthServices
     // register function with phone number
     public function register($data)
     {
-        // $inputPhone = str_replace(' ', '', $data['country_code'] . $data['phone_number']);
-
-        // $user = User::whereRaw("REPLACE(CONCAT(country_code, phone_number), ' ', '') = ?", [$inputPhone])
-        //     ->where('role', $data['role'])
-        //     ->first();
-
 
         $phoneParts = PhoneService::parsePhoneParts($data['phone']);
 

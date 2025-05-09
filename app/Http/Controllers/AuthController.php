@@ -31,7 +31,6 @@ class AuthController extends Controller
         ]);
     }
 
-    // register function with phone number
     public function register(RegisterRequest $request)
     {
         $data = $this->authServices->register($request->validated());
