@@ -150,8 +150,6 @@ class AuthServices
         $user->update([
             'phone_verified' => true,
             'is_verified' => true,
-            'otp' => null,
-            'otp_expire_at' => null,
         ]);
 
         return [
