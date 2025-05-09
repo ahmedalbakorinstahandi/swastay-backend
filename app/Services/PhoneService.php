@@ -12,7 +12,7 @@ class PhoneService
         $phoneUtil = PhoneNumberUtil::getInstance();
 
         try {
-            $numberProto = $phoneUtil->parse($value, null);
+            $numberProto = $phoneUtil->parse($attribute, null);
             $res = $phoneUtil->isValidNumber($numberProto);
             if (!$res) {
                 MessageService::abort(
