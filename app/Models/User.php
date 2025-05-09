@@ -2,47 +2,51 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'wallet_balance',
+        'avatar',
         'email',
-        'password',
+        'email_verified',
+        'country_code',
+        'phone_number',
+        'phone_verified',
+        'role',
+        'status',
+        'otp',
+        'otp_expire_at',
+        'is_verified',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $casts = [
+        'wallet_balance'     => 'float',
+        'email_verified'     => 'boolean',
+        'phone_verified'     => 'boolean',
+        'is_verified'        => 'boolean',
+        'otp_expire_at'      => 'datetime',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // العلاقات
+    public function listings()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Listing::class, 'host_id');
+    }
+
+    public function bookingsAsGuest()
+    {
+        return $this->hasMany(Booking::class, 'guest_id');
+    }
+
+    public function bookingsAsHost()
+    {
+        return $this->hasMany(Booking::class, 'host_id');
     }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('listing_id');
             $table->foreign('listing_id')->references('id')->on('listings');
             $table->timestamp('created_at');
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

@@ -32,7 +32,8 @@ return new class extends Migration
             $table->integer('beds');
             $table->float('bathrooms');
             $table->integer('booking_capacity');
-            $table->string('contains_camera', 350)->nullable();
+            $table->boolean('is_contains_cameras')->default(false);
+            $table->string('camera_locations', 350)->nullable();
             $table->boolean('noise_monitoring_device');
             $table->boolean('weapons_on_property');
             $table->tinyInteger('floor_number')->default(1);

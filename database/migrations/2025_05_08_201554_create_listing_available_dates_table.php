@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('listing_id')->references('id')->on('listings');
             $table->date('available_date');
             $table->timestamp('created_at');
+            $table->softDeletes();
         });
 
         Schema::enableForeignKeyConstraints();

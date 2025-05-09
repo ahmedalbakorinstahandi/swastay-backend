@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->bigInteger('wallet_balance');
+            $table->float('wallet_balance');
             $table->string('avatar')->nullable();
             $table->string('email');
             $table->boolean('email_verified')->default(false);
