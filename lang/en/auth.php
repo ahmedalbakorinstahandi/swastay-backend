@@ -25,4 +25,7 @@ return [
     'otp_invalid' => 'The verification code is incorrect.',
     'otp_expired' => 'The verification code has expired.',
     'otp_verified' => 'The verification code has been successfully verified.',
+
+    'user_logged_out_successfully' => 'User logged out successfully.',
+    'password_reset_success' => 'Password has been reset successfully.',
 ];
