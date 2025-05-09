@@ -50,20 +50,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verifyOtp(VerifyCodeRequest $request)
-    {
-        $data = $this->authServices->verifyOtp($request->all());
-
-        return ResponseService::response([
-            'status' => 200,
-            'message' => 'auth.otp_verified',
-            'data' => new UserResource($data['user']),
-        ]);
-    }
 
     public function forgotPassword(ForgotPasswordRequest $request)
     {
-        $data = $this->authServices->forgotPassword($request->all());
+        $data = $this->authServices->forgotPassword($request->validated());
 
         return ResponseService::response([
             'status' => 200,
@@ -75,6 +65,19 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    public function verifyOtp(VerifyCodeRequest $request)
+    {
+        $data = $this->authServices->verifyOtp($request->all());
+
+        return ResponseService::response([
+            'status' => 200,
+            'message' => 'auth.otp_verified',
+            'data' => new UserResource($data['user']),
+        ]);
+    }
+
+
 
     public function resetPassword(ResetPasswordRequest $request)
     {

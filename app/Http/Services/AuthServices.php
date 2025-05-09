@@ -176,12 +176,20 @@ class AuthServices
             );
         }
 
+        $code = random_int(100000, 999999);
+        $minutes = 10;
+        $otpExpireAt = now()->addMinutes($minutes);
+        $user->update([
+            'otp' => $code,
+            'otp_expire_at' => $otpExpireAt,
+        ]);
+
         // Send OTP to phone number
 
         return [
             'user' => $user,
             'minutes' => 10,
-            'otp_expire_at' => now()->addMinutes(10),
+            'otp_expire_at' =>  $otpExpireAt,
         ];
     }
 
