@@ -16,9 +16,18 @@ class ResponseService
     }
 
 
-    public static function response(array $params)
+    public static function response(array $params, $status = 200)
     {
-        $status = $params['status'] ?? 200;
+        
+        $status = $status ?? 200;
+        
+        
+        if (isset($params['status'])) {
+            $status = $params['status'] ?? 200;
+        }
+        
+
+
         $replace = $params['replace'] ?? [];
 
         $response = [];

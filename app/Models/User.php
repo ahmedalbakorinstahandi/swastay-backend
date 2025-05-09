@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Model
 {
@@ -49,5 +50,32 @@ class User extends Model
     public function bookingsAsHost()
     {
         return $this->hasMany(Booking::class, 'host_id');
+    }
+
+    public static function auth()
+    {
+        if (Auth::check()) {
+            return User::find(Auth::user()->id);
+        }
+
+        // MessageService::abort(503, 'messages.unauthorized');
+
+        abort(
+            401,
+            response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ]),
+        );
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
     }
 }

@@ -7,10 +7,10 @@ use App\Models\User;
 use App\Services\MessageService;
 use App\Services\PhoneService;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthServices
 {
-    // login function with phone number
     public function login($data)
     {
 
@@ -18,10 +18,10 @@ class AuthServices
 
         $countryCode = $phoneParts['country_code'];
         $phoneNumber = $phoneParts['national_number'];
+
         $user = User::where('country_code', $countryCode)
             ->where('phone_number', $phoneNumber)
             ->where('role', $data['role'])
-            ->where('phone_verified', true)
             ->first();
 
 
@@ -62,17 +62,16 @@ class AuthServices
     }
 
 
-    // register function with phone number
     public function register($data)
     {
 
         $phoneParts = PhoneService::parsePhoneParts($data['phone']);
 
-        $data['country_code'] = $phoneParts['country_code'];
-        $data['phone_number'] = $phoneParts['national_number'];
+        $countryCode = $phoneParts['country_code'];
+        $phoneNumber = $phoneParts['national_number'];
 
-        $user = User::where('country_code', $data['country_code'])
-            ->where('phone_number', $data['phone_number'])
+        $user = User::where('country_code', $countryCode)
+            ->where('phone_number', $phoneNumber)
             ->where('role', 'user')
             ->first();
 
@@ -114,13 +113,17 @@ class AuthServices
         ];
     }
 
-    // verify otp function
     public function verifyOtp($data)
     {
-        $inputPhone = str_replace(' ', '', $data['country_code'] . $data['phone_number']);
 
-        $user = User::whereRaw("REPLACE(CONCAT(country_code, phone_number), ' ', '') = ?", [$inputPhone])
-            ->where('role', $data['role'])
+        $phoneParts = PhoneService::parsePhoneParts($data['phone']);
+
+        $countryCode = $phoneParts['country_code'];
+        $phoneNumber = $phoneParts['national_number'];
+
+        $user = User::where('country_code', $countryCode)
+            ->where('phone_number', $phoneNumber)
+            ->where('role', 'user')
             ->first();
 
         if (!$user) {
@@ -152,5 +155,58 @@ class AuthServices
         ]);
 
         return $user;
+    }
+
+    public function forgotPassword($data)
+    {
+        $phoneParts = PhoneService::parsePhoneParts($data['phone']);
+
+        $countryCode = $phoneParts['country_code'];
+        $phoneNumber = $phoneParts['national_number'];
+
+        $user = User::where('country_code', $countryCode)
+            ->where('phone_number', $phoneNumber)
+            ->where('role', 'user')
+            ->first();
+
+        if (!$user) {
+            MessageService::abort(
+                401,
+                'auth.phone_number_not_found',
+            );
+        }
+
+        // Send OTP to phone number
+
+        return [
+            'user' => $user,
+            'minutes' => 10,
+            'otp_expire_at' => now()->addMinutes(10),
+        ];
+    }
+
+    public function resetPassword($data)
+    {
+        $user = User::auth();
+
+        $user->update([
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $newToken = $user->createToken($user->first_name)->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $newToken,
+        ];
+    }
+
+    public function logout($token)
+    {
+        $personalAccessToken = PersonalAccessToken::findToken($token);
+
+        // FirebaseService::unsubscribeFromAllTopic($personalAccessToken->tokenable);
+
+        return $personalAccessToken->delete();
     }
 }

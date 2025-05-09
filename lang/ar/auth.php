@@ -25,4 +25,7 @@ return [
     'otp_invalid' => 'رمز التحقق غير صحيح.',
     'otp_expired' => 'رمز التحقق منتهٍ.',
     'otp_verified' => 'تم التحقق من الرمز بنجاح.',
+
+    'user_logged_out_successfully' => 'تم تسجيل الخروج بنجاح.',
+    'password_reset_success' => 'تم إعادة تعيين كلمة المرور بنجاح.',
 ];

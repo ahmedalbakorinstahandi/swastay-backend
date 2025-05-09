@@ -45,4 +45,55 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    public function verifyOtp(Request $request)
+    {
+        $data = $this->authServices->verifyOtp($request->all());
+
+        return ResponseService::response([
+            'status' => 200,
+            'message' => 'auth.otp_verified',
+            'data' => new UserResource($data['user']),
+        ]);
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $data = $this->authServices->forgotPassword($request->all());
+
+        return ResponseService::response([
+            'status' => 200,
+            'message' => 'auth.we_sent_verification_code_to_your_phone',
+            'data' => new UserResource($data['user']),
+            'info' => [
+                'code_duration' => $data['minutes'],
+                'otp_expire_at' => $data['otp_expire_at'],
+            ],
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $data = $this->authServices->resetPassword($request->all());
+
+        return ResponseService::response([
+            'status' => 200,
+            'access_token' => $data['token'],
+            'message' => 'auth.password_reset_success',
+            'data' => new UserResource($data['user']),
+        ]);
+    }
+
+    public function logout()
+    {
+
+        $token = request()->bearerToken();
+
+        $this->authServices->logout($token);
+
+        return response()->json([
+            'success' => true,
+            'message' => trans('auth.user_logged_out_successfully'),
+        ], 200);
+    }
 }
