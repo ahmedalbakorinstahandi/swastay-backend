@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ForgetPasswordRequest;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\VerifyCodeRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\AuthServices;
 use App\Services\ResponseService;
@@ -46,7 +50,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verifyOtp(Request $request)
+    public function verifyOtp(VerifyCodeRequest $request)
     {
         $data = $this->authServices->verifyOtp($request->all());
 
@@ -57,7 +61,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function forgotPassword(Request $request)
+    public function forgotPassword(ForgotPasswordRequest $request)
     {
         $data = $this->authServices->forgotPassword($request->all());
 
@@ -72,7 +76,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
         $data = $this->authServices->resetPassword($request->all());
 
