@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('country_code', 7);
             $table->string('phone_number');
             $table->boolean('phone_verified');
+            $table->string('password');
             $table->enum('role', ["user", "admin"]);
             $table->enum('status', ["active", "banneded"]);
             $table->string('otp', 10)->nullable();

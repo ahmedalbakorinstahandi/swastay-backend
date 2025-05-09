@@ -19,6 +19,7 @@ class User extends Model
         'country_code',
         'phone_number',
         'phone_verified',
+        'password',
         'role',
         'status',
         'otp',
