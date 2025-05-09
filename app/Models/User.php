@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasApiTokens;
 
     protected $fillable = [
         'first_name',
