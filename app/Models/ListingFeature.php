@@ -13,6 +13,7 @@ class ListingFeature extends Model
     protected $fillable = [
         'listing_id',
         'feature_id',
+        'created_at',
     ];
 
     public function listing()

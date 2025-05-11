@@ -13,6 +13,7 @@ class ListingCategory extends Model
     protected $fillable = [
         'listing_id',
         'category_id',
+        'created_at',
     ];
 
     public function listing()
