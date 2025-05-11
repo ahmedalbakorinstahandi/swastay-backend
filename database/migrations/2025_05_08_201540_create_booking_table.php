@@ -23,11 +23,14 @@ return new class extends Migration
             $table->foreign('guest_id')->references('id')->on('users');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->time('check_in');
-            $table->time('check_out');
+            $table->time('check_in')->nullable();
+            $table->time('check_out')->nullable();
             $table->enum('status', ["draft", "waiting_payment", "paid", "confirmed", "completed", "cancelled", "rejected"]);
             $table->enum('payment_method', ["wallet", "shamcash", "alharam", "cash", "crypto"]);
+            $table->string('currency', 5)->default('USD');
             $table->float('price');
+            $table->float('commission')->default(0);
+            $table->float('service_fees')->nullable();
             $table->text('message');
             $table->bigInteger('adults_count');
             $table->bigInteger('children_count');

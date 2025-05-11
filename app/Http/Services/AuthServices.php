@@ -204,6 +204,8 @@ class AuthServices
             'password' => Hash::make($data['password']),
         ]);
 
+        $user->tokens()->delete();
+
         $newToken = $user->createToken($user->first_name)->plainTextToken;
 
         return [

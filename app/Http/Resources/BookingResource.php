@@ -19,7 +19,10 @@ class BookingResource extends JsonResource
             'check_out'       => $this->check_out,
             'status'          => $this->status,
             'payment_method'  => $this->payment_method,
+            'currency'        => $this->currency,
             'price'           => $this->price,
+            'commission'      => $this->commission,
+            'service_fees'    => $this->service_fees,
             'message'         => $this->message,
             'adults_count'    => $this->adults_count,
             'children_count'  => $this->children_count,
@@ -27,7 +30,7 @@ class BookingResource extends JsonResource
             'pets_count'      => $this->pets_count,
             'host_notes'      => $this->host_notes,
             'admin_notes'     => $this->admin_notes,
-            'created_at'     => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at'      => $this->created_at->format('Y-m-d H:i:s'),
 
             // علاقات
             'listing' => new ListingResource($this->whenLoaded('listing')),

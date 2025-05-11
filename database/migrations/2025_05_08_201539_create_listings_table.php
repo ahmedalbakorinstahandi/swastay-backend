@@ -23,14 +23,13 @@ return new class extends Migration
             $table->foreign('house_type_id')->references('id')->on('house_types');
             $table->enum('property_type', ["House", "Apartment", "Guesthouse"]);
             $table->float('price');
-            $table->string('currency', 5)->default('SYP');
+            $table->string('currency', 5)->default('USD');
             $table->float('commission');
-            $table->float('service_fees')->nullable();
-            $table->enum('status', ["draft", "in_review", "approved", "paused", "archived"]);
-            $table->tinyInteger('guests');
-            $table->tinyInteger('bedrooms');
-            $table->integer('beds');
-            $table->float('bathrooms');
+            $table->enum('status', ["draft", "in_review", "approved", "paused", "rejected"]);
+            $table->tinyInteger('guests_count');
+            $table->tinyInteger('bedrooms_count');
+            $table->integer('beds_count');
+            $table->float('bathrooms_count');
             $table->integer('booking_capacity');
             $table->boolean('is_contains_cameras')->default(false);
             $table->string('camera_locations', 350)->nullable();
@@ -39,9 +38,7 @@ return new class extends Migration
             $table->tinyInteger('floor_number')->default(1);
             $table->integer('min_booking_days')->default(1);
             $table->bigInteger('max_booking_days')->default(730);
-            $table->time('check_in');
-            $table->time('check_out');
-            $table->text('rules_content')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
