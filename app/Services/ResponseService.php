@@ -36,6 +36,7 @@ class ResponseService
             switch ($key) {
                 case 'status':
                 case 'replace':
+                case 'resource':
                     break;
 
                 case 'message':

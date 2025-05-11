@@ -30,7 +30,7 @@ class FilterService
             : $defaultSortField;
 
         if ($withPagination == true) {
-            return FilterService::applySorting($query, $sortField, $sortOrder)->paginate($filters['limit'] ?? 20);
+            return FilterService::applySorting($query, $sortField, $sortOrder)->paginate($filters['limit'] ?? 50);
         } else {
             return FilterService::applySorting($query, $sortField, $sortOrder);
         }
