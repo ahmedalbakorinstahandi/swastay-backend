@@ -64,6 +64,8 @@ class ListingRuleResource extends JsonResource
 
     protected function check_in_time_description()
     {
+        if (!$this->check_in_time) return null;
+
         $locales = config('translatable.locales');
         $translations = [];
 
@@ -78,6 +80,8 @@ class ListingRuleResource extends JsonResource
 
     protected function check_out_time_description()
     {
+        if (!$this->check_out_time) return null;
+
         $locales = config('translatable.locales');
         $translations = [];
 
