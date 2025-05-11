@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Setting as ModelsSetting;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingSeeder extends Seeder
@@ -35,7 +34,7 @@ class SettingSeeder extends Seeder
 
 
         foreach ($settings as $setting) {
-            ModelsSetting::updateOrCreate(
+            Setting::updateOrCreate(
                 ['key' => $setting['key']],
                 [
                     'value' => $setting['value'],
