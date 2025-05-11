@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 class User extends Model
 {
@@ -23,7 +25,9 @@ class User extends Model
         'phone_verified',
         'password',
         'role',
+        'host_verified',
         'status',
+        'bank_details',
         'otp',
         'otp_expire_at',
         'is_verified',
@@ -53,22 +57,42 @@ class User extends Model
         return $this->hasMany(Booking::class, 'host_id');
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(UserListingFavorite::class, 'user_id');
+    }
+
+    public function isHost()
+    {
+        return in_array($this->host_verified, ['approved', 'stopped']);
+    }
+
+    public function isGuest(): bool
+    {
+        $isNotApproved = !in_array($this->host_verified, ['approved', 'stopped']);
+        $isFromGuestEndpoint = Str::contains(Request::path(), 'api/guest');
+
+        return $isNotApproved || $isFromGuestEndpoint;
+    }
+
     public static function auth()
     {
-        if (Auth::check()) {
-            return User::find(Auth::user()->id);
+        if (Auth::guard('sanctum')->check()) {
+            return User::find(Auth::guard('sanctum')->id());
         }
 
-        // MessageService::abort(503, 'messages.unauthorized');
-
-        abort(
-            401,
-            response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ]),
-        );
+        return null;
     }
+
+    // public static function auth()
+    // {
+    //     if (Auth::check()) {
+    //         return User::find(Auth::user()->id);
+    //     }
+
+
+    //     return null;
+    // }
 
     public function isAdmin()
     {

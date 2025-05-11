@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('file_path');
-            $table->enum('type', ["id", "selfie", "video", "passport"]);
+            $table->enum('type', ['id_front', 'id_back', 'selfie', 'video', 'passport']);
             $table->enum('status', ["in_review", "approved", "rejected"]);
             $table->unsignedBigInteger('reviewed_by')->nullable();
             $table->foreign('reviewed_by')->references('id')->on('users');

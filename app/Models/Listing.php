@@ -114,4 +114,19 @@ class Listing extends Model
     {
         return $this->hasMany(ListingAvailableDate::class);
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(UserListingFavorite::class);
+    }
+
+    public function address()
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
+    public function rules()
+    {
+        return $this->hasMany(ListingRule::class);
+    }
 }

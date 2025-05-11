@@ -2,12 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ListingResource extends JsonResource
 {
     public function toArray($request)
     {
+
+        $is_favorite = false;
+        if (Auth::check()) {
+            $user = User::Auth();
+
+            $is_favorite = $user->favorites()->where('listing_id', $this->id)->exists();
+        }
+
         return [
             'id'                          => $this->id,
             'host_id'                     => $this->host_id,
@@ -33,6 +43,8 @@ class ListingResource extends JsonResource
             'max_booking_days'            => $this->max_booking_days,
             'created_at'                  => $this->created_at->format('Y-m-d H:i:s'),
 
+            'is_favorite'                =>  $is_favorite,
+
             // علاقات عند التحميل
             'host'         => new UserResource($this->whenLoaded('host')),
             'house_type'   => new HouseTypeResource($this->whenLoaded('houseType')),
@@ -41,6 +53,7 @@ class ListingResource extends JsonResource
             'features'     => FeatureResource::collection($this->whenLoaded('features')),
             'reviews'      => ListingReviewResource::collection($this->whenLoaded('reviews')),
             'available_dates' => ListingAvailableDateResource::collection($this->whenLoaded('availableDates')),
+            'rules'       => ListingRuleResource::collection($this->whenLoaded('rules')),
         ];
     }
 }

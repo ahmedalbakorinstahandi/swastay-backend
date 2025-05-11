@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Requests\Listing;
+
+use App\Http\Requests\BaseFormRequest;
+use App\Models\User;
+use App\Services\LanguageService;
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateRequest extends BaseFormRequest
+{
+
+    public function rules(): array
+    {
+        $rules = [
+            'title' => LanguageService::translatableFieldRules('required|string|max:255'),
+            'description' => LanguageService::translatableFieldRules('required|string|max:1500'),
+            'house_type_id' => 'required|exists:house_types,id,deleted_at,NULL',
+            'property_type' => 'required|in:House,Apartment,Guesthouse',
+            'price' => 'required|numeric|min:0',
+            'guests_count' => 'required|integer|min:1',
+            'bedrooms_count' => 'required|integer|min:1',
+            'beds_count' => 'required|integer|min:1',
+            'bathrooms_count' => 'required|numeric|min:0.5',
+            'booking_capacity' => 'required|integer|min:1',
+            'is_contains_cameras' => 'required|boolean',
+            'camera_locations' => LanguageService::translatableFieldRules('required_if:is_contains_cameras,true|string|max:350'),
+            'noise_monitoring_device' => 'required|boolean',
+            'weapons_on_property' => 'required|boolean',
+            'floor_number' => 'required|integer|min:1',
+            'min_booking_days' => 'required|integer|min:1',
+            'max_booking_days' => 'required|integer|min:1|max:730',
+            'features' => 'nullable|array',
+            'features.*' => 'required|exists:features,id,deleted_at,NULL',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'required|exists:categories,id,deleted_at,NULL',
+            'location.latitude' => 'required|numeric',
+            'location.longitude' => 'required|numeric',
+            'location.extra_address' => 'required|string|max:500',
+            'images' => 'required|array|min:5',
+            'images.*' => 'required|string|max:100',
+        ];
+
+
+        $user = User::auth();
+
+        if ($user->isAdmin()) {
+            $rules['host_id'] = 'required|exists:users,id,deleted_at,NULL';
+        }
+
+
+        return $rules;
+    }
+}

@@ -24,16 +24,16 @@ class LocationService
             $googleMapData = $responseData['results'][0];
             $emiratePlaceId = null;
 
-            foreach ($responseData['results'] as $result) {
-                if (in_array('administrative_area_level_1', $result['types']) && in_array('political', $result['types'])) {
-                    $emiratePlaceId = $result['place_id'];
-                    break;
-                }
-            }
+            // foreach ($responseData['results'] as $result) {
+            //     if (in_array('administrative_area_level_1', $result['types']) && in_array('political', $result['types'])) {
+            //         $emiratePlaceId = $result['place_id'];
+            //         break;
+            //     }
+            // }
 
-            if(!$emiratePlaceId) {
-                MessageService::abort(400, 'messages.invalid_location');
-            }
+            // if(!$emiratePlaceId) {
+            //     MessageService::abort(400, 'messages.invalid_location');
+            // }
 
             return [
                 'address' => $googleMapData['formatted_address'] ?? '',
@@ -41,9 +41,10 @@ class LocationService
                 'country' => $googleMapData['address_components']['country'] ?? '',
                 'postal_code' => $googleMapData['address_components']['postal_code'] ?? '',
                 'address_secondary' => $googleMapData['address_components']['sublocality'] ?? '',
+                'state' => $googleMapData['address_components']['administrative_area_level_1'] ?? '',
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'emirate_place_id' => $emiratePlaceId,
+                'place_id' => $emiratePlaceId,
             ];
         }
 

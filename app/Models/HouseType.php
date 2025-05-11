@@ -15,6 +15,8 @@ class HouseType extends Model
     protected $fillable = [
         'name',
         'icon',
+        'description',
+        'is_visible',
     ];
 
 
@@ -23,13 +25,20 @@ class HouseType extends Model
     ];
 
     protected $translatable = [
-        'name',
+        'name', 
+        'description',
     ];
 
     protected function name(): Attribute
     {
         return Attribute::make(
             get: fn(string $value) =>  $this->getAllTranslations('name'),
+        );
+    }
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) =>  $this->getAllTranslations('description'),
         );
     }
 

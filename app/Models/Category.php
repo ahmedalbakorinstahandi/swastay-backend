@@ -15,8 +15,10 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'icon',
         'key',
+        'is_visible',
     ];
 
     protected $casts = [
@@ -26,6 +28,7 @@ class Category extends Model
 
     protected $translatable = [
         'name',
+        'description',
     ];
 
 
@@ -33,6 +36,13 @@ class Category extends Model
     {
         return Attribute::make(
             get: fn(string $value) =>  $this->getAllTranslations('name'),
+        );
+    }
+
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) =>  $this->getAllTranslations('description'),
         );
     }
 

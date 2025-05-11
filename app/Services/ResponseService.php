@@ -18,14 +18,14 @@ class ResponseService
 
     public static function response(array $params, $status = 200)
     {
-        
+
         $status = $status ?? 200;
-        
-        
+
+
         if (isset($params['status'])) {
             $status = $params['status'] ?? 200;
         }
-        
+
 
 
         $replace = $params['replace'] ?? [];
@@ -44,7 +44,13 @@ class ResponseService
                     break;
 
                 case 'data':
-                    $response['data'] = $value;
+                    if (isset($params['resource'])) {
+                        $response['data'] = is_array($value) || $value instanceof \Illuminate\Support\Collection
+                            ? $params['resource']::collection($value)
+                            : new $params['resource']($value);
+                    } else {
+                        $response['data'] = $value;
+                    }
                     break;
 
                 case 'meta':
