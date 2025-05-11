@@ -78,7 +78,8 @@ class User extends Model
     public static function auth()
     {
         if (Auth::guard('sanctum')->check()) {
-            return User::find(Auth::guard('sanctum')->id());
+            $user =  Auth::guard('sanctum')->user();
+            return User::find($user->id);
         }
 
         return null;
