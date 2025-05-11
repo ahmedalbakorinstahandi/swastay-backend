@@ -29,4 +29,8 @@ return [
         'delete' => 'The category was deleted successfully.',
     ],
 
+     'image' => [
+        'uploaded' => 'The image was uploaded successfully.',
+    ]
+
 ];

@@ -27,6 +27,7 @@ class CategoryController extends Controller
             'data'    => $categories,
             'resource' => CategoryResource::class,
             'status'  => 200,
+            'meta'    => true,
         ]);
     }
 

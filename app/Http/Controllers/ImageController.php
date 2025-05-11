@@ -2,47 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ImageService;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function uploadImage(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'folder' => 'required|string|in:users,listings',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $imageName = ImageService::storeImage($request->image, $request->folder);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return ResponseService::response([
+            'success' => true,
+            'data' => [
+                'image_name' => $imageName,
+                'image_url' => asset('storage/' . $imageName),
+            ],
+            'message' => 'messages.image.uploaded',+
+            'status' => 201,
+        ]);
     }
 }
