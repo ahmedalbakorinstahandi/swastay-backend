@@ -5,7 +5,7 @@ namespace App\Http\Permissions;
 use App\Models\User;
 use App\Services\MessageService;
 
-class CategoryPermission
+class HouseTypePermission
 {
 
 
@@ -19,18 +19,18 @@ class CategoryPermission
 
         return $query;
     }
-    public static function canShow($category)
-    {
-        if (!$category->is_visible) {
-            $user = User::auth();
 
+    public static function canShow($houseType)
+    {
+        if (!$houseType->is_visible) {
+            $user = User::auth();
             if (!$user || !$user->isAdmin()) {
                 MessageService::abort(403, 'messages.permission.error');
             }
         }
     }
 
-    public static function canUpdate($category)
+    public static function canUpdate($houseType)
     {
         $user = User::auth();
         if (!$user || !$user->isAdmin()) {
@@ -38,7 +38,7 @@ class CategoryPermission
         }
     }
 
-    public static function canDelete($category)
+    public static function canDelete($houseType)
     {
         $user = User::auth();
         if (!$user || !$user->isAdmin()) {

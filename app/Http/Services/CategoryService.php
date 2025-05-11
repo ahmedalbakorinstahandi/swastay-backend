@@ -2,7 +2,9 @@
 
 namespace App\Http\Services;
 
+use App\Http\Permissions\CategoryPermission;
 use App\Models\Category;
+use App\Models\User;
 use App\Services\FilterService;
 use App\Services\LanguageService;
 use App\Services\MessageService;
@@ -14,11 +16,7 @@ class CategoryService
     {
         $query = Category::query();
 
-        $user = \App\Models\User::auth();
-
-        if (!$user || !$user->isAdmin()) {
-            $query->where('is_visible', true);
-        }
+        $query = CategoryPermission::filterIndex($query);
 
         return FilterService::applyFilters(
             $query,
@@ -61,6 +59,7 @@ class CategoryService
 
     public function destroy(Category $category)
     {
+
         $category->delete();
     }
 }

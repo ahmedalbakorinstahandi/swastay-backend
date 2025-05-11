@@ -7,6 +7,7 @@ use App\Models\Listing;
 use App\Models\Setting;
 use App\Services\FilterService;
 use App\Services\ImageService;
+use App\Services\LanguageService;
 use App\Services\LocationService;
 use App\Services\MessageService;
 
@@ -49,6 +50,8 @@ class ListingService
     // create
     public function create($data)
     {
+        $data = LanguageService::prepareTranslatableData($data, new Listing);
+
 
         $data['currency'] = 'USD';
         $data['commission'] = Setting::where('key', 'commission')->first()->value;
@@ -107,6 +110,9 @@ class ListingService
 
     public function update($listing, $data)
     {
+
+        $data = LanguageService::prepareTranslatableData($data, $listing);
+
 
         $images_count = count($listing->images);
 

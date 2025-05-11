@@ -20,20 +20,30 @@ class LanguageService
     {
         $defaultLocale = config('translatable.default_locale');
         $locales = config('translatable.locales');
-        $required = str_contains($baseRule, 'required');
-        $rules = ['required', 'array'];
+        $ruleParts = explode('|', $baseRule);
+        $isRequired = in_array('required', $ruleParts);
+        $isNullable = in_array('nullable', $ruleParts);
 
-        $rules[] = function ($attribute, $value, $fail) use ($defaultLocale, $baseRule, $required, $locales) {
+        $rules = [];
+
+        if ($isRequired) {
+            $rules[] = 'required';
+        } elseif ($isNullable) {
+            $rules[] = 'nullable';
+        }
+
+        $rules[] = 'array';
+
+        $rules[] = function ($attribute, $value, $fail) use ($defaultLocale, $ruleParts, $isRequired, $locales) {
             if (!is_array($value)) {
                 return $fail("The $attribute field must be an array.");
             }
 
-            if ($required && empty($value[$defaultLocale])) {
+            if ($isRequired && empty($value[$defaultLocale])) {
                 return $fail("The $attribute field is required in $defaultLocale.");
             }
 
-            $cleanRule = str_replace('required|', '', $baseRule);
-            $cleanRule = str_replace('required', '', $cleanRule);
+            $cleanRule = collect($ruleParts)->reject(fn($r) => $r === 'required' || $r === 'nullable')->implode('|');
 
             foreach ($locales as $locale) {
                 if (isset($value[$locale]) && $value[$locale] !== null) {
@@ -47,6 +57,7 @@ class LanguageService
 
         return $rules;
     }
+
 
 
 
