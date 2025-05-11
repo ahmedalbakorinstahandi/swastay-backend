@@ -16,6 +16,7 @@ class UpdateRequest extends BaseFormRequest
             'allows_children' => 'nullable|boolean',
             'remove_shoes' => 'nullable|boolean',
             'no_extra_guests' => 'nullable|boolean',
+            
             'check_in_time' => 'nullable|date_format:H:i',
             'check_out_time' => 'nullable|date_format:H:i',
 

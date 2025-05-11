@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
 
 class ListingRuleResource extends JsonResource
 {
@@ -31,7 +32,10 @@ class ListingRuleResource extends JsonResource
             'no_extra_guests_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->no_extra_guests, 'extra_guests')),
 
             'check_in_time' => $this->check_in_time,
+            'check_in_time_text' => $this->whenNotNull($this->check_in_time_description()),
+
             'check_out_time' => $this->check_out_time,
+            'check_out_time_text' => $this->whenNotNull($this->check_out_time_description()),
 
             'quiet_hours' => $this->quiet_hours,
             'restricted_rooms_note' => $this->restricted_rooms_note,
@@ -55,5 +59,19 @@ class ListingRuleResource extends JsonResource
         }
 
         return $translations;
+    }
+
+    protected function check_in_time_description()
+    {
+        return trans('rules_texts.check_in_time', [
+            'time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->check_in_time)->format('g:i A'),
+        ], App::getLocale());
+    }
+
+    protected function check_out_time_description()
+    {
+        return trans('rules_texts.check_out_time', [
+            'time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->check_out_time)->format('g:i A'),
+        ], App::getLocale());
     }
 }

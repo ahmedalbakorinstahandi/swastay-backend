@@ -2,27 +2,30 @@
 
 return [
     'pets' => [
-        'yes' => 'Pets allowed',
-        'no' => 'No pets allowed',
+        'yes' => 'Pets are allowed',
+        'no' => 'Pets are not allowed',
     ],
     'smoking' => [
-        'yes' => 'Smoking allowed',
-        'no' => 'No smoking',
+        'yes' => 'Smoking is allowed',
+        'no' => 'Smoking is not allowed',
     ],
     'parties' => [
-        'yes' => 'Parties allowed',
-        'no' => 'No parties allowed',
+        'yes' => 'Parties or events are allowed',
+        'no' => 'Parties or events are not allowed',
     ],
     'children' => [
-        'yes' => 'Suitable for children',
-        'no' => 'Not suitable for children',
+        'yes' => 'Children are allowed',
+        'no' => 'Children are not allowed',
     ],
     'shoes' => [
         'yes' => 'Shoes must be removed indoors',
-        'no' => 'Shoes removal not required',
+        'no' => 'Shoes do not need to be removed',
     ],
     'extra_guests' => [
-        'yes' => 'No extra guests allowed',
-        'no' => 'Extra guests allowed',
+        'yes' => 'Extra guests are not allowed without permission',
+        'no' => 'Extra guests are allowed',
     ],
+
+    'check_in_time' => 'Check-in after :time',
+    'check_out_time' => 'Check-out before :time',
 ];
