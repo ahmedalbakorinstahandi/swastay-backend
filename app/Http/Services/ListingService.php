@@ -95,14 +95,20 @@ class ListingService
         $categories = $data['categories'];
 
         foreach ($categories as $category) {
-            $listing->categories()->attach($category);
+            $listing->categories()->create([
+                'category_id' => $category,
+                'created_at' => now(),
+            ]);
         }
 
         // features
         $features = $data['features'] ?? [];
 
         foreach ($features as $feature) {
-            $listing->features()->attach($feature);
+            $listing->features()->create([
+                'feature_id' => $feature,
+                'created_at' => now(),
+            ]);
         }
 
         $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rules']);
@@ -180,13 +186,35 @@ class ListingService
         // categories
         if (isset($data['categories'])) {
             $categories = $data['categories'];
-            $listing->categories()->sync($categories);
+            // $listing->categories()->sync($categories);
+            // اريد حذف الغير موجودين في المصفوفة واضافة الجدد
+            $listing->categories()->whereNotIn('category_id', $categories)->delete();
+            // معرفة المعرفات الجديدة
+            $newCategories = array_diff($categories, $listing->categories()->pluck('category_id')->toArray());
+            // اضافة الجدد
+            foreach ($newCategories as $category) {
+                $listing->categories()->create([
+                    'category_id' => $category,
+                    'created_at' => now(),
+                ]);
+            }
         }
 
         // features
         if (isset($data['features'])) {
             $features = $data['features'];
-            $listing->features()->sync($features);
+            // $listing->features()->sync($features);
+            // اريد حذف الغير موجودين في المصفوفة واضافة الجدد
+            $listing->features()->whereNotIn('feature_id', $features)->delete();
+            // معرفة المعرفات الجديدة
+            $newFeatures = array_diff($features, $listing->features()->pluck('feature_id')->toArray());
+            // اضافة الجدد
+            foreach ($newFeatures as $feature) {
+                $listing->features()->create([
+                    'feature_id' => $feature,
+                    'created_at' => now(),
+                ]);
+            }
         }
 
 
