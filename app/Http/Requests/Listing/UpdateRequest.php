@@ -48,8 +48,8 @@ class UpdateRequest extends BaseFormRequest
 
         if ($user->isAdmin()) {
             $rules_admin = [
-                'commission' => 'required|numeric|min:0|max:100',
-                'status' => 'required|in:in_review,approved,paused,rejected',
+                'commission' => 'nullable|numeric|min:0|max:100',
+                'status' => 'nullable|in:in_review,approved,paused,rejected',
                 'is_published' => 'nullable|boolean',
             ];
         }
