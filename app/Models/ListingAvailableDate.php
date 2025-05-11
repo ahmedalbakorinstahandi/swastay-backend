@@ -19,6 +19,7 @@ class ListingAvailableDate extends Model
 
     protected $casts = [
         'available_date' => 'date',
+        'created_at'     => 'datetime',
     ];
 
     public function listing()
