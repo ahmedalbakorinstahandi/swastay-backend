@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Categories;
+namespace App\Http\Requests\Category;
 
 use App\Http\Requests\BaseFormRequest;
 use App\Services\LanguageService;

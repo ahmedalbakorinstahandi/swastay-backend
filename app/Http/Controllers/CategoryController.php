@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Permissions\CategoryPermission;
-use App\Http\Requests\Categories\CreateRequest;
-use App\Http\Requests\Categories\UpdateRequest;
+use App\Http\Requests\Category\CreateRequest;
+use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Http\Services\CategoryService;
 use App\Services\ResponseService;
