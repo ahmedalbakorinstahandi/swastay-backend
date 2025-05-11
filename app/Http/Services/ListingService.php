@@ -95,7 +95,7 @@ class ListingService
         $categories = $data['categories'];
 
         foreach ($categories as $category) {
-            $listing->categories()->create([
+            $listing->listingCategories()->create([
                 'category_id' => $category,
                 'created_at' => now(),
             ]);
@@ -105,7 +105,7 @@ class ListingService
         $features = $data['features'] ?? [];
 
         foreach ($features as $feature) {
-            $listing->features()->create([
+            $listing->listingFeatures()->create([
                 'feature_id' => $feature,
                 'created_at' => now(),
             ]);

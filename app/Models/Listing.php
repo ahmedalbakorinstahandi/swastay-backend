@@ -96,6 +96,16 @@ class Listing extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    // listing categories
+    public function listingCategories()
+    {
+        return $this->hasMany(ListingCategory::class);
+    }
+    public function listingFeatures()
+    {
+        return $this->hasMany(ListingFeature::class);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'listing_categories', 'listing_id', 'category_id');
