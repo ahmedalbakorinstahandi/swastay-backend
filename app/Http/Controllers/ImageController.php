@@ -23,7 +23,7 @@ class ImageController extends Controller
                 'image_name' => $imageName,
                 'image_url' => asset('storage/' . $imageName),
             ],
-            'message' => 'messages.image.uploaded',+
+            'message' => 'messages.image.uploaded',
             'status' => 201,
         ]);
     }
