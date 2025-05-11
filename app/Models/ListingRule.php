@@ -66,28 +66,28 @@ class ListingRule extends Model
     protected function restrictedRoomsNote(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) =>  $this->getAllTranslations('restricted_rooms_note'),
+            get: fn() =>   $this->getAllTranslations('restricted_rooms_note'),
         );
     }
 
     protected function garbageDisposalNote(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) =>  $this->getAllTranslations('garbage_disposal_note'),
+            get: fn() =>   $this->getAllTranslations('garbage_disposal_note'),
         );
     }
 
     protected function poolUsageNote(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) =>  $this->getAllTranslations('pool_usage_note'),
+            get: fn() =>   $this->getAllTranslations('pool_usage_note'),
         );
     }
 
     protected function forbiddenActivitiesNote(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) =>  $this->getAllTranslations('forbidden_activities_note'),
+            get: fn() =>   $this->getAllTranslations('forbidden_activities_note'),
         );
     }
 }
