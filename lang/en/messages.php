@@ -48,4 +48,8 @@ return [
     ],
 
 
+    'host' => [
+        'not_found' => 'The host was not found.',
+    ],
+
 ];

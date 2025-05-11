@@ -66,7 +66,7 @@ class ListingPermission
         $host = User::find($data['host_id']);
 
         if (!$host || !$host->isHost()) {
-            MessageService::abort(403, 'messages.permission.error');
+            MessageService::abort(403, 'messages.host.not_found');
         }
 
         return $data;
