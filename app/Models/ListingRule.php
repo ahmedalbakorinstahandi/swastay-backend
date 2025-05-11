@@ -29,6 +29,20 @@ class ListingRule extends Model
         'forbidden_activities_note',
     ];
 
+    protected $casts = [
+        'allows_pets' => 'boolean',
+        'allows_smoking' => 'boolean',
+        'allows_parties' => 'boolean',
+        'allows_children' => 'boolean',
+        'remove_shoes' => 'boolean',
+        'no_extra_guests' => 'boolean',
+        'quiet_hours' => 'array',
+        'restricted_rooms_note' => 'array',
+        'garbage_disposal_note' => 'array',
+        'pool_usage_note' => 'array',
+        'forbidden_activities_note' => 'array',
+    ];
+
     public $translatable = [
         'quiet_hours',
         'restricted_rooms_note',
