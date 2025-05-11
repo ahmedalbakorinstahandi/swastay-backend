@@ -59,7 +59,7 @@ class ListingRule extends Model
     protected function quietHours(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) =>  $this->getAllTranslations('quiet_hours'),
+            get: fn() => $this->getAllTranslations('quiet_hours'),
         );
     }
 

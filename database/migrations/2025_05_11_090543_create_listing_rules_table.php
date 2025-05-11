@@ -21,13 +21,13 @@ return new class extends Migration
             $table->boolean('remove_shoes')->nullable();
             $table->boolean('no_extra_guests')->nullable();
 
-            $table->json('quiet_hours')->nullable();
-            $table->json('restricted_rooms_note')->nullable();
+            $table->text('quiet_hours')->nullable();
+            $table->text('restricted_rooms_note')->nullable();
             $table->time('check_in_time')->nullable();
             $table->time('check_out_time')->nullable();
-            $table->json('garbage_disposal_note')->nullable();
-            $table->json('pool_usage_note')->nullable();
-            $table->json('forbidden_activities_note')->nullable();
+            $table->text('garbage_disposal_note')->nullable();
+            $table->text('pool_usage_note')->nullable();
+            $table->text('forbidden_activities_note')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
