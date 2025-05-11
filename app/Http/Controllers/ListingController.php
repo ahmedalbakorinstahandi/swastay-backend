@@ -119,7 +119,6 @@ class ListingController extends Controller
     }
 
 
-    // available date : founction for editing available date
     public function updateAvailableDate($id, AvailableDateRequest $request)
     {
         $listing = $this->listingService->show($id);

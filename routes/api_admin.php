@@ -13,8 +13,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post('/listings', [ListingController::class, 'create']);
     Route::put('/listings/{id}', [ListingController::class, 'update']);
     Route::delete('/listings/{id}', [ListingController::class, 'destroy']);
-    
-    Route::put('/listings/{id}/available-dates', [ListingAvailableDateController::class, 'updateAvailableDate']);
+
+    Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
 
 
     Route::get('/categories', [CategoryController::class, 'index']);

@@ -11,4 +11,6 @@ Route::group(['prefix' => 'host', 'middleware' => ['auth:sanctum']], function ()
     Route::post('/listings', [ListingController::class, 'create']);
     Route::put('/listings/{id}', [ListingController::class, 'update']);
     Route::delete('/listings/{id}', [ListingController::class, 'delete']);
+
+    Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
 });
