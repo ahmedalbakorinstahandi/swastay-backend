@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('phone_verified');
             $table->string('password');
             $table->enum('role', ["user", "admin"]);
+            $table->enum('host_verified', ["none", "in_review", "approved", "rejected"]);
             $table->enum('status', ["active", "banneded"]);
             $table->string('otp', 10)->nullable();
             $table->timestamp('otp_expire_at')->nullable();
