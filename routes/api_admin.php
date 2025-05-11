@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ListingController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post('/categories', [CategoryController::class, 'create']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+
+    Route::get('/house-types', [HouseTypeController::class, 'index']);
+    Route::get('/house-types/{id}', [HouseTypeController::class, 'show']);
+    Route::post('/house-types', [HouseTypeController::class, 'create']);
+    Route::put('/house-types/{id}', [HouseTypeController::class, 'update']);
+    Route::delete('/house-types/{id}', [HouseTypeController::class, 'destroy']);
 });

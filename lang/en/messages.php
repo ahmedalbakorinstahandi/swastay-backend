@@ -29,8 +29,15 @@ return [
         'delete' => 'The category was deleted successfully.',
     ],
 
-     'image' => [
+    'image' => [
         'uploaded' => 'The image was uploaded successfully.',
-    ]
+    ],
+
+    'house_type' => [
+        'not_found' => 'The house type was not found.',
+        'create' => 'The house type was created successfully.',
+        'update' => 'The house type was updated successfully.',
+        'delete' => 'The house type was deleted successfully.',
+    ],
 
 ];

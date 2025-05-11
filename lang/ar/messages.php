@@ -35,4 +35,12 @@ return [
         'uploaded' => 'تم رفع الصورة بنجاح',
     ],
 
+    'house_type' => [
+        'not_found' => 'The house type was not found.',
+        'create' => 'The house type was created successfully.',
+        'update' => 'The house type was updated successfully.',
+        'delete' => 'The house type was deleted successfully.',
+    ],
+
+
 ];
