@@ -43,6 +43,7 @@ class ListingPermission
         $user = User::auth();
 
         if ($user) {
+             MessageService::abort(403, 'messages.user.found');
 
             if ($user->isHost()) {
                 $canShow = $listing->host_id == $user->id;
@@ -51,6 +52,9 @@ class ListingPermission
             } elseif ($user->isAdmin()) {
                 $canShow = true;
             }
+        }
+        else{
+            MessageService::abort(403, 'messages.user.not_found');
         }
 
 
