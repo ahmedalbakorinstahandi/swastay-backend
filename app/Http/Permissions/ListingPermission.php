@@ -53,19 +53,6 @@ class ListingPermission
             }
         }
 
-        abort(
-            response()->json([
-                'success' => false,
-                'data'    => $user,
-                'canShow' => $canShow,
-                'isAdmin' => $user->isAdmin(),
-                'isHost'  => $user->isHost(),
-                'isGuest' => $user->isGuest(),
-            ], 403)
-        );
-
-
-
         if (!$canShow) {
             MessageService::abort(403, 'messages.permission.error');
         }

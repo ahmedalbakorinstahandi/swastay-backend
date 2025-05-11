@@ -72,7 +72,7 @@ class User extends Model
         $isNotApproved = !in_array($this->host_verified, ['approved', 'stopped']);
         $isFromGuestEndpoint = Str::contains(Request::path(), 'api/guest');
 
-        return $isNotApproved || $isFromGuestEndpoint;
+        return ($isNotApproved || $isFromGuestEndpoint) && $this->role === 'user';
     }
 
     public static function auth()
