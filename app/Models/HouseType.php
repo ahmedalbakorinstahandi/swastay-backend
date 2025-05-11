@@ -22,6 +22,7 @@ class HouseType extends Model
 
     protected $casts = [
         'icon' => 'string',
+        'is_visible' => 'boolean',
     ];
 
     protected $translatable = [

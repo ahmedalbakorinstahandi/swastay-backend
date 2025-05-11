@@ -24,6 +24,7 @@ class Category extends Model
     protected $casts = [
         'icon' => 'string',
         'key' => 'string',
+        'is_visible' => 'boolean',
     ];
 
     protected $translatable = [

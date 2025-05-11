@@ -14,7 +14,7 @@ class UpdateRequest extends BaseFormRequest
             'description' => LanguageService::translatableFieldRules('nullable|string'),
             'icon' => 'nullable|string|max:255',
             'key' => 'nullable|string|max:255',
-            'is_visible' => 'boolean',
+            'is_visible' => 'nullable|boolean',
         ];
     }
 }

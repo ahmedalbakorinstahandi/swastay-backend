@@ -12,9 +12,10 @@ class CategoryResource extends JsonResource
             'id'    => $this->id,
             'name'  => $this->name,
             'description' => $this->description,
-            'is_visible' => $this->is_visible,
             'icon'  => $this->icon,
+            'icon_url' => $this->icon ? asset('storage/' . $this->icon) : null,
             'key'   => $this->key,
+            'is_visible' => $this->is_visible,
 
             'listings' => ListingResource::collection($this->whenLoaded('listings')),
         ];
