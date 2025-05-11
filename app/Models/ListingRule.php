@@ -36,11 +36,11 @@ class ListingRule extends Model
         'allows_children' => 'boolean',
         'remove_shoes' => 'boolean',
         'no_extra_guests' => 'boolean',
-        'quiet_hours' => 'array',
-        'restricted_rooms_note' => 'array',
-        'garbage_disposal_note' => 'array',
-        'pool_usage_note' => 'array',
-        'forbidden_activities_note' => 'array',
+        // 'quiet_hours' => 'array',
+        // 'restricted_rooms_note' => 'array',
+        // 'garbage_disposal_note' => 'array',
+        // 'pool_usage_note' => 'array',
+        // 'forbidden_activities_note' => 'array',
     ];
 
     public $translatable = [

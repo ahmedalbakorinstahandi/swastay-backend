@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\App;
 
@@ -64,14 +65,14 @@ class ListingRuleResource extends JsonResource
     protected function check_in_time_description()
     {
         return trans('rules_texts.check_in_time', [
-            'time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->check_in_time)->format('g:i A'),
-        ], App::getLocale());
+            'time' => Carbon::parse($this->check_in_time)->format('g:i A'),
+        ], app()->getLocale());
     }
 
     protected function check_out_time_description()
     {
         return trans('rules_texts.check_out_time', [
-            'time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->check_out_time)->format('g:i A'),
-        ], App::getLocale());
+            'time' => Carbon::parse($this->check_out_time)->format('g:i A'),
+        ], app()->getLocale());
     }
 }
