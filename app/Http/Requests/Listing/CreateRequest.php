@@ -24,7 +24,8 @@ class CreateRequest extends BaseFormRequest
             'bathrooms_count' => 'required|numeric|min:0.5',
             'booking_capacity' => 'required|integer|min:1',
             'is_contains_cameras' => 'required|boolean',
-            'camera_locations' => LanguageService::translatableFieldRules('required_if:is_contains_cameras,true|string|max:350'),
+            'camera_locations' =>
+            request('is_contains_cameras') ? LanguageService::translatableFieldRules('required|string|max:350') : LanguageService::translatableFieldRules('nullable|string|max:350'),
             'noise_monitoring_device' => 'required|boolean',
             'weapons_on_property' => 'required|boolean',
             'floor_number' => 'required|integer|min:1',
