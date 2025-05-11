@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Permissions\HouseTypePermission;
-use App\Http\Requests\HouseTypes\CreateRequest;
-use App\Http\Requests\HouseTypes\UpdateRequest;
+use App\Http\Requests\HouseType\CreateRequest;
+use App\Http\Requests\HouseType\UpdateRequest;
 use App\Http\Resources\HouseTypeResource;
 use App\Http\Services\HouseTypeService;
 use App\Services\ResponseService;

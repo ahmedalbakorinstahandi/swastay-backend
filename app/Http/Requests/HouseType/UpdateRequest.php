@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\HouseTypes;
+namespace App\Http\Requests\HouseType;
 
 use App\Http\Requests\BaseFormRequest;
 use App\Services\LanguageService;
