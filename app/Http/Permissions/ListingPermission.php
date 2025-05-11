@@ -13,8 +13,8 @@ class ListingPermission
 
         $is_guest = false;
 
-        if (Auth::check()) {
-            $user = User::auth();
+        $user = User::auth();
+        if ($user) {
 
 
             if ($user->isHost()) {
@@ -39,8 +39,10 @@ class ListingPermission
 
         $canShow = false;
 
-        if (Auth::check()) {
-            $user = User::auth();
+
+        $user = User::auth();
+
+        if ($user) {
 
             if ($user->isHost()) {
                 $canShow = $listing->host_id == $user->id;
