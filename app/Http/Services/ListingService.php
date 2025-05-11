@@ -3,6 +3,8 @@
 namespace App\Http\Services;
 
 use App\Http\Permissions\ListingPermission;
+use App\Models\Address;
+use App\Models\Image;
 use App\Models\Listing;
 use App\Models\Setting;
 use App\Services\FilterService;
@@ -63,11 +65,11 @@ class ListingService
         // images
         $images = $data['images'];
         foreach ($images as $image) {
-            $listing->images()->create([
+            Image::create([
                 'path' => $image,
                 'type' => 'image',
-                // 'imageable_id' => $listing->id,
-                // 'imageable_type' => Listing::class,
+                'imageable_id' => $listing->id,
+                'imageable_type' => Listing::class,
             ]);
         }
 
@@ -76,7 +78,7 @@ class ListingService
 
         $address = LocationService::getLocationData($location['latitude'], $location['longitude']);
 
-        $listing->address()->create([
+        Address::create([
             'street_address' => $address['address'] ?? '',
             'city' => $address['city'] ?? '',
             'country' => $address['country'] ?? '',
@@ -135,9 +137,11 @@ class ListingService
         if (isset($data['images'])) {
             $images = $data['images'];
             foreach ($images as $image) {
-                $listing->images()->create([
+                Image::create([
                     'path' => $image,
                     'type' => 'image',
+                    'imageable_id' => $listing->id,
+                    'imageable_type' => Listing::class,
                 ]);
             }
         }
