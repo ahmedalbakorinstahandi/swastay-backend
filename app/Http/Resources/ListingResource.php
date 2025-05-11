@@ -53,7 +53,7 @@ class ListingResource extends JsonResource
             'features'     => FeatureResource::collection($this->whenLoaded('features')),
             'reviews'      => ListingReviewResource::collection($this->whenLoaded('reviews')),
             'available_dates' => ListingAvailableDateResource::collection($this->whenLoaded('availableDates')),
-            'rule'       => ListingRuleResource::collection($this->whenLoaded('rule')),
+            'rule' => new ListingRuleResource($this->whenLoaded('rule')),
         ];
     }
 }

@@ -282,6 +282,8 @@ class ListingService
             $rule = $listing->rule()->create($data);
         }
 
-        return $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+
+        return $listing;
     }
 }

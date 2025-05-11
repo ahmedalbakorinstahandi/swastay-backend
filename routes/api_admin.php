@@ -15,7 +15,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::delete('/listings/{id}', [ListingController::class, 'destroy']);
 
     Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
-      Route::put('/listings/{id}/rules', [ListingController::class, 'updateRule']);
+    Route::put('/listings/{id}/rules', [ListingController::class, 'updateRule']);
 
 
     Route::get('/categories', [CategoryController::class, 'index']);
