@@ -59,6 +59,8 @@ class ListingPermission
                 'data'    => $user,
                 'canShow' => $canShow,
                 'isAdmin' => $user->isAdmin(),
+                'isHost'  => $user->isHost(),
+                'isGuest' => $user->isGuest(),
             ], 403)
         );
 
