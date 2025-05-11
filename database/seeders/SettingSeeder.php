@@ -1,8 +1,7 @@
 <?php
 
-namespace Database\Seeders\General;
+namespace Database\Seeders;
 
-use App\Models\General\Setting;
 use App\Models\Setting as ModelsSetting;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
