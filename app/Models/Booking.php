@@ -9,6 +9,8 @@ class Booking extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'bookings';
+
     protected $fillable = [
         'listing_id',
         'host_id',

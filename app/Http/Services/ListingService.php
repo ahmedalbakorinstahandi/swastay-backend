@@ -44,7 +44,7 @@ class ListingService
             MessageService::abort(404, 'messages.listing.not_found');
         }
 
-        $list->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rules']);
+        $list->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $list;
     }
@@ -111,7 +111,7 @@ class ListingService
             ]);
         }
 
-        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rules']);
+        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -218,7 +218,7 @@ class ListingService
         }
 
 
-        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rules']);
+        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
     }
