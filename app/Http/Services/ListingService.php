@@ -188,7 +188,7 @@ class ListingService
             $categories = $data['categories'];
             // $listing->categories()->sync($categories);
             // اريد حذف الغير موجودين في المصفوفة واضافة الجدد
-            $listing->categories()->whereNotIn('category_id', $categories)->delete();
+            $listing->listingCategories()->whereNotIn('category_id', $categories)->delete();
             // معرفة المعرفات الجديدة
             $newCategories = array_diff($categories, $listing->categories()->pluck('category_id')->toArray());
             // اضافة الجدد
@@ -210,7 +210,7 @@ class ListingService
             $newFeatures = array_diff($features, $listing->features()->pluck('feature_id')->toArray());
             // اضافة الجدد
             foreach ($newFeatures as $feature) {
-                $listing->features()->create([
+                $listing->listingFeatures()->create([
                     'feature_id' => $feature,
                     'created_at' => now(),
                 ]);
