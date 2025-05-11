@@ -18,47 +18,28 @@ class LanguageService
 
     public static function translatableFieldRules(string $baseRule): array
     {
-        $locales = config('translatable.locales');
         $defaultLocale = config('translatable.default_locale');
-        $rules = ['nullable', 'array'];
+        $locales = config('translatable.locales');
+        $required = str_contains($baseRule, 'required');
+        $rules = ['required', 'array'];
 
-        $rules[] = function ($attribute, $value, $fail) use ($locales, $defaultLocale, $baseRule) {
-            $attributeName = trans("attributes.{$attribute}");
-
-            if (is_null($value)) {
-                return;
-            }
-
+        $rules[] = function ($attribute, $value, $fail) use ($defaultLocale, $baseRule, $required, $locales) {
             if (!is_array($value)) {
-                $fail(trans('validation.translatable.required_array', [
-                    'attribute' => $attributeName,
-                ]));
-                return;
+                return $fail("The $attribute field must be an array.");
             }
 
-            $ruleParts = collect(explode('|', $baseRule));
-            $required = $ruleParts->contains('required');
-            $rulesWithoutRequired = $ruleParts->reject(fn($rule) => trim($rule) === 'required')->implode('|');
+            if ($required && empty($value[$defaultLocale])) {
+                return $fail("The $attribute field is required in $defaultLocale.");
+            }
+
+            $cleanRule = str_replace('required|', '', $baseRule);
+            $cleanRule = str_replace('required', '', $cleanRule);
 
             foreach ($locales as $locale) {
-                $localizedValue = $value[$locale] ?? null;
-
-                if ($required && $locale === $defaultLocale && empty($localizedValue)) {
-                    $fail(trans('validation.translatable.required_locale', [
-                        'attribute' => $attributeName,
-                        'locale' => $locale,
-                    ]));
-                }
-
-                if (!is_null($localizedValue)) {
-                    $validator = validator([$locale => $localizedValue], [$locale => $rulesWithoutRequired]);
-
+                if (isset($value[$locale]) && $value[$locale] !== null) {
+                    $validator = validator([$locale => $value[$locale]], [$locale => $cleanRule]);
                     if ($validator->fails()) {
-                        $fail(trans('validation.translatable.invalid_locale', [
-                            'attribute' => $attributeName,
-                            'locale' => $locale,
-                            'error' => $validator->errors()->first($locale),
-                        ]));
+                        return $fail("Invalid value for $attribute in $locale: " . $validator->errors()->first($locale));
                     }
                 }
             }
