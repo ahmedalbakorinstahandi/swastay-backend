@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Permissions\ListingPermission;
 use App\Models\Listing;
 use App\Models\Setting;
 use App\Services\FilterService;

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Permissions\ListingPermission;
 use App\Http\Requests\Listing\CreateRequest;
 use App\Http\Resources\ListingResource;
-use App\Http\Services\ListingPermission;
 use App\Http\Services\ListingService;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Permissions;
 
 use App\Models\User;
 use App\Services\MessageService;
