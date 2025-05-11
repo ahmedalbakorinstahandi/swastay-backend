@@ -64,15 +64,29 @@ class ListingRuleResource extends JsonResource
 
     protected function check_in_time_description()
     {
-        return trans('rules_texts.check_in_time', [
-            'time' => Carbon::parse($this->check_in_time)->format('g:i A'),
-        ], app()->getLocale());
+        $locales = config('translatable.locales');
+        $translations = [];
+
+        foreach ($locales as $locale) {
+            $translations[$locale] = trans('rules_texts.check_in_time', [
+                'time' => Carbon::parse($this->check_in_time)->format('g:i A'),
+            ], $locale);
+        }
+
+        return $translations;
     }
 
     protected function check_out_time_description()
     {
-        return trans('rules_texts.check_out_time', [
-            'time' => Carbon::parse($this->check_out_time)->format('g:i A'),
-        ], app()->getLocale());
+        $locales = config('translatable.locales');
+        $translations = [];
+
+        foreach ($locales as $locale) {
+            $translations[$locale] = trans('rules_texts.check_out_time', [
+                'time' => Carbon::parse($this->check_out_time)->format('g:i A'),
+            ], $locale);
+        }
+
+        return $translations;
     }
 }
