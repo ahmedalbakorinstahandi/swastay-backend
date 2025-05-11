@@ -44,8 +44,12 @@ class ListingPermission
                 $canShow = $listing->host_id == $user->id;
             } elseif ($user->isGuest()) {
                 $canShow = $listing->status == 'approved' && $listing->is_published;
+            } elseif ($user->isAdmin()) {
+                $canShow = true;
             }
         }
+
+
 
         if (!$canShow) {
             MessageService::abort(403, 'messages.permission.error');
@@ -97,5 +101,4 @@ class ListingPermission
 
         return false;
     }
-
 }
