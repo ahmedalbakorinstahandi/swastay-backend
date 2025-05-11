@@ -12,8 +12,8 @@ class ListingResource extends JsonResource
     {
 
         $is_favorite = false;
-        if (Auth::check()) {
-            $user = User::Auth();
+        $user = User::Auth();
+        if ($user) {
 
             $is_favorite = $user->favorites()->where('listing_id', $this->id)->exists();
         }
