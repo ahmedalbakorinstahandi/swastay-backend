@@ -13,22 +13,22 @@ class ListingRuleResource extends JsonResource
             'listing_id' => $this->listing_id,
 
             'allows_pets' => $this->whenNotNull($this->allows_pets),
-            'allows_pets_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_pets, 'pets')),
+            'allows_pets_text' => $this->whenNotNull($this->translateBoolean($this->allows_pets, 'pets')),
 
             'allows_smoking' => $this->whenNotNull($this->allows_smoking),
-            'allows_smoking_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_smoking, 'smoking')),
+            'allows_smoking_text' => $this->whenNotNull($this->translateBoolean($this->allows_smoking, 'smoking')),
 
             'allows_parties' => $this->whenNotNull($this->allows_parties),
-            'allows_parties_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_parties, 'parties')),
+            'allows_parties_text' => $this->whenNotNull($this->translateBoolean($this->allows_parties, 'parties')),
 
             'allows_children' => $this->whenNotNull($this->allows_children),
-            'allows_children_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_children, 'children')),
+            'allows_children_text' => $this->whenNotNull($this->translateBoolean($this->allows_children, 'children')),
 
             'remove_shoes' => $this->whenNotNull($this->remove_shoes),
-            'remove_shoes_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->remove_shoes, 'shoes')),
+            'remove_shoes_text' => $this->whenNotNull($this->translateBoolean($this->remove_shoes, 'shoes')),
 
             'no_extra_guests' => $this->whenNotNull($this->no_extra_guests),
-            'no_extra_guests_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->no_extra_guests, 'extra_guests')),
+            'no_extra_guests_text' => $this->whenNotNull($this->translateBoolean($this->no_extra_guests, 'extra_guests')),
 
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
@@ -41,19 +41,12 @@ class ListingRuleResource extends JsonResource
         ]);
     }
 
-    protected function translateBooleanForAllLocales($value, $field)
+    protected function translateBoolean($value, $field)
     {
         if (!in_array($value, [true, false], true)) {
             return null;
         }
 
-        $locales = config('translatable.locales');
-        $translations = [];
-
-        foreach ($locales as $locale) {
-            $translations[$locale] = trans("rules_texts.{$field}." . ($value ? 'yes' : 'no'), [], $locale);
-        }
-
-        return $translations;
+        return trans("rules_texts.{$field}." . ($value ? 'yes' : 'no'));
     }
 }
