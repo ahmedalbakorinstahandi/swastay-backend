@@ -22,6 +22,7 @@ class Listing extends Model
         'currency',
         'commission',
         'status',
+        'is_published',
         'guests_count',
         'bedrooms_count',
         'beds_count',

@@ -45,7 +45,7 @@ class ResponseService
 
                 case 'data':
                     if (isset($params['resource'])) {
-                        $response['data'] = is_array($value) || $value instanceof \Illuminate\Support\Collection
+                        $response['data'] = self::isCollectionLike($value)
                             ? $params['resource']::collection($value)
                             : new $params['resource']($value);
                     } else {
@@ -72,5 +72,11 @@ class ResponseService
         $response = ['success' => $status >= 200 && $status < 300] + $response;
 
         return response()->json($response, $status);
+    }
+
+    protected static function isCollectionLike($value): bool
+    {
+        return $value instanceof \Illuminate\Support\Collection
+            || $value instanceof \Illuminate\Contracts\Pagination\Paginator;
     }
 }

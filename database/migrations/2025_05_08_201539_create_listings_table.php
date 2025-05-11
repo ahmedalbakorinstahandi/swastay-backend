@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('currency', 5)->default('USD');
             $table->float('commission');
             $table->enum('status', ["draft", "in_review", "approved", "paused", "rejected"]);
+            $table->boolean('is_published')->default(false);
             $table->tinyInteger('guests_count');
             $table->tinyInteger('bedrooms_count');
             $table->integer('beds_count');
