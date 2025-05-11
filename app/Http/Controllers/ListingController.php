@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Permissions\ListingPermission;
 use App\Http\Requests\Listing\CreateRequest;
+use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
 use App\Services\ResponseService;
@@ -26,7 +27,7 @@ class ListingController extends Controller
 
         $listings = $this->listingService->index($data);
 
-        ListingPermission::filterIndex($listings, $data);
+        ListingPermission::filterIndex($listings);
 
         return ResponseService::response(
             [
@@ -39,7 +40,7 @@ class ListingController extends Controller
         );
     }
 
-    public function show(string $id)
+    public function show($id)
     {
         $listing = $this->listingService->show($id);
 
@@ -76,16 +77,43 @@ class ListingController extends Controller
     }
 
 
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request,   $id)
     {
-        //
+        $data = $request->all();
+
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canUpdate($listing);
+
+
+        $listing = $this->listingService->update($listing, $data);
+
+        return ResponseService::response(
+            [
+                'success' => true,
+                'message' => 'messages.listing.update',
+                'data'    => $listing,
+                'resource' => ListingResource::class,
+                'status'  => 200,
+            ]
+        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function destroy($id)
     {
-        //
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canDelete($listing);
+
+        $this->listingService->destroy($listing);
+
+        return ResponseService::response(
+            [
+                'success' => true,
+                'message' => 'messages.listing.delete',
+                'status'  => 200,
+            ]
+        );
     }
 }

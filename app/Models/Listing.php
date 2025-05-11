@@ -126,8 +126,8 @@ class Listing extends Model
         return $this->morphOne(Address::class, 'addressable');
     }
 
-    public function rules()
+    public function rule()
     {
-        return $this->hasMany(ListingRule::class);
+        return $this->hasOne(ListingRule::class);
     }
 }

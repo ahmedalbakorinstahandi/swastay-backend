@@ -72,7 +72,7 @@ class ListingPermission
         return $data;
     }
 
-    public static function update($listing)
+    public static function canUpdate($listing)
     {
         $user = User::auth();
 
@@ -85,7 +85,7 @@ class ListingPermission
         return false;
     }
 
-    public static function delete($listing)
+    public static function canDelete($listing)
     {
         $user = User::auth();
 
@@ -97,4 +97,5 @@ class ListingPermission
 
         return false;
     }
+
 }

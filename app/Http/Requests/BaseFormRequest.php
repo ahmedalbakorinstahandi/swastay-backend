@@ -27,7 +27,4 @@ abstract class BaseFormRequest extends FormRequest
     {
         return trans('validation');
     }
-
-
-    
 }

@@ -2,47 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Permissions\CategoryPermission;
+use App\Http\Requests\Categories\CreateRequest;
+use App\Http\Requests\Categories\UpdateRequest;
+use App\Http\Resources\CategoryResource;
+use App\Http\Services\CategoryService;
+use App\Services\ResponseService;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function index()
     {
-        //
+        $categories = $this->categoryService->index(request()->all());
+
+        return ResponseService::response([
+            'success' => true,
+            'data'    => $categories,
+            'resource' => CategoryResource::class,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function show($id)
     {
-        //
+        $category = $this->categoryService->show($id);
+
+        CategoryPermission::canShow($category);
+
+        return ResponseService::response([
+            'success' => true,
+            'data'    => $category,
+            'resource' => CategoryResource::class,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function create(CreateRequest $request)
     {
-        //
+        $data = $request->validated();
+        $category = $this->categoryService->create($data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.category.create',
+            'data'    => $category,
+            'resource' => CategoryResource::class,
+            'status'  => 201,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+
+        $category = $this->categoryService->show($id);
+        CategoryPermission::canUpdate($category);
+
+        $category = $this->categoryService->update($category, $data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.category.update',
+            'data'    => $category,
+            'resource' => CategoryResource::class,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $category = $this->categoryService->show($id);
+
+        CategoryPermission::canDelete($category);
+
+        $this->categoryService->destroy($category);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.category.delete',
+            'status'  => 200,
+        ]);
     }
 }

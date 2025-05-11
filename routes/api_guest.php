@@ -10,6 +10,7 @@ Route::group(['prefix' => 'guest'], function () {
     Route::get('/listings/{id}', [ListingController::class, 'show']);
 
 
-
-    Route::group(['middleware' => ['auth:sanctum']], function () {});
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        
+    });
 });

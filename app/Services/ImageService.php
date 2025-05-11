@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\General\Image;
+use App\Models\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -45,8 +45,7 @@ class ImageService
         }
 
         if (Storage::disk('public')->exists($imagePath)) {
-            // return  Storage::disk('public')->delete($imagePath);
-            return true;
+            return  Storage::disk('public')->delete($imagePath);
         }
 
         return false;
