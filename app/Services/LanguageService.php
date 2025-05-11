@@ -36,15 +36,14 @@ class LanguageService
                 return;
             }
 
-            // افصل required عن باقي القواعد
-            $rulesWithoutRequired = collect(explode('|', $baseRule))
-                ->reject(fn($rule) => trim($rule) === 'required')
-                ->implode('|');
+            $ruleParts = collect(explode('|', $baseRule));
+            $required = $ruleParts->contains('required');
+            $rulesWithoutRequired = $ruleParts->reject(fn($rule) => trim($rule) === 'required')->implode('|');
 
             foreach ($locales as $locale) {
                 $localizedValue = $value[$locale] ?? null;
 
-                if (strpos($baseRule, 'required') !== false && $locale === $defaultLocale && ($localizedValue === null || $localizedValue === '')) {
+                if ($required && $locale === $defaultLocale && empty($localizedValue)) {
                     $fail(trans('validation.translatable.required_locale', [
                         'attribute' => $attributeName,
                         'locale' => $locale,
