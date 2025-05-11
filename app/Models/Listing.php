@@ -98,12 +98,12 @@ class Listing extends Model
 
     public function categories()
     {
-        return $this->hasMany(ListingCategory::class);
+        return $this->belongsToMany(Category::class, 'listing_categories', 'listing_id', 'category_id');
     }
 
     public function features()
     {
-        return $this->hasMany(ListingFeature::class);
+        return $this->belongsToMany(Feature::class, 'listing_features', 'listing_id', 'feature_id');
     }
 
     public function reviews()
