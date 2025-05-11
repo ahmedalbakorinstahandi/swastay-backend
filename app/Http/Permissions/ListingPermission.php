@@ -11,6 +11,8 @@ class ListingPermission
     public static function filterIndex($query)
     {
 
+        $is_guest = false;
+
         if (Auth::check()) {
             $user = User::auth();
 
