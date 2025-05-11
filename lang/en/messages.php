@@ -40,4 +40,12 @@ return [
         'delete' => 'The house type was deleted successfully.',
     ],
 
+    'feature' => [
+        'not_found' => 'The feature was not found.',
+        'create' => 'The feature was created successfully.',
+        'update' => 'The feature was updated successfully.',
+        'delete' => 'The feature was deleted successfully.',
+    ],
+
+
 ];

@@ -42,5 +42,11 @@ return [
         'delete' => 'The house type was deleted successfully.',
     ],
 
+    'feature' => [
+        'not_found' => 'الميزة غير موجودة.',
+        'create' => 'تم إنشاء الميزة بنجاح.',
+        'update' => 'تم تحديث الميزة بنجاح.',
+        'delete' => 'تم حذف الميزة بنجاح.',
+    ],
 
 ];
