@@ -91,9 +91,9 @@ class Listing extends Model
         return $this->belongsTo(HouseType::class)->withTrashed();
     }
 
-    public function images()
+    public function images() // morphMany
     {
-        return $this->hasMany(Image::class);
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     public function categories()
