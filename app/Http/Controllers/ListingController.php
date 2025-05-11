@@ -6,6 +6,7 @@ use App\Http\Permissions\ListingPermission;
 use App\Http\Requests\Listing\AvailableDateRequest;
 use App\Http\Requests\Listing\CreateRequest;
 use App\Http\Requests\Listing\UpdateRequest;
+use App\Http\Requests\ListingRule\UpdateRequest as ListingRuleUpdateRequest;
 use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
 use App\Services\ResponseService;
@@ -128,6 +129,27 @@ class ListingController extends Controller
         $data = $request->all();
 
         $listing = $this->listingService->updateAvailableDate($listing, $data);
+
+        return ResponseService::response(
+            [
+                'success' => true,
+                'message' => 'messages.listing.update',
+                'data'    => $listing,
+                'resource' => ListingResource::class,
+                'status'  => 200,
+            ]
+        );
+    }
+
+    public function updateRule($id, ListingRuleUpdateRequest $request)
+    {
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canUpdate($listing);
+
+        $data = $request->all();
+
+        $listing = $this->listingService->updateRule($listing, $data);
 
         return ResponseService::response(
             [

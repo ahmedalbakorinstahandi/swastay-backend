@@ -52,4 +52,12 @@ return [
         'not_found' => 'The host was not found.',
     ],
 
+    'listing_rule' => [
+        'not_found' => 'The listing rule was not found.',
+        'create' => 'The listing rule was created successfully.',
+        'update' => 'The listing rule was updated successfully.',
+        'delete' => 'The listing rule was deleted successfully.',
+    ],
+
+
 ];

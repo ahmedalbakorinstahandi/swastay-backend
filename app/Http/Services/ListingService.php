@@ -6,6 +6,7 @@ use App\Http\Permissions\ListingPermission;
 use App\Models\Address;
 use App\Models\Image;
 use App\Models\Listing;
+use App\Models\ListingRule;
 use App\Models\Setting;
 use App\Services\FilterService;
 use App\Services\ImageService;
@@ -240,11 +241,6 @@ class ListingService
         $listing->delete();
     }
 
-    //         $table->unsignedBigInteger('listing_id');
-    //         $table->foreign('listing_id')->references('id')->on('listings');
-    //         $table->date('available_date');
-    //         $table->timestamp('created_at');
-    //updateAvailableDate
     public function updateAvailableDate($listing, $data)
     {
 
@@ -270,5 +266,22 @@ class ListingService
 
         $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
         return $listing;
+    }
+
+    public function updateRule($listing, $data)
+    {
+
+        $data = LanguageService::prepareTranslatableData($data, new ListingRule);
+
+
+        $rule = $listing->rule;
+
+        if ($rule) {
+            $rule->update($data);
+        } else {
+            $rule = $listing->rule()->create($data);
+        }
+
+        return $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
     }
 }
