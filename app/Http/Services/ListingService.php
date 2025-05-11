@@ -112,6 +112,11 @@ class ListingService
             ]);
         }
 
+        // create rule
+        $listing->rule()->create([
+            'listing_id' => $listing->id,
+        ]);
+
         $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
