@@ -45,6 +45,9 @@ class CategoryService
 
     public function create($data)
     {
+
+        $data = LanguageService::prepareTranslatableData($data, new Category);
+
         return Category::create($data);
     }
 
