@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->boolean('phone_verified');
             $table->string('password');
-            +$table->enum('role', ["user", "admin"]);
+            $table->enum('role', ["user", "admin"]);
             $table->enum('host_verified', ["none", "in_review", "approved", "rejected", "stopped"]);
             $table->text('bank_details')->nullable();
             $table->enum('status', ["active", "banneded"]);
