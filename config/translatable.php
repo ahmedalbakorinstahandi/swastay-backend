@@ -3,9 +3,8 @@
 
 return [
     'locales' => [
-        'en',
         'ar',
-        // 'tr', 
+        'en',
     ],
     'default_locale' => 'ar', // اللغة الأساسية
 ];
