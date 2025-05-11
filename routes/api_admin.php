@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
+use App\Http\Controllers\ListingAvailableDateController;
 use App\Http\Controllers\ListingController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post('/listings', [ListingController::class, 'create']);
     Route::put('/listings/{id}', [ListingController::class, 'update']);
     Route::delete('/listings/{id}', [ListingController::class, 'destroy']);
+    
+    Route::put('/listings/{id}/available-dates', [ListingAvailableDateController::class, 'updateAvailableDate']);
 
 
     Route::get('/categories', [CategoryController::class, 'index']);

@@ -187,11 +187,8 @@ class ListingService
         if (isset($data['categories'])) {
             $categories = $data['categories'];
             // $listing->categories()->sync($categories);
-            // اريد حذف الغير موجودين في المصفوفة واضافة الجدد
             $listing->listingCategories()->whereNotIn('category_id', $categories)->delete();
-            // معرفة المعرفات الجديدة
             $newCategories = array_diff($categories, $listing->categories()->pluck('category_id')->toArray());
-            // اضافة الجدد
             foreach ($newCategories as $category) {
                 $listing->listingCategories()->create([
                     'category_id' => $category,
@@ -204,11 +201,8 @@ class ListingService
         if (isset($data['features'])) {
             $features = $data['features'];
             // $listing->features()->sync($features);
-            // اريد حذف الغير موجودين في المصفوفة واضافة الجدد
             $listing->listingFeatures()->whereNotIn('feature_id', $features)->delete();
-            // معرفة المعرفات الجديدة
             $newFeatures = array_diff($features, $listing->features()->pluck('feature_id')->toArray());
-            // اضافة الجدد
             foreach ($newFeatures as $feature) {
                 $listing->listingFeatures()->create([
                     'feature_id' => $feature,
@@ -244,5 +238,37 @@ class ListingService
 
 
         $listing->delete();
+    }
+
+    //         $table->unsignedBigInteger('listing_id');
+    //         $table->foreign('listing_id')->references('id')->on('listings');
+    //         $table->date('available_date');
+    //         $table->timestamp('created_at');
+    //updateAvailableDate
+    public function updateAvailableDate($listing, $data)
+    {
+
+        $newAvailableDates = $data['available_dates'] ?? [];
+        $removedAvailableDates = $data['removed_available_dates'] ?? [];
+
+        // remove available dates
+        $listing->availableDates()->whereIn('available_date', $removedAvailableDates)->delete();
+
+
+        // add available dates
+        foreach ($newAvailableDates as $date) {
+            $listing->availableDates()->updateOrCreate(
+                [
+                    'listing_id' => $listing->id,
+                    'available_date' => $date,
+                ],
+                [
+                    'created_at' => now(),
+                ]
+            );
+        }
+
+        $listing->load(['host', 'address', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        return $listing;
     }
 }

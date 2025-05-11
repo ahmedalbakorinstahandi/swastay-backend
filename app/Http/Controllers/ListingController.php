@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Permissions\ListingPermission;
+use App\Http\Requests\Listing\AvailableDateRequest;
 use App\Http\Requests\Listing\CreateRequest;
 use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Resources\ListingResource;
@@ -112,6 +113,29 @@ class ListingController extends Controller
             [
                 'success' => true,
                 'message' => 'messages.listing.delete',
+                'status'  => 200,
+            ]
+        );
+    }
+
+
+    // available date : founction for editing available date
+    public function updateAvailableDate($id, AvailableDateRequest $request)
+    {
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canUpdate($listing);
+
+        $data = $request->all();
+
+        $listing = $this->listingService->updateAvailableDate($listing, $data);
+
+        return ResponseService::response(
+            [
+                'success' => true,
+                'message' => 'messages.listing.update',
+                'data'    => $listing,
+                'resource' => ListingResource::class,
                 'status'  => 200,
             ]
         );

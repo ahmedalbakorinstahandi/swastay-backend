@@ -26,7 +26,7 @@ class UpdateRequest extends BaseFormRequest
             'bathrooms_count' => 'nullable|numeric|min:0.5',
             'booking_capacity' => 'nullable|integer|min:1',
             'is_contains_cameras' => 'nullable|boolean',
-            'camera_locations' => LanguageService::translatableFieldRules('nullable|string|max:350'),
+            request('is_contains_cameras', false)  ? LanguageService::translatableFieldRules('required|string|max:350') : LanguageService::translatableFieldRules('nullable|string|max:350'),
             'noise_monitoring_device' => 'nullable|boolean',
             'weapons_on_property' => 'nullable|boolean',
             'floor_number' => 'nullable|integer|min:1',
