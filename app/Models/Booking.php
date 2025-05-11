@@ -60,4 +60,9 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class, 'guest_id')->withTrashed();
     }
+
+    public function review()
+    {
+        return $this->hasOne(ListingReview::class, 'booking_id', 'id')->withTrashed();
+    }
 }

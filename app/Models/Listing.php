@@ -108,7 +108,7 @@ class Listing extends Model
 
     public function reviews()
     {
-        return $this->hasMany(ListingReview::class);
+        return $this->hasManyThrough(ListingReview::class, Booking::class, 'listing_id', 'booking_id', 'id', 'id');
     }
 
     public function availableDates()

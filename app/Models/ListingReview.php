@@ -24,7 +24,7 @@ class ListingReview extends Model
 
     public function booking()
     {
-        return $this->belongsTo(Booking::class)->withTrashed();
+        return $this->belongsTo(Booking::class, 'booking_id')->withTrashed();
     }
 
     public function user()
