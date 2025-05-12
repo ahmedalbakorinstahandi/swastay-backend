@@ -169,8 +169,9 @@ class ListingController extends Controller
 
         $listing = $this->listingService->show($id);
 
+        ListingPermission::canShow($listing);
+        
         $user = User::auth();
-
 
         if ($user->favorites()->where('listing_id', $listing->id)->exists()) {
             $user->favorites()->create(
