@@ -59,10 +59,16 @@ class User extends Model
         return $this->hasMany(Booking::class, 'host_id');
     }
 
+    // public function favorites()
+    // {
+    //     return $this->hasManyThrough(Listing::class, UserListingFavorite::class, 'user_id', 'id', 'id', 'listing_id');
+    // }
+    
     public function favorites()
     {
         return $this->hasMany(UserListingFavorite::class, 'user_id');
     }
+
 
     public function isHost()
     {
@@ -81,7 +87,7 @@ class User extends Model
     {
         if (Auth::guard('sanctum')->check()) {
             $user =  Auth::guard('sanctum')->user();
-            return User::find($user->id);
+            return User::where('id', $user->id)->first();
         }
 
         return null;

@@ -57,6 +57,10 @@ class UserService
         $data['role'] = 'user';
         $data['status'] = 'active';
 
+        // if ($data['host_verified'] == 'none') {
+        //     unset($data['bank_details']);
+        // }
+
         return User::create($data);
     }
 
@@ -83,6 +87,10 @@ class UserService
             $data['email_verified'] = true;
         }
 
+        // if ($user->host_verified == 'none') {
+        //     unset($data['bank_details']);
+        // }
+
         $user->update($data);
 
         return $user;
@@ -91,5 +99,30 @@ class UserService
     public function destroy(User $user)
     {
         $user->delete();
+    }
+
+
+    public function updateProfile(User $user, array $data)
+    {
+
+        if (isset($data['old_password'])) {
+            if (!Hash::check($data['old_password'], $user->password)) {
+                MessageService::abort(422, 'messages.user.old_password');
+            } else {
+                unset($data['old_password']);
+                if (isset($data['password'])) {
+                    $data['password'] = Hash::make($data['password']);
+                }
+            }
+        }
+
+        // if ($user->host_verified == 'none') {
+        //     unset($data['bank_details']);
+        // }
+
+
+        $user->update($data);
+
+        return $user;
     }
 }

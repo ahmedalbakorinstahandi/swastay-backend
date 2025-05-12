@@ -9,6 +9,7 @@ use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Requests\ListingRule\UpdateRequest as ListingRuleUpdateRequest;
 use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
+use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Termwind\Components\Li;
@@ -160,5 +161,37 @@ class ListingController extends Controller
                 'status'  => 200,
             ]
         );
+    }
+
+
+    public function listingFavoritesUpdate($id)
+    {
+
+        $listing = $this->listingService->show($id);
+
+        $user = User::auth();
+
+
+        if ($user->favorites()->where('listing_id', $listing->id)->exists()) {
+            $user->favorites()->create(
+                [
+                    'listing_id' => $listing->id,
+                    'created_at' => now(),
+                ]
+            );
+        } else {
+            $user->favorites()->where('listing_id', $listing->id)->delete();
+        }
+
+
+        $listing = $this->listingService->show($id);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.user.favorite',
+            'data'    => $listing,
+            'resource' => ListingResource::class,
+            'status'  => 200,
+        ]);
     }
 }

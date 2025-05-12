@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Permissions\UserPermission;
 use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\UserService;
+use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +20,7 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
+
 
     public function index()
     {
@@ -67,11 +70,10 @@ class UserController extends Controller
 
         $user = $this->userService->show($id);
 
-        if ($user instanceof Model) {
-            UserPermission::canUpdate($user);
+        UserPermission::canUpdate($user);
 
-            $user = $this->userService->update($user, $data);
-        }
+        $user = $this->userService->update($user, $data);
+
 
         return ResponseService::response([
             'success' => true,
@@ -93,6 +95,37 @@ class UserController extends Controller
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.user.delete',
+            'status'  => 200,
+        ]);
+    }
+
+
+    public function profile()
+    {
+        $user = User::auth();
+
+        return ResponseService::response([
+            'success' => true,
+            'data'    => $user,
+            'resource' => UserResource::class,
+            'status'  => 200,
+        ]);
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $data = $request->validated();
+
+        $user = User::auth();
+
+        $user = $this->userService->update($user, $data);
+
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.user.update',
+            'data'    => $user,
+            'resource' => UserResource::class,
             'status'  => 200,
         ]);
     }

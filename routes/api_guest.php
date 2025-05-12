@@ -11,6 +11,6 @@ Route::group(['prefix' => 'guest'], function () {
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        
+        Route::put('/listings/{id}/favorites', [ListingController::class, 'listingFavoritesUpdate']);
     });
 });
