@@ -14,6 +14,7 @@ class UserResource extends JsonResource
             'last_name'       => $this->last_name,
             'wallet_balance'  => $this->wallet_balance,
             'avatar'          => $this->avatar,
+            'avatar_url'     => $this->avatar_url ? asset('storage/' . $this->avatar_url) : null,
             'email'           => $this->email,
             'email_verified'  => $this->email_verified,
             'country_code'    => $this->country_code,
