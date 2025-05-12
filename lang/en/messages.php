@@ -60,4 +60,13 @@ return [
     ],
 
 
+    'user' => [
+        'not_found' => 'User not found.',
+        'create' => 'User created successfully.',
+        'update' => 'User updated successfully.',
+        'delete' => 'User deleted successfully.',
+    ],
+
+
+
 ];

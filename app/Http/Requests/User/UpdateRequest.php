@@ -4,25 +4,29 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
-{
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
+namespace App\Http\Requests\User;
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+use App\Http\Requests\BaseFormRequest;
+
+class UpdateRequest extends BaseFormRequest
+{
     public function rules(): array
     {
         return [
-            //
+            'first_name' => 'nullable|string|max:100',
+            'last_name' => 'nullable|string|max:100',
+            'email' => 'nullable|email|unique:users,email,' . $this->id . ',id,deleted_at,NULL',
+            'phone' => ['nullable', 'phone:AUTO'],
+            'password' => 'nullable|string|min:6',
+            'wallet_balance' => 'nullable|numeric|min:0',
+            'avatar' => 'nullable|string|max:255',
+            'role' => 'nullable|in:user,admin',
+            'status' => 'nullable|in:active,banneded',
+            'host_verified' => 'nullable|in:none,in_review,approved,rejected,stopped',
+            'is_verified' => 'nullable|boolean',
+            'email_verified' => 'nullable|boolean',
+            'phone_verified' => 'nullable|boolean',
+            'bank_details' => 'nullable|string',
         ];
     }
 }

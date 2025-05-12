@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
+use App\Services\PhoneService;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -22,18 +23,32 @@ class UserService
         );
     }
 
-    public function show($id)
+    public function show($id): User
     {
-        $user = User::find($id);
+        $user = new User();
+        $user->find($id);
+
         if (!$user) {
             MessageService::abort(404, 'messages.user.not_found');
         }
+
         return $user;
     }
 
     public function create($data)
     {
         $data['password'] = Hash::make($data['password']);
+
+
+        $phoneParts = PhoneService::parsePhoneParts($data['phone']);
+
+        $data['country_code'] = $phoneParts['country_code'];
+        $data['phone_number'] = $phoneParts['national_number'];
+
+         if (empty($data['email'])) {
+            $data['email'] = '';
+        }
+
         return User::create($data);
     }
 
@@ -43,7 +58,15 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
 
+        if (isset($data['phone'])) {
+            $phoneParts = PhoneService::parsePhoneParts($data['phone']);
+
+            $data['country_code'] = $phoneParts['country_code'];
+            $data['phone_number'] = $phoneParts['national_number'];
+        }
+
         $user->update($data);
+
         return $user;
     }
 

@@ -23,8 +23,11 @@ class UserPermission
     public static function canDelete(User $user)
     {
         $auth = User::auth();
+        
         if (!$auth || !$auth->isAdmin()) {
             MessageService::abort(403, 'messages.permission.error');
         }
+
+        return $user->id !== $auth->id;
     }
 }
