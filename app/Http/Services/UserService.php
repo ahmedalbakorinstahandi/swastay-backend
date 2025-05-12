@@ -73,12 +73,9 @@ class UserService
         }
 
         if (isset($data['email'])) {
-            $email_exists = User::whereEmail($data['email'])
-                ->where('id', '!=', $user->id)
-                ->whereNull('deleted_at')
-                ->first();
+            $email_exists = User::where('email', $data['email'])->first();
 
-            if ($email_exists) {
+            if ($email_exists && $email_exists->id != $user->id) {
                 MessageService::abort(422, 'messages.user.email_exists');
             }
         }
