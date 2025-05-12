@@ -100,7 +100,7 @@ class UserController extends Controller
     }
 
 
-    public function profile()
+    public function getProfile()
     {
         $user = User::auth();
 
@@ -118,7 +118,7 @@ class UserController extends Controller
 
         $user = User::auth();
 
-        $user = $this->userService->update($user, $data);
+        $user = $this->userService->updateProfile($user, $data);
 
 
         return ResponseService::response([
