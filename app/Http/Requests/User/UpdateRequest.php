@@ -18,14 +18,9 @@ class UpdateRequest extends BaseFormRequest
             'email' => 'nullable|email|unique:users,email,' . $this->id . ',id,deleted_at,NULL',
             'phone' => ['nullable', 'phone:AUTO'],
             'password' => 'nullable|string|min:6',
-            'wallet_balance' => 'nullable|numeric|min:0',
             'avatar' => 'nullable|string|max:255',
-            'role' => 'nullable|in:user,admin',
             'status' => 'nullable|in:active,banneded',
-            'host_verified' => 'nullable|in:none,in_review,approved,rejected,stopped',
-            'is_verified' => 'nullable|boolean',
-            'email_verified' => 'nullable|boolean',
-            'phone_verified' => 'nullable|boolean',
+            'host_verified' => 'nullable|in:none,approved,rejected',
             'bank_details' => 'nullable|string',
         ];
     }
