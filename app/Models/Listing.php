@@ -141,6 +141,11 @@ class Listing extends Model
         return $this->hasOne(ListingRule::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 
 
     public function isAvailableBetween($startDate, $endDate): bool
