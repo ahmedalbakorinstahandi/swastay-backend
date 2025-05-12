@@ -14,14 +14,8 @@ class CreateRequest extends BaseFormRequest
             'email' => 'nullable|email|unique:users,email,NULL,id,deleted_at,NULL',
             'phone' => ['required', 'phone:AUTO'],
             'password' => 'required|string|min:6',
-            'wallet_balance' => 'nullable|numeric|min:0',
             'avatar' => 'nullable|string|max:255',
-            'role' => 'required|in:user,admin',
-            'status' => 'required|in:active,banneded',
-            'host_verified' => 'required|in:none,in_review,approved,rejected,stopped',
-            'is_verified' => 'boolean',
-            'email_verified' => 'boolean',
-            'phone_verified' => 'boolean',
+            'host_verified' => 'required|in:none,approved',
             'bank_details' => 'nullable|string',
         ];
     }

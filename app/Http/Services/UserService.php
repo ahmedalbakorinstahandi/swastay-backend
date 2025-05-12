@@ -43,10 +43,18 @@ class UserService
 
         $data['country_code'] = $phoneParts['country_code'];
         $data['phone_number'] = $phoneParts['national_number'];
+        $data['phone_verified'] = true;
+        $data['is_verified'] = true;
 
         if (empty($data['email'])) {
             $data['email'] = '';
+        } else {
+            $data['email_verified'] = true;
         }
+
+        $data['wallet_balance'] = 0;
+        $data['role'] = 'user';
+        $data['status'] = 'active';
 
         return User::create($data);
     }
