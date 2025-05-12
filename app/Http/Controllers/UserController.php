@@ -48,6 +48,7 @@ class UserController extends Controller
     public function create(CreateRequest $request)
     {
         $data = $request->validated();
+        
         $user = $this->userService->create($data);
 
         return ResponseService::response([

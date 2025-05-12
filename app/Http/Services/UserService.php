@@ -25,8 +25,7 @@ class UserService
 
     public function show($id): User
     {
-        $user = new User();
-        $user->find($id);
+        $user = User::find($id)->first();
 
         if (!$user) {
             MessageService::abort(404, 'messages.user.not_found');
@@ -45,7 +44,7 @@ class UserService
         $data['country_code'] = $phoneParts['country_code'];
         $data['phone_number'] = $phoneParts['national_number'];
 
-         if (empty($data['email'])) {
+        if (empty($data['email'])) {
             $data['email'] = '';
         }
 
