@@ -65,6 +65,7 @@ return [
         'create' => 'User created successfully.',
         'update' => 'User updated successfully.',
         'delete' => 'User deleted successfully.',
+        'email_exists' => 'The email is already in use.',
     ],
 
 
