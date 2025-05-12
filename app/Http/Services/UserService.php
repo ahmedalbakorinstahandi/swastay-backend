@@ -23,12 +23,12 @@ class UserService
         );
     }
 
-    public function show($id): User
+    public function show($id)
     {
-        $user = User::find($id)->first();
+        $user = User::find($id);
 
         if (!$user) {
-            MessageService::abort(404, 'messages.user.not_found');
+            return MessageService::abort(404, 'messages.user.not_found');
         }
 
         return $user;
@@ -78,6 +78,8 @@ class UserService
             if ($email_exists && $email_exists->id != $user->id) {
                 MessageService::abort(422, 'messages.user.email_exists');
             }
+
+            $data['email_verified'] = true;
         }
 
         $user->update($data);
