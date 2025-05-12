@@ -72,13 +72,13 @@ class UserService
             $data['phone_number'] = $phoneParts['national_number'];
         }
 
-        // email unique validation
         if (isset($data['email'])) {
-            $userWithSameEmail = User::where('email', $data['email'])
+            $email_exists = User::whereEmail($data['email'])
                 ->where('id', '!=', $user->id)
+                ->whereNull('deleted_at')
                 ->first();
 
-            if ($userWithSameEmail) {
+            if ($email_exists) {
                 MessageService::abort(422, 'messages.user.email_exists');
             }
         }
