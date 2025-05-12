@@ -7,6 +7,7 @@ use App\Services\FilterService;
 use App\Services\MessageService;
 use App\Services\PhoneService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
 
 class UserService
 {
@@ -25,10 +26,10 @@ class UserService
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::where('id', $id)->first();
 
         if (!$user) {
-            return MessageService::abort(404, 'messages.user.not_found');
+            MessageService::abort(404, 'messages.user.not_found');
         }
 
         return $user;

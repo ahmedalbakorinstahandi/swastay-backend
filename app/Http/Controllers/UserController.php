@@ -8,6 +8,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\UserService;
 use App\Services\ResponseService;
+use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
@@ -63,11 +64,14 @@ class UserController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->validated();
+
         $user = $this->userService->show($id);
 
-        UserPermission::canUpdate($user);
+        if ($user instanceof Model) {
+            UserPermission::canUpdate($user);
 
-        $user = $this->userService->update($user, $data);
+            $user = $this->userService->update($user, $data);
+        }
 
         return ResponseService::response([
             'success' => true,
