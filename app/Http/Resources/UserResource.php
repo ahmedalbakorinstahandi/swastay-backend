@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'otp'             => $this->otp,
             'otp_expire_at'   => $this->otp_expire_at,
             'is_verified'     => $this->is_verified,
-            'created_at'     => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at'     => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
 
             // علاقات
             'listings'           => ListingResource::collection($this->whenLoaded('listings')),
