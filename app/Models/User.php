@@ -39,6 +39,8 @@ class User extends Model
         'phone_verified'     => 'boolean',
         'is_verified'        => 'boolean',
         'otp_expire_at'      => 'datetime',
+        'created_at'         => 'datetime',
+        'updated_at'         => 'datetime',
     ];
 
     // العلاقات
