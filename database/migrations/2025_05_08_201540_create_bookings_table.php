@@ -25,8 +25,7 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
-            $table->enum('status', ["draft", "waiting_payment", "paid", "confirmed", "completed", "cancelled", "rejected"]);
-            $table->enum('payment_method', ["wallet", "shamcash", "alharam", "cash", "crypto"]);
+            $table->enum('status', ['pending', 'accepted', 'confirmed', 'completed', 'cancelled', 'rejected']);
             $table->string('currency', 5)->default('USD');
             $table->float('price');
             $table->float('commission')->default(0);

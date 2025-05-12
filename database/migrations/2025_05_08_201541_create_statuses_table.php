@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('statusable_id');
             $table->string('statusable_type');
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

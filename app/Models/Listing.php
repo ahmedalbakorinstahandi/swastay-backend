@@ -140,4 +140,164 @@ class Listing extends Model
     {
         return $this->hasOne(ListingRule::class);
     }
+
+
+
+    public function isAvailableBetween($startDate, $endDate): bool
+    {
+        $start = \Carbon\Carbon::parse($startDate)->startOfDay();
+        $end = \Carbon\Carbon::parse($endDate)->startOfDay();
+        $days = $start->diffInDays($end);
+
+        if ($days < $this->min_booking_days) {
+            return false;
+        }
+
+        $dateRange = collect();
+        for ($date = $start->copy(); $date < $end; $date->addDay()) {
+            $dateRange->push($date->toDateString());
+        }
+
+        // الأيام المتوفرة بالقائمة
+        $availableDays = $this->availableDates()
+            ->whereBetween('available_date', [$start, $end])
+            ->pluck('available_date')
+            ->map(fn($d) => $d->toDateString());
+
+        if ($availableDays->count() < $dateRange->count()) {
+            return false;
+        }
+
+        // الحجوزات المؤكدة
+        $confirmedDates = $this->bookings()
+            ->whereIn('status', ['confirmed'])
+            ->where(function ($q) use ($start, $end) {
+                $q->whereBetween('start_date', [$start, $end])
+                    ->orWhereBetween('end_date', [$start, $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('start_date', '<', $start)->where('end_date', '>', $end);
+                    });
+            })
+            ->get()
+            ->flatMap(function ($booking) {
+                return collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                    ->map(fn($date) => $date->toDateString());
+            });
+
+        if ($dateRange->intersect($confirmedDates)->isNotEmpty()) {
+            return false;
+        }
+
+        // التحقق من accepted حسب الـ capacity
+        $acceptedBookings = $this->bookings()
+            ->where('status', 'accepted')
+            ->where(function ($q) use ($start, $end) {
+                $q->whereBetween('start_date', [$start, $end])
+                    ->orWhereBetween('end_date', [$start, $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('start_date', '<', $start)->where('end_date', '>', $end);
+                    });
+            })
+            ->get();
+
+        $acceptedDates = [];
+
+        foreach ($acceptedBookings as $booking) {
+            $period = \Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date);
+            foreach ($period as $date) {
+                $acceptedDates[$date->toDateString()] = ($acceptedDates[$date->toDateString()] ?? 0) + 1;
+                if ($acceptedDates[$date->toDateString()] > $this->booking_capacity) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    public function getBlockedDates(): array
+    {
+        $blocked = [];
+
+        // غير متوفرة: ليست موجودة ضمن availableDates
+        $allDates = $this->availableDates()->pluck('available_date')->map(fn($d) => $d->toDateString())->toArray();
+
+        // التواريخ المستقبلية (مثلاً سنة قادمة)
+        $start = now();
+        $end = now()->addYear();
+
+        $expected = [];
+        for ($date = $start->copy(); $date <= $end; $date->addDay()) {
+            $expected[] = $date->toDateString();
+        }
+
+        $notAvailable = array_diff($expected, $allDates);
+        $blocked = array_merge($blocked, $notAvailable);
+
+        // التواريخ المؤكدة
+        $confirmed = $this->bookings()
+            ->where('status', 'confirmed')
+            ->get()
+            ->flatMap(function ($booking) {
+                return collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                    ->map(fn($d) => $d->toDateString());
+            });
+
+        $blocked = array_merge($blocked, $confirmed->toArray());
+
+        // التواريخ التي تجاوزت الـ booking_capacity ضمن accepted
+        $accepted = $this->bookings()
+            ->where('status', 'accepted')
+            ->get()
+            ->flatMap(function ($booking) {
+                return collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                    ->map(fn($d) => $d->toDateString());
+            })
+            ->groupBy(fn($date) => $date)
+            ->filter(fn($dates) => count($dates) >= $this->booking_capacity)
+            ->keys();
+
+        $blocked = array_merge($blocked, $accepted->toArray());
+
+        return array_unique($blocked);
+    }
+
+    public function getAvailableDates(): array
+    {
+        // 1. كل الأيام المتاحة في الجدول
+        $available = $this->availableDates()
+            ->pluck('available_date')
+            ->map(fn($d) => $d->toDateString())
+            ->toArray();
+
+        // 2. أيام الحجز المؤكدة
+        $confirmed = $this->bookings()
+            ->where('status', 'confirmed')
+            ->get()
+            ->flatMap(function ($booking) {
+                return collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                    ->map(fn($date) => $date->toDateString());
+            })
+            ->toArray();
+
+        // 3. أيام الحجوزات accepted التي تجاوزت السعة
+        $acceptedOverCapacity = $this->bookings()
+            ->where('status', 'accepted')
+            ->get()
+            ->flatMap(function ($booking) {
+                return collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                    ->map(fn($d) => $d->toDateString());
+            })
+            ->groupBy(fn($date) => $date)
+            ->filter(fn($group) => count($group) >= $this->booking_capacity)
+            ->keys()
+            ->toArray();
+
+        // 4. جمع كل المحجوز والممنوع
+        $blocked = array_unique(array_merge($confirmed, $acceptedOverCapacity));
+
+        // 5. المتاحة = available - blocked
+        return array_values(array_diff($available, $blocked));
+    }
 }

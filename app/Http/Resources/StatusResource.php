@@ -13,6 +13,7 @@ class StatusResource extends JsonResource
             'name'              => $this->name,
             'statusable_id'     => $this->statusable_id,
             'statusable_type'   => $this->statusable_type,
+            'author_id'         => $this->author_id,
             'created_at'     => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

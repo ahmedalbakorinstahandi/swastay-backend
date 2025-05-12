@@ -20,7 +20,6 @@ class Booking extends Model
         'check_in',
         'check_out',
         'status',
-        'payment_method',
         'currency',
         'price',
         'commission',

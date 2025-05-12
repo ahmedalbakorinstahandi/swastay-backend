@@ -54,6 +54,7 @@ class ListingResource extends JsonResource
             'reviews'      => ListingReviewResource::collection($this->whenLoaded('reviews')),
             'available_dates' => ListingAvailableDateResource::collection($this->whenLoaded('availableDates')),
             'rule' => new ListingRuleResource($this->whenLoaded('rule')),
+            'available_dates_pro' => $this->getAvailableDates(),
         ];
     }
 }

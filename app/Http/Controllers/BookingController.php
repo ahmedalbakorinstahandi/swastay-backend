@@ -2,47 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Permissions\BookingPermission;
+use App\Http\Requests\Booking\CreateRequest;
+use App\Http\Requests\Booking\UpdateRequest;
+use App\Http\Resources\BookingResource;
+use App\Http\Services\BookingService;
+use App\Services\ResponseService;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $bookingService;
+
+    public function __construct(BookingService $bookingService)
+    {
+        $this->bookingService = $bookingService;
+    }
+
     public function index()
     {
-        //
+        $data = request()->all();
+        $bookings = $this->bookingService->index($data);
+
+        return ResponseService::response([
+            'success' => true,
+            'data'    => $bookings,
+            'resource' => BookingResource::class,
+            'meta'    => true,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        //
+        $booking = $this->bookingService->show($id);
+
+        BookingPermission::canShow($booking);
+
+        return ResponseService::response([
+            'success' => true,
+            'data'    => $booking,
+            'resource' => BookingResource::class,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function create(CreateRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $data = BookingPermission::create($data);
+
+        $booking = $this->bookingService->create($data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.booking.create',
+            'data'    => $booking,
+            'resource' => BookingResource::class,
+            'status'  => 201,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+
+        $booking = $this->bookingService->show($id);
+
+        BookingPermission::canUpdate($booking);
+
+        $booking = $this->bookingService->update($booking, $data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.booking.update',
+            'data'    => $booking,
+            'resource' => BookingResource::class,
+            'status'  => 200,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $booking = $this->bookingService->show($id);
+
+        BookingPermission::canDelete($booking);
+
+        $this->bookingService->destroy($booking);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.booking.delete',
+            'status'  => 200,
+        ]);
     }
 }

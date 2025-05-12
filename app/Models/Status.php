@@ -13,6 +13,7 @@ class Status extends Model
         'name',
         'statusable_id',
         'statusable_type',
+        'author_id',
     ];
 
     public function statusable()
