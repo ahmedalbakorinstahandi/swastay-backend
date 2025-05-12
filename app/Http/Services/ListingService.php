@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Listing;
 use App\Models\ListingRule;
 use App\Models\Setting;
+use App\Models\User;
 use App\Services\FilterService;
 use App\Services\ImageService;
 use App\Services\LanguageService;
@@ -22,6 +23,15 @@ class ListingService
 
         $query = ListingPermission::filterIndex($query);
 
+
+        if (isset($data['get_favorites']) && $data['get_favorites'] == 1) {
+            $user = User::auth();
+            if ($user) {
+                $query->whereHas('favorites', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                });
+            }
+        }
 
         $query = FilterService::applyFilters(
             $query,

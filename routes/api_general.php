@@ -25,7 +25,7 @@ Route::group(['prefix' => 'general'], function () {
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-        Route::get('/profile', [UserController::class, 'show']);
+        Route::get('/profile', [UserController::class, 'getProfile']);
         Route::put('/profile', [UserController::class, 'updateProfile']);
     });
 });
