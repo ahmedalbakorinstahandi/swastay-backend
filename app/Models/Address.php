@@ -33,4 +33,9 @@ class Address extends Model
     {
         return $this->morphTo();
     }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city', 'id');
+    }
 }

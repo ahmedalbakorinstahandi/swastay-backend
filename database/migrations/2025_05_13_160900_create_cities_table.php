@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('plcae_id')->nullable();
+            $table->string('place_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
