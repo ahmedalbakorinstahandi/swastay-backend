@@ -63,7 +63,7 @@ class User extends Model
     // {
     //     return $this->hasManyThrough(Listing::class, UserListingFavorite::class, 'user_id', 'id', 'id', 'listing_id');
     // }
-    
+
     public function favorites()
     {
         return $this->hasMany(UserListingFavorite::class, 'user_id');
@@ -72,7 +72,11 @@ class User extends Model
 
     public function isHost()
     {
-        return in_array($this->host_verified, ['approved', 'stopped']);
+        // return in_array($this->host_verified, ['approved', 'stopped']);
+
+        $isFromHostEndpoint = Str::contains(Request::path(), 'api/host');
+
+        return $isFromHostEndpoint &&  $this->role === 'user';
     }
 
     public function isGuest(): bool
@@ -80,7 +84,8 @@ class User extends Model
         $isNotApproved = !in_array($this->host_verified, ['approved', 'stopped']);
         $isFromGuestEndpoint = Str::contains(Request::path(), 'api/guest');
 
-        return ($isNotApproved || $isFromGuestEndpoint) && $this->role === 'user';
+        // return ($isNotApproved || $isFromGuestEndpoint) && $this->role === 'user';
+        return $isFromGuestEndpoint && $this->role === 'user';
     }
 
     public static function auth()
