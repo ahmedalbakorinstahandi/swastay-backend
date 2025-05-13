@@ -19,6 +19,7 @@ class AddressResource extends JsonResource
             'zip_code'       => $this->zip_code,
             'latitude'       => $this->latitude,
             'longitude'      => $this->longitude,
+            'place_id'       => $this->place_id,
             'addressable_id'   => $this->addressable_id,
             'addressable_type' => $this->addressable_type,
             'created_at'     => $this->created_at->format('Y-m-d H:i:s'),

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('zip_code')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
+            $table->string('place_id')->nullable();
             $table->unsignedBigInteger('addressable_id');
             $table->string('addressable_type');
             $table->timestamps();

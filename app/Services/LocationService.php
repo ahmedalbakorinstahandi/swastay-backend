@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\City;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -22,29 +23,37 @@ class LocationService
 
         if ($responseData['status'] == 'OK') {
             $googleMapData = $responseData['results'][0];
-            $emiratePlaceId = null;
+            $cityPlaceId = null;
 
-            // foreach ($responseData['results'] as $result) {
-            //     if (in_array('administrative_area_level_1', $result['types']) && in_array('political', $result['types'])) {
-            //         $emiratePlaceId = $result['place_id'];
-            //         break;
-            //     }
-            // }
+            foreach ($responseData['results'] as $result) {
+                if (in_array('administrative_area_level_1', $result['types']) && in_array('political', $result['types'])) {
+                    $cityPlaceId = $result['place_id'];
+                    break;
+                }
+            }
 
-            // if(!$emiratePlaceId) {
-            //     MessageService::abort(400, 'messages.invalid_location');
-            // }
+
+
+            if (!$cityPlaceId) {
+                MessageService::abort(400, 'messages.invalid_location');
+            }
+
+
+            $city = City::where('place_id', $cityPlaceId)->first();
+
 
             return [
                 'address' => $googleMapData['formatted_address'] ?? '',
-                'city' => $googleMapData['address_components']['locality'] ?? '',
+                // 'city' => $googleMapData['address_components']['locality'] ?? '',
+                'city' => $city ? $city->id : null,
                 'country' => $googleMapData['address_components']['country'] ?? '',
                 'postal_code' => $googleMapData['address_components']['postal_code'] ?? '',
                 'address_secondary' => $googleMapData['address_components']['sublocality'] ?? '',
                 'state' => $googleMapData['address_components']['administrative_area_level_1'] ?? '',
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'place_id' => $emiratePlaceId,
+                'place_id' => $cityPlaceId,
+                // 'city_id' => $city ? $city->id : null,
             ];
         }
 

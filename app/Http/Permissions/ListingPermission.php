@@ -65,6 +65,7 @@ class ListingPermission
         $user = User::auth();
 
         $host_id = null;
+
         if ($user->isHost()) {
             $host_id = $user->id;
         } else {

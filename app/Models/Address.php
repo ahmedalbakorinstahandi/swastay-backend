@@ -21,6 +21,7 @@ class Address extends Model
         'longitude',
         'addressable_id',
         'addressable_type',
+        'place_id',
     ];
 
     protected $casts = [
