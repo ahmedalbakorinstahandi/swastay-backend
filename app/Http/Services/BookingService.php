@@ -53,11 +53,11 @@ class BookingService
         $rule = $listing->rule;
 
         if ($rule) {
-            if ($rule->check_in) {
-                $data['check_in_time'] = $rule->check_in;
+            if ($rule->check_in_time) {
+                $data['check_in'] = $rule->check_in_time;
             }
-            if ($rule->check_out) {
-                $data['check_out_time'] = $rule->check_out;
+            if ($rule->check_out_time) {
+                $data['check_out'] = $rule->check_out_time;
             }
         }
 
