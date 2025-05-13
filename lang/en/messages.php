@@ -69,5 +69,16 @@ return [
     ],
 
 
+    'booking' => [
+        'not_found' => 'The booking was not found.',
+        'create' => 'The booking was created successfully.',
+        'update' => 'The booking was updated successfully.',
+        'delete' => 'The booking was deleted successfully.',
+        'approve' => 'The booking was approved successfully.',
+        'reject' => 'The booking was rejected successfully.',
+        'confirm' => 'The booking was confirmed successfully.',
+        'complete' => 'The booking was completed successfully.',
+        'cancel' => 'The booking was cancelled successfully.',
+    ],
 
 ];

@@ -15,8 +15,8 @@ class CreateRequest extends BaseFormRequest
         
         $rules = [
             'listing_id' => 'required|exists:listings,id,deleted_at,NULL',
-            'start_date' => 'required|date_format:Y-m-d H:i:s',
-            'end_date'   => 'required|date_format:Y-m-d H:i:s|after:start_date',
+            'start_date' => 'required|date_format:Y-m-d',
+            'end_date'   => 'required|date_format:Y-m-d|after:start_date',
             'message'    => 'nullable|string|max:500',
             'adults_count' => 'required|integer|min:0',
             'children_count' => 'required|integer|min:0',
