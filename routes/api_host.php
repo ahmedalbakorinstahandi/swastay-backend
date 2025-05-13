@@ -2,6 +2,7 @@
 
 //  group prefixe host and middleware sanctum
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingRuleController;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,9 @@ Route::group(['prefix' => 'host', 'middleware' => ['auth:sanctum']], function ()
         Route::post('/listing-rules', [ListingRuleController::class, 'create']);
         Route::put('/listing-rules/{id}', [ListingRuleController::class, 'update']);
         Route::delete('/listing-rules/{id}', [ListingRuleController::class, 'destroy']);
+
+
+        Route::get('/bookings', [BookingController::class, 'index']);
+        Route::get('/bookings/{id}', [BookingController::class, 'show']);
     });
 });
