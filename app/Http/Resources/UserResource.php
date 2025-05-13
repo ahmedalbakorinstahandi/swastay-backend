@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'phone_number'    => $this->phone_number,
             'phone_verified'  => $this->phone_verified,
             'role'            => $this->role,
-            'host_verified'   => $this->host_verified,
+            'id_verified'   => $this->id_verified,
             'status'          => $this->status,
             'otp'             => $this->otp,
             'otp_expire_at'   => $this->otp_expire_at,

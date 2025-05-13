@@ -20,7 +20,7 @@ class UpdateRequest extends BaseFormRequest
             'password' => 'nullable|string|min:6',
             'avatar' => 'nullable|string|max:255',
             'status' => 'nullable|in:active,banneded',
-            'host_verified' => 'nullable|in:none,approved,stopped',
+            'id_verified' => 'nullable|in:none,approved,stopped,rejected',
             'bank_details' => 'nullable|string',
         ];
     }

@@ -15,7 +15,7 @@ class CreateRequest extends BaseFormRequest
             'phone' => ['required', 'phone:AUTO'],
             'password' => 'required|string|min:6',
             'avatar' => 'nullable|string|max:255',
-            'host_verified' => 'required|in:none,approved',
+            'id_verified' => 'required|in:none,approved',
             'bank_details' => 'nullable|string',
         ];
     }

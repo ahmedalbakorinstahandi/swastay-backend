@@ -25,7 +25,7 @@ class User extends Model
         'phone_verified',
         'password',
         'role',
-        'host_verified',
+        'id_verified',
         'status',
         'bank_details',
         'otp',
@@ -72,7 +72,7 @@ class User extends Model
 
     public function isHost()
     {
-        // return in_array($this->host_verified, ['approved', 'stopped']);
+        // return in_array($this->id_verified, ['approved', 'stopped']);
 
         $isFromHostEndpoint = Str::contains(Request::path(), 'api/host');
 
@@ -81,7 +81,7 @@ class User extends Model
 
     public function isGuest(): bool
     {
-        $isNotApproved = !in_array($this->host_verified, ['approved', 'stopped']);
+        $isNotApproved = !in_array($this->id_verified, ['approved', 'stopped']);
         $isFromGuestEndpoint = Str::contains(Request::path(), 'api/guest');
 
         // return ($isNotApproved || $isFromGuestEndpoint) && $this->role === 'user';

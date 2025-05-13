@@ -19,7 +19,7 @@ class UserService
             [['first_name', 'last_name'], 'email', 'phone_number'],
             ['wallet_balance'],
             [],
-            ['role', 'status', 'host_verified', 'is_verified'],
+            ['role', 'status', 'id_verified', 'is_verified'],
             ['role', 'status']
         );
     }
@@ -57,7 +57,7 @@ class UserService
         $data['role'] = 'user';
         $data['status'] = 'active';
 
-        // if ($data['host_verified'] == 'none') {
+        // if ($data['id_verified'] == 'none') {
         //     unset($data['bank_details']);
         // }
 
@@ -87,7 +87,7 @@ class UserService
             $data['email_verified'] = true;
         }
 
-        // if ($user->host_verified == 'none') {
+        // if ($user->id_verified == 'none') {
         //     unset($data['bank_details']);
         // }
 
@@ -116,7 +116,7 @@ class UserService
             }
         }
 
-        // if ($user->host_verified == 'none') {
+        // if ($user->id_verified == 'none') {
         //     unset($data['bank_details']);
         // }
 
