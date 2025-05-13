@@ -19,7 +19,7 @@ class ListingService
 {
     public function index($data)
     {
-        $query = Listing::with(['host', 'address.city', 'images']);
+        $query = Listing::with(['host', 'address.cityDetails', 'images']);
 
         $query = ListingPermission::filterIndex($query);
 
@@ -55,7 +55,7 @@ class ListingService
             MessageService::abort(404, 'messages.listing.not_found');
         }
 
-        $list->load(['host', 'address.city', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $list->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $list;
     }
@@ -90,7 +90,7 @@ class ListingService
         $address = LocationService::getLocationData($location['latitude'], $location['longitude']);
 
         Address::create([
-            'street_address' => $address['address.city'] ?? '',
+            'street_address' => $address['address'] ?? '',
             'city' => $address['city'] ?? '',
             'country' => $address['country'] ?? '',
             'latitude' => $location['latitude'],
@@ -127,7 +127,7 @@ class ListingService
             'listing_id' => $listing->id,
         ]);
 
-        $listing->load(['host', 'address.city', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -188,7 +188,7 @@ class ListingService
             $address = LocationService::getLocationData($location['latitude'], $location['longitude']);
 
             $listing->address()->update([
-                'street_address' => $address['address.city'] ?? '',
+                'street_address' => $address['address'] ?? '',
                 'city' => $address['city'] ?? '',
                 'country' => $address['country'] ?? '',
                 'latitude' => $location['latitude'],
@@ -228,7 +228,7 @@ class ListingService
         }
 
 
-        $listing->load(['host', 'address.city', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -279,7 +279,7 @@ class ListingService
             );
         }
 
-        $listing->load(['host', 'address.city', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
         return $listing;
     }
 
@@ -297,7 +297,7 @@ class ListingService
             $rule = $listing->rule()->create($data);
         }
 
-        $listing->load(['host', 'address.city', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
         return $listing;
     }

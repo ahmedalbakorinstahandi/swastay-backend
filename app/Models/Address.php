@@ -34,7 +34,7 @@ class Address extends Model
         return $this->morphTo();
     }
 
-    public function city()
+    public function cityDetails()
     {
         return $this->belongsTo(City::class, 'city', 'id');
     }
