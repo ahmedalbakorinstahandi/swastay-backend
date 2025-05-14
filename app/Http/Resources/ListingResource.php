@@ -53,10 +53,19 @@ class ListingResource extends JsonResource
             'features'     => FeatureResource::collection($this->whenLoaded('features')),
             'reviews'      => ListingReviewResource::collection($this->whenLoaded('reviews')),
             'available_dates' => ListingAvailableDateResource::collection($this->whenLoaded('availableDates')),
-            'address'      => new AddressResource($this->addressWithRandomizedCoordinates()),
+            'address'      => $user == null || $user->isGuest() ? new AddressResource($this->addressWithRandomizedCoordinates()) : new AddressResource($this->whenLoaded('address')),
             // 'address'      => new AddressResource($this->whenLoaded('address')),
             'rule' => new ListingRuleResource($this->whenLoaded('rule')),
             'available_dates_pro' => $this->getAvailableDates(),
         ];
+
+        
     }
+
+
+   
 }
+
+
+
+  
