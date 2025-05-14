@@ -14,22 +14,22 @@ class ListingRuleResource extends JsonResource
             'id' => $this->id,
             'listing_id' => $this->listing_id,
 
-            'allows_pets' => $this->whenNotNull($this->allows_pets),
+            'allows_pets' => $this->allows_pets,
             'allows_pets_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_pets, 'pets')),
 
-            'allows_smoking' => $this->whenNotNull($this->allows_smoking),
+            'allows_smoking' => $this->allows_smoking,
             'allows_smoking_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_smoking, 'smoking')),
 
-            'allows_parties' => $this->whenNotNull($this->allows_parties),
+            'allows_parties' => $this->allows_parties,
             'allows_parties_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_parties, 'parties')),
 
-            'allows_children' => $this->whenNotNull($this->allows_children),
+            'allows_children' => $this->allows_children,
             'allows_children_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_children, 'children')),
 
-            'remove_shoes' => $this->whenNotNull($this->remove_shoes),
+            'remove_shoes' => $this->remove_shoes,
             'remove_shoes_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->remove_shoes, 'shoes')),
 
-            'no_extra_guests' => $this->whenNotNull($this->no_extra_guests),
+            'no_extra_guests' => $this->no_extra_guests,
             'no_extra_guests_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->no_extra_guests, 'extra_guests')),
 
             'check_in_time' => $this->check_in_time,
