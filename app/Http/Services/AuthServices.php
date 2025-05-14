@@ -6,6 +6,7 @@ namespace App\Http\Services;
 use App\Models\User;
 use App\Services\MessageService;
 use App\Services\PhoneService;
+use App\Services\WhatsappMessageService;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -105,6 +106,15 @@ class AuthServices
         ]);
 
         // Send OTP to phone number
+        $phoneNumber = $countryCode . $phoneNumber;
+        $message = __('messages.verification_code', [
+            'name' => $user->first_name,
+            'otp' => $otp,
+            'minutes' => $minutes,
+        ]);
+
+
+        WhatsappMessageService::send($phoneNumber, $message);
 
         return [
             'user' => $user,

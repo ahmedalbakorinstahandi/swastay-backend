@@ -90,5 +90,9 @@ return [
         'already_exists' => 'You have already left a review for this booking.',
     ],
 
+    'verification' => [
+        'code_message' => 'Hello :first_name, your verification code is: :otp. Please use this code to verify your account. Note that the code will expire in :minutes minutes. If you did not request this, please ignore this message.',
+    ],
+
 
 ];
