@@ -158,6 +158,7 @@ class Listing extends Model
             $newLongitude = $address->longitude + ($distance / $earthRadius) * (180 / pi()) * sin($angleRad) / cos(deg2rad($address->latitude));
 
             return [
+                'id' => $address->id,
                 'latitude' => $newLatitude,
                 'longitude' => $newLongitude,
                 'name' => $address->name ?? null,
