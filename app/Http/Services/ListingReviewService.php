@@ -22,6 +22,8 @@ class ListingReviewService
             });
         }
 
+        MessageService::abort(400, $filters['listing_id']);
+
 
         return FilterService::applyFilters(
             $query,
