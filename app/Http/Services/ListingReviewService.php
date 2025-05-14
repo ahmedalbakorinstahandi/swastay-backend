@@ -14,9 +14,9 @@ class ListingReviewService
         $query = ListingReview::query()->with(['user', 'booking']);
 
 
-        $listingId = $filters['listing_id'] ?? null;
-
-        if (!empty($filters['listing_id'])) {
+        // listing_id
+        if (request()->has('listing_id')) {
+            $filters['listing_id'] = request()->get('listing_id');
             $query->whereHas('booking', function ($q) use ($filters) {
                 $q->where('listing_id', $filters['listing_id']);
             });
