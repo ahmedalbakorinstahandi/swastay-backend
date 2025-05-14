@@ -8,7 +8,7 @@ use App\Services\MessageService;
 
 class ListingReviewService
 {
-    public function index($filters = [])
+    public function index($filters)
     {
 
         $query = ListingReview::query()->with(['user', 'booking']);
@@ -16,9 +16,9 @@ class ListingReviewService
 
         $listingId = $filters['listing_id'] ?? null;
 
-        if ($listingId) {
-            $query->whereHas('booking', function ($q) use ($listingId) {
-                $q->where('listing_id', $listingId);
+        if (!empty($filters['listing_id'])) {
+            $query->whereHas('booking', function ($q) use ($filters) {
+                $q->where('listing_id', $filters['listing_id']);
             });
         }
 
