@@ -4,7 +4,6 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
-use App\Http\Controllers\ListingAvailableDateController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;

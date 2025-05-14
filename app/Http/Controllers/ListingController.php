@@ -173,7 +173,7 @@ class ListingController extends Controller
         
         $user = User::auth();
 
-        if ($user->favorites()->where('listing_id', $listing->id)->exists()) {
+        if (!$user->favorites()->where('listing_id', $listing->id)->exists()) {
             $user->favorites()->create(
                 [
                     'listing_id' => $listing->id,

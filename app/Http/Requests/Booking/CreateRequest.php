@@ -22,6 +22,7 @@ class CreateRequest extends BaseFormRequest
             'children_count' => 'required|integer|min:0',
             'infants_count' => 'required|integer|min:0',
             'pets_count' => 'required|integer|min:0',
+            'payment_proof' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx,xls,xlsx,txt|max:4096',
         ];
         
         $admin_rules = [];
