@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
 use App\Services\PhoneService;
+use App\Services\WhatsappMessageService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 
@@ -61,7 +62,20 @@ class UserService
         //     unset($data['bank_details']);
         // }
 
-        return User::create($data);
+        $user = User::create($data);
+
+
+
+        $message1 = "مرحباً {$user->first_name} {$user->last_name}، نحن سعداء بانضمامك إلينا! لقد تم إنشاء حسابك بنجاح ويمكنك الآن الاستفادة من خدماتنا. إذا كنت بحاجة إلى أي مساعدة، لا تتردد في التواصل معنا.";
+        WhatsappMessageService::send($user->phone_number, $message1);
+
+
+        $message2 = "مرحبًا بك في SawaStay!\n\nشكرًا لانضمامك إلى عائلة SawaStay!\nيسعدنا أن نعلن بأن موعد الانطلاق الرسمي لمنصتنا سيكون في 1 حزيران 2025، ونتطلع إلى تقديم تجربة استثنائية للمضيفين والضيوف على حد سواء.\n\nنحن هنا لدعمك في كل خطوة من خطوات رحلتك كمضيف. إذا كان لديك أي استفسار أو تحتاج إلى مساعدة، لا تتردد في التواصل معنا عبر:\n\nالبريد الإلكتروني: contact@sawastay.com\nرقم الهاتف: +963 935 919 671\n\nمع أطيب التحيات،\nفريق SawaStay";
+
+        WhatsappMessageService::send($user->phone_number, $message2);
+
+
+        return $user;
     }
 
     public function update(User $user, array $data)
