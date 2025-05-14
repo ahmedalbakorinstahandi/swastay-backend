@@ -135,47 +135,30 @@ class Listing extends Model
     {
         return $this->morphOne(Address::class, 'addressable');
     }
-    
 
-    // اريد جلب عنوان الـ listing واشتت الاحداثيات بنطاق 1 كم
+
     public function addressWithRandomizedCoordinates()
     {
         $address = $this->address()->first();
 
         if ($address && $address->latitude && $address->longitude) {
-            $earthRadius = 6371; // Earth's radius in kilometers
-            $maxDistance = 1; // Maximum distance in kilometers
+            $earthRadius = 6371;
+            $maxDistance = 1; // km
 
-            // Generate random distance and angle
-            $distance = mt_rand(0, $maxDistance * 1000) / 1000; // Random distance in km
-            $angle = mt_rand(0, 360); // Random angle in degrees
-
-            // Convert angle to radians
+            $distance = mt_rand(0, $maxDistance * 1000) / 1000;
+            $angle = mt_rand(0, 360);
             $angleRad = deg2rad($angle);
 
-            // Calculate new latitude and longitude
             $newLatitude = $address->latitude + ($distance / $earthRadius) * (180 / pi()) * cos($angleRad);
             $newLongitude = $address->longitude + ($distance / $earthRadius) * (180 / pi()) * sin($angleRad) / cos(deg2rad($address->latitude));
 
-            return [
-                'id' => $address->id,
-                'latitude' => $newLatitude,
-                'longitude' => $newLongitude,
-                'name' => $address->name ?? null,
-                'country' => $address->country,
-                'street_address' => $address->street_address ?? null,
-                'extra_address' => $address->extra_address ?? null,
-                'city' => $address->city,
-                'state' => $address->state,
-                'zip_code' => $address->postal_code,
-                'addressable_id' => $address->addressable_id ?? null,
-                'addressable_type' => $address->addressable_type ?? null,
-                'place_id' => $address->place_id ?? null,
-            ];
+            $address->latitude = $newLatitude;
+            $address->longitude = $newLongitude;
         }
 
-        return null;
+        return $address;
     }
+
 
     public function rule()
     {
