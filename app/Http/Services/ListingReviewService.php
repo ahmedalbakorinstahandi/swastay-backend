@@ -8,14 +8,13 @@ use App\Services\MessageService;
 
 class ListingReviewService
 {
-    public function index($filters)
+    public function index($filters = [])
     {
-        $query = ListingReview::with(['user', 'booking']);
+        $query = ListingReview::with(['user', 'booking.listing']);
 
         if (!empty($filters['listing_id'])) {
             $listingId = $filters['listing_id'];
 
-            // فلترة بناءً على listing_id داخل علاقة الحجز
             $query->whereHas('booking', function ($q) use ($listingId) {
                 $q->where('listing_id', $listingId);
             });
@@ -31,6 +30,7 @@ class ListingReviewService
             ['user_id']
         );
     }
+
 
 
     public function show($id)
