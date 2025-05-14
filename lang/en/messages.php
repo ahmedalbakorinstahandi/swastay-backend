@@ -79,6 +79,16 @@ return [
         'confirm' => 'The booking was confirmed successfully.',
         'complete' => 'The booking was completed successfully.',
         'cancel' => 'The booking was cancelled successfully.',
+        'not_completed' => 'The booking is not completed.',
     ],
+
+    'listing_review' => [
+        'not_found' => 'Review not found.',
+        'create'    => 'Review created successfully.',
+        'update'    => 'Review updated successfully.',
+        'delete'    => 'Review deleted successfully.',
+        'already_exists' => 'You have already left a review for this booking.',
+    ],
+
 
 ];

@@ -4,6 +4,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ListingReviewController;
 use App\Http\Controllers\ListingRuleController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,10 @@ Route::group(['prefix' => 'host', 'middleware' => ['auth:sanctum']], function ()
 
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/{id}', [BookingController::class, 'show']);
+
+        Route::group(['prefix' => 'reviews'], function () {
+            Route::get('/', [ListingReviewController::class, 'index']);
+            Route::get('/{id}', [ListingReviewController::class, 'show']);
+        });
     });
 });

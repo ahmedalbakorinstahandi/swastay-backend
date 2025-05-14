@@ -329,4 +329,22 @@ class Listing extends Model
         // 5. المتاحة = available - blocked
         return array_values(array_diff($available, $blocked));
     }
+
+
+    // public function canReview($userId): bool
+    // {
+
+    //     $user = User::auth();
+
+    //     if (!$user || $user->isAdmin() || $user->isHost()) {
+    //         return false;
+    //     }
+
+    //     return $this->reviews()
+    //         ->where('user_id', $userId)
+    //         ->whereHas('bookings', function ($q) {
+    //             $q->where('status', 'confirmed');
+    //         })
+    //         ->doesntExist();
+    // }
 }

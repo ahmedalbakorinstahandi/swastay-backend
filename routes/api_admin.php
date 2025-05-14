@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ListingReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +56,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post('/bookings', [BookingController::class, 'create']);
     // Route::put('/bookings/{id}', [BookingController::class, 'update']);
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
+
+
+
+    Route::group(['prefix' => 'reviews'], function () {
+        Route::get('/', [ListingReviewController::class, 'index']);
+        Route::get('/{id}', [ListingReviewController::class, 'show']);
+        Route::put('/{id}', [ListingReviewController::class, 'update']);
+        Route::delete('/{id}', [ListingReviewController::class, 'destroy']);
+    });
 });

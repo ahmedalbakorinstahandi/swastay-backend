@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('listing_reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('booking_id');
-            $table->foreign('booking_id')->references('id')->on('booking');
+            $table->foreign('booking_id')->references('id')->on('bookings');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->text('comment')->nullable();
