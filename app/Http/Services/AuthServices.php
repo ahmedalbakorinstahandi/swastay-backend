@@ -108,7 +108,7 @@ class AuthServices
         // Send OTP to phone number
         $phoneNumber = $countryCode . $phoneNumber;
         $message = __('messages.verification.code_message_rigster', [
-            'name' => $user->first_name,
+            'first_name' => $user->first_name,
             'otp' => $otp,
             'minutes' => $minutes,
         ]);
