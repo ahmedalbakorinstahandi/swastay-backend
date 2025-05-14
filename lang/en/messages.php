@@ -91,7 +91,7 @@ return [
     ],
 
     'verification' => [
-        'code_message' => 'Hello :first_name, your verification code is: :otp. Please use this code to verify your account. Note that the code will expire in :minutes minutes. If you did not request this, please ignore this message.',
+        'code_message_rigster' => 'Hello :first_name, your verification code is: :otp. Please use this code to verify your account. Note that the code will expire in :minutes minutes. If you did not request this, please ignore this message.',
     ],
 
 
