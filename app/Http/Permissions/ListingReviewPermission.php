@@ -31,6 +31,10 @@ class ListingReviewPermission
 
         $booking = Booking::find($data['booking_id']);
 
+        if ($booking->guest_id !== $user->id) {
+            MessageService::abort(403, 'messages.permission.error');
+        }
+
         if ($booking->status !== 'completed') {
             MessageService::abort(403, 'messages.booking.not_completed');
         }
