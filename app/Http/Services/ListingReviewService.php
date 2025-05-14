@@ -10,20 +10,16 @@ class ListingReviewService
 {
     public function index($filters)
     {
+        $query = ListingReview::with(['user', 'booking']);
 
-        $query = ListingReview::query()->with(['user', 'booking']);
+        if (!empty($filters['listing_id'])) {
+            $listingId = $filters['listing_id'];
 
-
-        // listing_id
-        if (request()->has('listing_id')) {
-            $filters['listing_id'] = request()->get('listing_id');
-            $query->whereHas('booking', function ($q) use ($filters) {
-                $q->where('listing_id', $filters['listing_id']);
+            // فلترة بناءً على listing_id داخل علاقة الحجز
+            $query->whereHas('booking', function ($q) use ($listingId) {
+                $q->where('listing_id', $listingId);
             });
         }
-
-        MessageService::abort(400, $filters['listing_id']);
-
 
         return FilterService::applyFilters(
             $query,
@@ -31,10 +27,11 @@ class ListingReviewService
             ['comment'],
             ['rating'],
             ['created_at'],
-            ['user_id', 'booking_id', 'booking.listing_id'],
+            ['user_id', 'booking_id'],
             ['user_id']
         );
     }
+
 
     public function show($id)
     {
