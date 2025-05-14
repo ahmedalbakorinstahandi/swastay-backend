@@ -41,6 +41,7 @@ class ListingResource extends JsonResource
             'floor_number'                => $this->floor_number,
             'min_booking_days'            => $this->min_booking_days,
             'max_booking_days'            => $this->max_booking_days,
+            'is_published'                => $this->is_published,
             'created_at'                  => $this->created_at->format('Y-m-d H:i:s'),
 
             'is_favorite'                =>  $is_favorite,
