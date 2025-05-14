@@ -39,7 +39,7 @@ class UpdateRequest extends BaseFormRequest
             'location' => 'nullable|array',
             'location.latitude' => 'required_with:location|numeric',
             'location.longitude' => 'required_with:location|numeric',
-            'location.address' => 'required|string|max:255',
+            'location.street_address' => 'required|string|max:255',
             'location.extra_address' => 'required_with:location|string|max:500',
             'images' => 'nullable|array',
             'images.*' => 'required|string|max:100',

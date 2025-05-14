@@ -37,7 +37,7 @@ class CreateRequest extends BaseFormRequest
             'categories.*' => 'required|exists:categories,id,deleted_at,NULL',
             'location.latitude' => 'required|numeric',
             'location.longitude' => 'required|numeric',
-            'location.address' => 'required|string|max:255',
+            'location.street_address' => 'required|string|max:255',
             'location.extra_address' => 'required|string|max:500',
             'images' => 'required|array|min:5',
             'images.*' => 'required|string|max:100',

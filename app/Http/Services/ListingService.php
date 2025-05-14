@@ -90,7 +90,7 @@ class ListingService
         $address = LocationService::getLocationData($location['latitude'], $location['longitude']);
 
         Address::create([
-            'street_address' => $location['address'] ?? '',
+            'street_address' => $location['street_address'] ?? '',
             'city' => $address['city'] ?? '',
             'country' => $address['country'] ?? '',
             'latitude' => $location['latitude'],
@@ -188,7 +188,7 @@ class ListingService
             $address = LocationService::getLocationData($location['latitude'], $location['longitude']);
 
             $listing->address()->update([
-                'street_address' => $location['address'] ?? '',
+                'street_address' => $location['street_address'] ?? '',
                 'city' => $address['city'] ?? '',
                 'country' => $address['country'] ?? '',
                 'latitude' => $location['latitude'],
