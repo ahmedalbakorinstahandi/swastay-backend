@@ -10,7 +10,7 @@ class ListingRuleResource extends JsonResource
 {
     public function toArray($request)
     {
-        return array_filter([
+        return  [
             'id' => $this->id,
             'listing_id' => $this->listing_id,
 
@@ -43,7 +43,7 @@ class ListingRuleResource extends JsonResource
             'garbage_disposal_note' => $this->garbage_disposal_note,
             'pool_usage_note' => $this->pool_usage_note,
             'forbidden_activities_note' => $this->forbidden_activities_note,
-        ]);
+        ];
     }
 
     protected function translateBooleanForAllLocales($value, $field)
