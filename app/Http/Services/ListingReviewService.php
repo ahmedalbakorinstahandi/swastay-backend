@@ -14,11 +14,13 @@ class ListingReviewService
         $query = ListingReview::query()->with(['user', 'booking']);
 
 
-        // $listingId = $filters['listing_id'] ?? null;
+        $listingId = $filters['listing_id'] ?? null;
 
-        // unset($filters['listing_id']);
-
-        // $filters['booking.listing_id'] = $listingId;
+        if ($listingId) {
+            $query->whereHas('booking', function ($q) use ($listingId) {
+                $q->where('listing_id', $listingId);
+            });
+        }
 
 
         return FilterService::applyFilters(
