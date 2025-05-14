@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
@@ -48,4 +49,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
 
     Route::get('/profile', [UserController::class, 'getProfile']);
     Route::put('/profile', [UserController::class, 'updateProfile']);
+
+
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::get('/bookings/{id}', [BookingController::class, 'show']);
+    Route::post('/bookings', [BookingController::class, 'create']);
+    // Route::put('/bookings/{id}', [BookingController::class, 'update']);
+    Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
 });
