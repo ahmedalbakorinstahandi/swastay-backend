@@ -60,7 +60,8 @@ class ListingReviewPermission
     public static function canDelete($review)
     {
         $user = User::auth();
-        if (!$user || !$user->isAdmin()) {
+
+        if ($user && $user->isGuest() && $review->user_id !== $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
     }

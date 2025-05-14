@@ -49,6 +49,9 @@ class ListingReviewService
     {
         $review = ListingReview::create($data);
 
+
+        $review->load(['user', 'booking']);
+
         return $review;
     }
 
@@ -61,6 +64,8 @@ class ListingReviewService
         }
 
         $review->update($data);
+
+        $review->load(['user', 'booking']);
 
         return $review;
     }
