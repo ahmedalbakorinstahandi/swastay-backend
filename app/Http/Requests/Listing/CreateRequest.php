@@ -39,8 +39,8 @@ class CreateRequest extends BaseFormRequest
             'location.longitude' => 'required|numeric',
             'location.street_address' => 'required|string|max:255',
             'location.extra_address' => 'required|string|max:500',
-            'images' => 'required|array|min:5',
-            'images.*' => 'required|string|max:100',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|string|max:100',
         ];
 
 

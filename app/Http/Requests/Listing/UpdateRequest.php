@@ -44,7 +44,7 @@ class UpdateRequest extends BaseFormRequest
             'images' => 'nullable|array',
             'images.*' => 'required|string|max:100',
             'delete_images' => 'nullable|array',
-            'delete_images.*' => 'required|exists:images,id,deleted_at,NULL',
+            'delete_images.*' => 'nullable|exists:images,id,deleted_at,NULL',
         ];
 
         if ($user->isAdmin()) {

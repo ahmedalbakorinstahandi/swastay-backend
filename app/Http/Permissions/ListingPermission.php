@@ -37,25 +37,7 @@ class ListingPermission
     {
 
 
-        $canShow = false;
-
-
-        $user = User::auth();
-
-        if ($user) {
-
-            if ($user->isHost()) {
-                $canShow = $listing->host_id == $user->id;
-            } elseif ($user->isGuest()) {
-                $canShow = $listing->status == 'approved' && $listing->is_published;
-            } elseif ($user->isAdmin()) {
-                $canShow = true;
-            }
-        }
-
-        if (!$canShow) {
-            MessageService::abort(403, 'messages.permission.error');
-        }
+       
 
         return false;
     }
@@ -76,9 +58,9 @@ class ListingPermission
 
         $data['host_id'] = $host_id;
 
-        if (!$host || !$host->isHost()) {
-            MessageService::abort(403, 'messages.host.not_found');
-        }
+      //  if (!$host || !$host->isHost()) {
+        //    MessageService::abort(403, 'messages.host.not_found');
+       // }
 
         return $data;
     }
