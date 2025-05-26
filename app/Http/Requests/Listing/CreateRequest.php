@@ -46,7 +46,7 @@ class CreateRequest extends BaseFormRequest
 
         $user = User::auth();
 
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->isEmployee()) {
             $rules['host_id'] = 'required|exists:users,id,deleted_at,NULL';
         }
 
