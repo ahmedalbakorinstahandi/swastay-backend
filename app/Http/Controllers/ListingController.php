@@ -11,8 +11,6 @@ use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
 use App\Models\User;
 use App\Services\ResponseService;
-use Illuminate\Http\Request;
-use Termwind\Components\Li;
 
 class ListingController extends Controller
 {

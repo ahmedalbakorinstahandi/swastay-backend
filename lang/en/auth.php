@@ -28,4 +28,6 @@ return [
 
     'user_logged_out_successfully' => 'User logged out successfully.',
     'password_reset_success' => 'Password has been reset successfully.',
+
+    'phone_number_not_found' => 'The phone number was not found.',
 ];

@@ -69,24 +69,24 @@ class ListingService
         $data['currency'] = 'USD';
         $data['commission'] = Setting::where('key', 'commission')->first()->value;
         $data['status'] = 'draft';
-      $data['is_published'] = 1;
+        $data['is_published'] = 1;
 
         $listing = Listing::create($data);
 
 
         // images
-      if(isset($data['images'])){
-        
-        $images = $data['images']??[];
-        foreach ($images as $image) {
-            Image::create([
-                'path' => $image,
-                'type' => 'image',
-                'imageable_id' => $listing->id,
-                'imageable_type' => Listing::class,
-            ]);
+        if (isset($data['images'])) {
+
+            $images = $data['images'] ?? [];
+            foreach ($images as $image) {
+                Image::create([
+                    'path' => $image,
+                    'type' => 'image',
+                    'imageable_id' => $listing->id,
+                    'imageable_type' => Listing::class,
+                ]);
+            }
         }
-      }
 
         // address
         $location = $data['location'];
@@ -142,19 +142,19 @@ class ListingService
         $data = LanguageService::prepareTranslatableData($data, $listing);
 
 
-      //  $images_count = count($listing->images);
+        //  $images_count = count($listing->images);
 
-     //   if (isset($data['images'])) {
-     //       $images_count += count($data['images']);
-     //   }
+        //   if (isset($data['images'])) {
+        //       $images_count += count($data['images']);
+        //   }
 
-     //   if (isset($data['delete_images'])) {
-     //       $images_count -= count($data['delete_images']);
-     //   }
+        //   if (isset($data['delete_images'])) {
+        //       $images_count -= count($data['delete_images']);
+        //   }
 
-      //  if ($images_count < 5) {
-      //      MessageService::abort(422, 'messages.listing.min_images_limit', ['limit' => 5]);
-       // }
+        //  if ($images_count < 5) {
+        //      MessageService::abort(422, 'messages.listing.min_images_limit', ['limit' => 5]);
+        // }
 
 
         $listing->update($data);

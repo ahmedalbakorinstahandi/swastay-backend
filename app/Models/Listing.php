@@ -35,6 +35,7 @@ class Listing extends Model
         'floor_number',
         'min_booking_days',
         'max_booking_days',
+        'addedd_by',
     ];
 
     protected $casts = [
@@ -51,6 +52,7 @@ class Listing extends Model
         'min_booking_days' => 'integer',
         'max_booking_days' => 'integer',
         'is_contains_cameras' => 'boolean',
+        'addedd_by' => 'integer',
     ];
 
     protected $translatable = [

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->float('wallet_balance');
             $table->string('avatar')->nullable();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->boolean('email_verified')->default(false);
             $table->string('country_code', 7);
             $table->string('phone_number');

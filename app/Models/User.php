@@ -113,6 +113,11 @@ class User extends Model
         return $this->role === 'admin';
     }
 
+    public function isEmployee()
+    {
+        return $this->role === 'employee';
+    }
+
     public function isUser()
     {
         return $this->role === 'user';

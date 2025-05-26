@@ -28,4 +28,6 @@ return [
 
     'user_logged_out_successfully' => 'تم تسجيل الخروج بنجاح.',
     'password_reset_success' => 'تم إعادة تعيين كلمة المرور بنجاح.',
+
+     'phone_number_not_found' => 'رقم الهاتف غير موجود.',
 ];
