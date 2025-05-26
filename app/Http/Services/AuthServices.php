@@ -20,9 +20,17 @@ class AuthServices
         $countryCode = $phoneParts['country_code'];
         $phoneNumber = $phoneParts['national_number'];
 
+
+        if ($data['role'] === 'admin') {
+            $roles = ['admin', 'employee'];
+        } else {
+            $roles = ['user'];
+        }
+
+
         $user = User::where('country_code', $countryCode)
             ->where('phone_number', $phoneNumber)
-            ->where('role', $data['role'])
+            ->whereIn('role', $roles)
             ->first();
 
 
