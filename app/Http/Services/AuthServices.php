@@ -206,6 +206,14 @@ class AuthServices
         ]);
 
         // Send OTP to phone number
+        $phoneNumber = $countryCode . $phoneNumber;
+        $message = __('messages.verification.code_message_forgot_password', [
+            'first_name' => $user->first_name,
+            'otp' => $code,
+            'minutes' => $minutes,
+        ]);
+
+        WhatsappMessageService::send($phoneNumber, $message);
 
         return [
             'user' => $user,

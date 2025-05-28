@@ -16,7 +16,8 @@ class CreateRequest extends BaseFormRequest
             'password' => 'required|string|min:6',
             'avatar' => 'nullable|string|max:255',
             'id_verified' => 'required|in:none,approved',
+            'role' => 'nullable|in:employee,user',
             'bank_details' => 'nullable|string',
-        ];
+         ];
     }
 }

@@ -55,7 +55,7 @@ class UserService
         }
 
         $data['wallet_balance'] = 0;
-        $data['role'] = 'user';
+        $data['role'] = $data['role'] ?? 'user';
         $data['status'] = 'active';
 
         // if ($data['id_verified'] == 'none') {
