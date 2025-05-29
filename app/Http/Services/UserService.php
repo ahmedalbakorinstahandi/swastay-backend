@@ -85,6 +85,9 @@ class UserService
     {
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+
+            $user->tokens()->delete();
+
         }
 
         if (isset($data['phone'])) {
