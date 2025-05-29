@@ -132,6 +132,9 @@ class UserService
                 unset($data['old_password']);
                 if (isset($data['password'])) {
                     $data['password'] = Hash::make($data['password']);
+
+                    // delete all personal access tokens ignore the current token
+                    $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
                 }
             }
         }
