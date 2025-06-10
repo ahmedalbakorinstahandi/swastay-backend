@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('otp', 10)->nullable();
             $table->timestamp('otp_expire_at')->nullable();
             $table->boolean('is_verified')->default(false);
+            $table->string('language')->default('ar');
             $table->timestamps();
             $table->softDeletes();
         });

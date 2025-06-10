@@ -31,6 +31,7 @@ class User extends Model
         'otp',
         'otp_expire_at',
         'is_verified',
+        'language',
     ];
 
     protected $casts = [
@@ -41,6 +42,7 @@ class User extends Model
         'otp_expire_at'      => 'datetime',
         'created_at'         => 'datetime',
         'updated_at'         => 'datetime',
+        'language'           => 'string',
     ];
 
     // العلاقات
