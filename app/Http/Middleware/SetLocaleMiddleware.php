@@ -16,17 +16,17 @@ class SetLocaleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = explode(',', $request->header('Accept-Language', 'en'))[0];
-        if (in_array($locale, ['ar', 'en'])) {
-            app()->setLocale($locale);
-        }
-
+        // $locale = explode(',', $request->header('Accept-Language', 'en'))[0];
+        // if (in_array($locale, ['ar', 'en'])) {
+        // }
+        
+        app()->setLocale('ar');
 
         $user = User::auth();
         if ($user) {
 
-            if ($user->language != $locale) {
-                $user->language = $locale;
+            if ($user->language != 'ar') {
+                $user->language = 'ar';
                 $user->save();
             }
         }
