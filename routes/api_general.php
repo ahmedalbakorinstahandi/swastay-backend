@@ -24,7 +24,7 @@ Route::group(['prefix' => 'general'], function () {
     Route::get('/features', [FeatureController::class, 'index']);
     Route::get('/features/{id}', [FeatureController::class, 'show']);
 
-    Route::get('cities', [CityController::class, 'index']);
+    Route::get('/cities', [CityController::class, 'index']);
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
