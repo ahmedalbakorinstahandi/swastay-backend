@@ -15,7 +15,7 @@ class AddressResource extends JsonResource
             'street_address' => $this->street_address,
             'extra_address'  => $this->extra_address,
             'city' => $this->city,
-            'city_details' => new CityResource($this->whenLoaded('cityDetails')),
+            'city_details' => new CityResource($this->cityDetails),
             'state'          => $this->state,
             'zip_code'       => $this->zip_code,
             'latitude'       => $this->latitude,

@@ -47,7 +47,7 @@ class ListingService
                 'floor_number',
                 'min_booking_days',
                 'max_booking_days',
-                'address.city_id'
+                'address.city'
             ],
             [],
             ['host_id', 'house_type_id', 'status', 'is_contains_cameras', 'noise_monitoring_device'],
