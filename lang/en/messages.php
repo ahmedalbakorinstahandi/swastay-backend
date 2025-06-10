@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'you_are_not_logged_in_Please_log_in_first' => 'You are not logged in. Please log in first.',
+    'route_not_found' => 'Route not found.',
+    'invalid_request_method_Please_check_the_allowed_method' => 'Invalid request method. Please check the allowed method.',
+
     'phone' => [
         'invalid' => 'The phone number is invalid.',
     ],

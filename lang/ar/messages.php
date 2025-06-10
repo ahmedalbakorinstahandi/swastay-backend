@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'you_are_not_logged_in_Please_log_in_first' => 'يجب عليك تسجيل الدخول للمتابعة.',
+    'route_not_found' => 'الرابط غير موجود.',
+    'invalid_request_method_Please_check_the_allowed_method' => 'طريقة الطلب غير صالحة. يرجى التحقق من الطريقة المسموح بها.',
+
     //messages.phone.invalid
     'phone' => [
         'invalid' => 'رقم الهاتف غير صحيح.',

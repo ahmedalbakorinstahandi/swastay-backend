@@ -33,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'You are not logged in. Please log in first.',
+                    'message' => trans('you_are_not_logged_in_Please_log_in_first'),
                     'status' => 401
                 ], 401);
             }
@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Route not found.',
+                    'message' => trans('route_not_found'),
                     'status' => 404,
                 ], 404);
             }
@@ -53,7 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Invalid request method. Please check the allowed method.',
+                    'message' => trans('invalid_request_method_Please_check_the_allowed_method'),
                     'status' => 405,
                 ], 405);
             }
