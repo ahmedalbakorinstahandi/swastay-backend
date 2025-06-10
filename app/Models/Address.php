@@ -37,6 +37,6 @@ class Address extends Model
 
     public function cityDetails()
     {
-        return $this->belongsTo(City::class, 'city', 'id');
+        return $this->hasOne(City::class, 'id', 'city');
     }
 }
