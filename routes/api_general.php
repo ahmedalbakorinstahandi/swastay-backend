@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ImageController;
@@ -22,6 +23,8 @@ Route::group(['prefix' => 'general'], function () {
 
     Route::get('/features', [FeatureController::class, 'index']);
     Route::get('/features/{id}', [FeatureController::class, 'show']);
+
+    Route::get('cities', [CityController::class, 'index']);
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {

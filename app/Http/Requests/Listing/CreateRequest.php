@@ -28,7 +28,7 @@ class CreateRequest extends BaseFormRequest
             request('is_contains_cameras') ? LanguageService::translatableFieldRules('required|string|max:350') : LanguageService::translatableFieldRules('nullable|string|max:350'),
             'noise_monitoring_device' => 'required|boolean',
             'weapons_on_property' => 'required|boolean',
-            'floor_number' => 'required|integer|min:1',
+            'floor_number' => 'required|integer|min:0',
             'min_booking_days' => 'required|integer|min:1',
             'max_booking_days' => 'required|integer|min:1|max:730',
             'features' => 'nullable|array',
