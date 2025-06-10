@@ -22,7 +22,7 @@ class SetLocaleMiddleware
             app()->setLocale($locale);
         }
 
-        MessageService::abort(400, $locale);
+        // MessageService::abort(400, $locale);
 
 
         $user = User::auth();
