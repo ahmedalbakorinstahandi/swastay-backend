@@ -34,7 +34,9 @@ class ListingService
         }
 
         if (isset($data['city_id'])) {
-            $query->where('address.city', $data['city_id']);
+            $query->whereHas('address', function ($q) use ($data) {
+                $q->where('city', $data['city_id']);
+            });
         }
 
         $query = FilterService::applyFilters(
