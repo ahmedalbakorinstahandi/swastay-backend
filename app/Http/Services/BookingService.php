@@ -44,7 +44,7 @@ class BookingService
         ];
 
         return [
-            'bookings' => $bookings,
+            'bookings' => $query->paginate($data['limit'] ?? 20),
             'bookings_status_count' => $bookings_status_count,
         ];
     }
