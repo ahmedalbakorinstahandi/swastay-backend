@@ -121,7 +121,10 @@ class BookingService
         $booking->transactions()->create([
             'user_id' => $user->id,
             'amount' => $data['amount'],
-            'description' => $data['description'],
+            'description' => [
+                'ar' => 'دفع رصيد للحجز ' . $booking->id,
+                'en' => 'Pay for booking ' . $booking->id,
+            ],
             'method' => $data['method'],
             'attached' => $data['attached'],
             'status' => 'pending',
