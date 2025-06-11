@@ -146,6 +146,8 @@ class ListingService
         // create rule
         $listing->rule()->create([
             'listing_id' => $listing->id,
+            'check_in_time' => $data['check_in_time'] ?? null,
+            'check_out_time' => $data['check_out_time'] ?? null,
         ]);
 
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
@@ -246,6 +248,14 @@ class ListingService
                     'created_at' => now(),
                 ]);
             }
+        }
+
+        // rule
+        if (isset($data['check_in_time']) || isset($data['check_out_time'])) {
+            $listing->rule()->update([
+                'check_in_time' => $data['check_in_time'] ?? null,
+                'check_out_time' => $data['check_out_time'] ?? null,
+            ]);
         }
 
 

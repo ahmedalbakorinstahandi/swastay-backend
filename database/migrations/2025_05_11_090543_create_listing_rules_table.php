@@ -20,6 +20,8 @@ return new class extends Migration
             $table->boolean('allows_children')->nullable();
             $table->boolean('remove_shoes')->nullable();
             $table->boolean('no_extra_guests')->nullable();
+            $table->boolean('allows_families_only')->nullable();
+
 
             $table->text('quiet_hours')->nullable();
             $table->text('restricted_rooms_note')->nullable();
