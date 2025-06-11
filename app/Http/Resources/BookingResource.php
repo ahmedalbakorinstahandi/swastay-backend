@@ -35,6 +35,7 @@ class BookingResource extends JsonResource
             'listing' => new ListingResource($this->whenLoaded('listing')),
             'host'    => new UserResource($this->whenLoaded('host')),
             'guest'   => new UserResource($this->whenLoaded('guest')),
+            'transactions' => TransactionResource::collection($this->whenLoaded('transactions')),
         ];
     }
 }
