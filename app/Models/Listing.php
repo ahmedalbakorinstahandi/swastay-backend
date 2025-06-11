@@ -145,7 +145,7 @@ class Listing extends Model
 
         if ($address && $address->latitude && $address->longitude) {
             $earthRadius = 6371;
-            $maxDistance = 0.25; // km
+            $maxDistance = 0.1; // km
 
             $distance = mt_rand(0, $maxDistance * 1000) / 1000;
             $angle = mt_rand(0, 360);
