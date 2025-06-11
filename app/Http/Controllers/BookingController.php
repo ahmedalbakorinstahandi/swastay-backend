@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Permissions\BookingPermission;
+use App\Http\Requests\Booking\AddTransactionRequest;
 use App\Http\Requests\Booking\CreateRequest;
 use App\Http\Requests\Booking\UpdateRequest;
 use App\Http\Resources\BookingResource;
@@ -94,6 +95,26 @@ class BookingController extends Controller
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.booking.delete',
+            'status'  => 200,
+        ]);
+    }
+
+    // add transaction
+    public function addTransaction($id, AddTransactionRequest $request)
+    {
+        $data = $request->validated();
+
+        $booking = $this->bookingService->show($id);
+
+        BookingPermission::canUpdate($booking);
+
+        $booking = $this->bookingService->addTransaction($booking, $data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.booking.addTransaction',
+            'data'    => $booking,
+            'resource' => BookingResource::class,
             'status'  => 200,
         ]);
     }

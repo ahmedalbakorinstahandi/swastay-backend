@@ -7,6 +7,7 @@ use App\Http\Permissions\BookingPermission;
 use App\Models\Booking;
 use App\Models\Listing;
 use App\Models\Setting;
+use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
 
@@ -57,7 +58,7 @@ class BookingService
             MessageService::abort(404, 'messages.booking.not_found');
         }
 
-        $booking->load(['host', 'guest', 'listing']);
+        $booking->load(['host', 'guest', 'listing', 'transactions']);
 
         return $booking;
     }
@@ -93,7 +94,7 @@ class BookingService
 
         $booking = Booking::create($data);
 
-        $booking->load(['host', 'guest', 'listing']);
+        $booking->load(['host', 'guest', 'listing', 'transactions']);
 
         return $booking;
     }
@@ -102,7 +103,7 @@ class BookingService
     {
         $booking->update($data);
 
-        $booking->load(['host', 'guest', 'listing']);
+        $booking->load(['host', 'guest', 'listing', 'transactions']);
 
         return $booking;
     }
@@ -110,5 +111,28 @@ class BookingService
     public function destroy(Booking $booking)
     {
         $booking->delete();
+    }
+
+    public function addTransaction(Booking $booking, array $data){
+
+
+        $user = User::auth();
+
+        $booking->transactions()->create([
+            'user_id' => $user->id,
+            'amount' => $data['amount'],
+            'description' => $data['description'],
+            'method' => $data['method'],
+            'attached' => $data['attached'],
+            'status' => 'pending',
+            'type' => 'booking_payment',
+            'direction' => 'in',
+            'transactionable_id' => $booking->id,
+            'transactionable_type' => Booking::class,
+        ]);
+
+        $booking->load(['host', 'guest', 'listing', 'transactions']);
+
+        return $booking;
     }
 }

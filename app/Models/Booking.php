@@ -66,4 +66,9 @@ class Booking extends Model
     {
         return $this->hasOne(ListingReview::class, 'booking_id', 'id');
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }
