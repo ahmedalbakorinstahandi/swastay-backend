@@ -21,11 +21,12 @@ class BookingController extends Controller
     public function index()
     {
         $data = request()->all();
-        $bookings = $this->bookingService->index($data);
+        $data = $this->bookingService->index($data);
 
         return ResponseService::response([
             'success' => true,
-            'data'    => $bookings,
+            'info'    => $data['bookings_status_count'],
+            'data'    => $data['bookings'],
             'resource' => BookingResource::class,
             'meta'    => true,
             'status'  => 200,

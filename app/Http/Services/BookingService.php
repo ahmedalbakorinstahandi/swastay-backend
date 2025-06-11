@@ -19,15 +19,34 @@ class BookingService
 
         $query = BookingPermission::filterIndex($query);
 
-        return FilterService::applyFilters(
+        $query = FilterService::applyFilters(
             $query,
             $filters,
             ['message', 'host_notes', 'admin_notes'],
             ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'],
             ['start_date', 'end_date'],
             ['status', 'payment_method', 'currency'],
-            ['status', 'payment_method']
+            ['status', 'payment_method'],
+            false,
         );
+
+
+        $bookings = $query->get();
+
+        $bookings_status_count = [
+            'all_count' => $bookings->count(),
+            'pending_count' => $bookings->where('status', 'pending')->count(),
+            'accepted_count' => $bookings->where('status', 'accepted')->count(),
+            'confirmed_count' => $bookings->where('status', 'confirmed')->count(),
+            'completed_count' => $bookings->where('status', 'completed')->count(),
+            'cancelled_count' => $bookings->where('status', 'cancelled')->count(),
+            'rejected_count' => $bookings->where('status', 'rejected')->count(),
+        ];
+
+        return [
+            'bookings' => $bookings,
+            'bookings_status_count' => $bookings_status_count,
+        ];
     }
 
     public function show($id)
