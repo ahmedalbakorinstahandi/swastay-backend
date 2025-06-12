@@ -62,13 +62,16 @@ class Listing extends Model
     ];
 
 
-    // قوائم مشابهة في تفاصيل الاعلان
     public function similarListings()
     {
         // same city or same house type
-        return $this->hasMany(Listing::class, 'house_type_id', 'house_type_id')->where('id', '!=', $this->id)->whereHas('address', function ($query) {
-            $query->where('city', $this->address->city);
-        });
+        return $this->hasMany(Listing::class, 'house_type_id', 'house_type_id')
+            ->where('id', '!=', $this->id)
+            ->whereHas('address', function ($query) {
+                $query->when($this->address, function ($q) {
+                    $q->where('city', $this->address->city);
+                });
+            });
     }
 
     protected function title(): Attribute
