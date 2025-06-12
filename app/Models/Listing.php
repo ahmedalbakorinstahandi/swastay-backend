@@ -153,13 +153,20 @@ class Listing extends Model
     }
 
 
+    
+     // distance attribute
+     public function getDistanceAttribute()
+     {
+        return $this->address->distance;
+     }
+
     public function addressWithRandomizedCoordinates()
     {
         $address = $this->address()->first();
 
         if ($address && $address->latitude && $address->longitude) {
             $earthRadius = 6371;
-            $maxDistance = 0.1; // km
+            $maxDistance = $this->distance ?? 0.1; // km
 
             $distance = mt_rand(0, $maxDistance * 1000) / 1000;
             $angle = mt_rand(0, 360);
