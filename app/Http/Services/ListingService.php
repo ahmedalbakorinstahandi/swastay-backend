@@ -56,7 +56,7 @@ class ListingService
                 'address.city'
             ],
             [],
-            ['host_id', 'house_type_id', 'status', 'is_contains_cameras', 'noise_monitoring_device'],
+            ['host_id', 'house_type_id', 'status', 'is_contains_cameras'],
             ['host_id', 'status'],
         );
 
@@ -76,7 +76,7 @@ class ListingService
 
         $user = User::auth();
         if (!$user || $user->isGuest()) {
-            $list->load('similarListings');
+            $list->load(['similarListings.images', 'similarListings.address.cityDetails', 'similarListings.host']);
         }
 
         return $list;
