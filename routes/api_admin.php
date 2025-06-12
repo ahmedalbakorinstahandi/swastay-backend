@@ -6,6 +6,7 @@ use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::post('/bookings', [BookingController::class, 'create']);
     // Route::put('/bookings/{id}', [BookingController::class, 'update']);
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
+
+    Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+
+
+    Route::get('/transactions', [TransactionController::class, 'index']);
+    Route::get('/transactions/{id}', [TransactionController::class, 'show']);
+    // Route::post('/transactions', [TransactionController::class, 'create']);
+    Route::put('/transactions/{id}', [TransactionController::class, 'update']);
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
 
 
 

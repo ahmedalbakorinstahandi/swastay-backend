@@ -28,7 +28,9 @@ Route::group(['prefix' => 'host', 'middleware' => ['auth:sanctum']], function ()
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::get('/bookings/{id}', [BookingController::class, 'show']);
 
-    Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+    // Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+
+    
 
     Route::group(['prefix' => 'reviews'], function () {
         Route::get('/', [ListingReviewController::class, 'index']);

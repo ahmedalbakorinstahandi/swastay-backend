@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,14 @@ Route::group(['prefix' => 'guest'], function () {
         Route::post('/bookings', [BookingController::class, 'create']);
         // Route::put('/bookings/{id}', [BookingController::class, 'update']);
         // Route::delete('/bookings/{id}', [BookingController::class, 'delete']);
+
+        Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+
+        Route::get('/transactions', [TransactionController::class, 'index']);
+        Route::get('/transactions/{id}', [TransactionController::class, 'show']);
+        // Route::post('/transactions', [TransactionController::class, 'create']);
+        Route::put('/transactions/{id}', [TransactionController::class, 'update']);
+        Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
 
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', [ListingReviewController::class, 'index']);
