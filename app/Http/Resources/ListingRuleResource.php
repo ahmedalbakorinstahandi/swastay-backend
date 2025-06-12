@@ -43,6 +43,9 @@ class ListingRuleResource extends JsonResource
             'garbage_disposal_note' => $this->garbage_disposal_note,
             'pool_usage_note' => $this->pool_usage_note,
             'forbidden_activities_note' => $this->forbidden_activities_note,
+
+            'allows_families_only' => $this->allows_families_only,
+            'allows_families_only_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_families_only, 'families_only')),
         ];
     }
 

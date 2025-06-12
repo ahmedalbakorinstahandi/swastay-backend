@@ -148,6 +148,7 @@ class ListingService
             'listing_id' => $listing->id,
             'check_in_time' => $data['check_in_time'] ?? null,
             'check_out_time' => $data['check_out_time'] ?? null,
+            'allows_families_only' => $data['rule']['allows_families_only'] ?? null,
         ]);
 
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
@@ -251,12 +252,13 @@ class ListingService
         }
 
         // rule
-        if (isset($data['check_in_time']) || isset($data['check_out_time'])) {
-            $listing->rule()->update([
-                'check_in_time' => $data['check_in_time'] ?? null,
-                'check_out_time' => $data['check_out_time'] ?? null,
-            ]);
-        }
+
+        $listing->rule()->update([
+            'check_in_time' => $data['check_in_time'] ?? null,
+            'check_out_time' => $data['check_out_time'] ?? null,
+            'allows_families_only' => $data['rule']['allows_families_only'] ?? null,
+        ]);
+
 
 
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);

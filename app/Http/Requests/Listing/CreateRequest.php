@@ -31,8 +31,9 @@ class CreateRequest extends BaseFormRequest
             'floor_number' => 'required|integer|min:0',
             'min_booking_days' => 'required|integer|min:1',
             'max_booking_days' => 'required|integer|min:1|max:730',
-            'check_in_time' => 'required|date_format:H:i',
-            'check_out_time' => 'required|date_format:H:i',
+            'check_in_time' => 'nullable|date_format:H:i',
+            'check_out_time' => 'nullable|date_format:H:i',
+
             'features' => 'nullable|array',
             'features.*' => 'required|exists:features,id,deleted_at,NULL',
             'categories' => 'required|array|min:1',
@@ -43,6 +44,10 @@ class CreateRequest extends BaseFormRequest
             'location.extra_address' => 'required|string|max:500',
             'images' => 'nullable|array',
             'images.*' => 'nullable|string|max:100',
+
+            'rule' => 'nullable|array',
+            'rule.allows_families_only' => 'nullable|boolean',
+
         ];
 
 
