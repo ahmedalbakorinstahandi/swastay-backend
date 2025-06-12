@@ -71,7 +71,8 @@ class Listing extends Model
                 $query->when($this->address, function ($q) {
                     $q->where('city', $this->address->city);
                 });
-            });
+            })
+            ->limit(3);
     }
 
     protected function title(): Attribute
