@@ -34,8 +34,8 @@ return new class extends Migration
             $table->integer('booking_capacity');
             $table->boolean('is_contains_cameras')->default(false);
             $table->string('camera_locations', 350)->nullable();
-            $table->boolean('noise_monitoring_device');
-            $table->boolean('weapons_on_property');
+            // $table->boolean('noise_monitoring_device');
+            // $table->boolean('weapons_on_property');
             $table->tinyInteger('floor_number')->default(1);
             $table->integer('min_booking_days')->default(1);
             $table->bigInteger('max_booking_days')->default(730);
