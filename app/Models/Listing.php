@@ -72,8 +72,7 @@ class Listing extends Model
                     $q->where('city', $this->address->city);
                 });
             })
-            // ->limit(3)
-            ;
+            ->limit(3);
     }
 
     protected function title(): Attribute
