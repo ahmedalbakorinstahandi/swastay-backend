@@ -26,6 +26,11 @@ return [
         'no' => 'Extra guests are allowed',
     ],
 
+    'families_only' => [
+        'yes' => 'Only families are allowed',
+        'no' => 'Families and extra guests are allowed',
+    ],
+
     'check_in_time' => 'Check-in after :time',
     'check_out_time' => 'Check-out before :time',
 ];

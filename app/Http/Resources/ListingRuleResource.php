@@ -32,6 +32,9 @@ class ListingRuleResource extends JsonResource
             'no_extra_guests' => $this->no_extra_guests,
             'no_extra_guests_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->no_extra_guests, 'extra_guests')),
 
+            'allows_families_only' => $this->allows_families_only,
+            'allows_families_only_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_families_only, 'families_only')),
+
             'check_in_time' => $this->check_in_time,
             'check_in_time_text' => $this->whenNotNull($this->check_in_time_description()),
 
@@ -44,8 +47,7 @@ class ListingRuleResource extends JsonResource
             'pool_usage_note' => $this->pool_usage_note,
             'forbidden_activities_note' => $this->forbidden_activities_note,
 
-            'allows_families_only' => $this->allows_families_only,
-            'allows_families_only_text' => $this->whenNotNull($this->translateBooleanForAllLocales($this->allows_families_only, 'families_only')),
+           
         ];
     }
 
