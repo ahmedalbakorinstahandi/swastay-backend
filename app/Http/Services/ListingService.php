@@ -74,6 +74,11 @@ class ListingService
 
         $list->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 
+        $user = User::auth();
+        if ($user && $user->isGuest()) {
+            $list->load('similarListings');
+        }
+
         return $list;
     }
 
