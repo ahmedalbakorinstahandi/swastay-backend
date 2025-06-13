@@ -43,7 +43,7 @@ class ConvertImagesToWebp extends Command
 
             try {
                 // اضغط وحوّل
-                $img = $manager->read($originalPath)->toWebp(quality: 75);
+                $img = $manager->read($originalPath)->toWebp(quality: 10);
                 $img->save($fullNewPath);
 
                 // احذف النسخة الأصلية
