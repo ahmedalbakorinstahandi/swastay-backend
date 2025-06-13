@@ -33,18 +33,23 @@ class ConvertImagesToWebp extends Command
                 continue;
             }
 
-            $newName = pathinfo($image->path, PATHINFO_FILENAME) . '.webp';
-            $newPath = pathinfo($image->path, PATHINFO_DIRNAME) . '/' . $newName;
+            $originalExtension = pathinfo($image->path, PATHINFO_EXTENSION);
+            $originalDir = pathinfo($image->path, PATHINFO_DIRNAME);
+            $originalName = pathinfo($image->path, PATHINFO_FILENAME);
+
+            $newName = $originalName . '.webp';
+            $newPath = $originalDir . '/' . $newName;
             $fullNewPath = storage_path("app/public/{$newPath}");
 
             try {
-                $img = $manager->read($originalPath)->toWebp(quality: 10);
+                // اضغط وحوّل
+                $img = $manager->read($originalPath)->toWebp(quality: 75);
                 $img->save($fullNewPath);
 
-                // حذف النسخة القديمة
+                // احذف النسخة الأصلية
                 unlink($originalPath);
 
-                // تحديث المسار في قاعدة البيانات
+                // حدّث السجل في قاعدة البيانات
                 $image->update(['path' => $newPath]);
             } catch (\Exception $e) {
                 $this->error("خطأ في الصورة ID: {$image->id} - {$e->getMessage()}");
@@ -52,6 +57,7 @@ class ConvertImagesToWebp extends Command
 
             $bar->advance();
         }
+
 
         $bar->finish();
         $this->info("\n✅ تم تحويل الصور وتحديث المسارات بنجاح!");
