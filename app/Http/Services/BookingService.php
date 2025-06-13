@@ -113,7 +113,8 @@ class BookingService
         $booking->delete();
     }
 
-    public function addTransaction(Booking $booking, array $data){
+    public function addTransaction(Booking $booking, array $data)
+    {
 
 
         $user = User::auth();
@@ -126,7 +127,7 @@ class BookingService
                 'en' => 'Pay for booking ' . $booking->id,
             ],
             'method' => $data['method'],
-            'attached' => $data['attached'],
+            'attached' => $data['attached'] ?? null,
             'status' => 'pending',
             'type' => 'booking_payment',
             'direction' => 'in',
