@@ -6,6 +6,10 @@ use App\Models\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Intervention\Image\ImageManager;
+
+
+
 
 class ImageService
 {
@@ -19,25 +23,29 @@ class ImageService
     }
 
 
+
     public static function storeImage($image, $folder, $name = null)
     {
         self::MakeFolder($folder);
 
-        $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+        $baseName = uniqid();
         if ($name) {
-            $imageName = $name . '-' . $imageName;
+            $baseName = $name . '-' . $baseName;
         }
 
+        $imageName = $baseName . '.webp';
         $new_path = storage_path(sprintf('app/public/%s/%s', $folder, $imageName));
 
-        move_uploaded_file($image, $new_path);
+        $manager = new ImageManager('gd');
+        $imageContent = $manager->read($image)
+            ->toWebp(75);  
 
-        // ✅ ضغط الصورة بعد الحفظ
-        $optimizerChain = OptimizerChainFactory::create();
-        $optimizerChain->optimize($new_path);
+        $imageContent->save($new_path);
 
         return sprintf('%s/%s', $folder, $imageName);
     }
+
+
 
 
     public static function updateImage($image, $folder, $oldImageName): string|null
