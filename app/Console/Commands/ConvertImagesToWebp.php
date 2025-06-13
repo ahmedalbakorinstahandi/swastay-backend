@@ -62,13 +62,13 @@ class ConvertImagesToWebp extends Command
                 // تحديث جميع السجلات المرتبطة بهذه الصورة
                 Image::where('path', $path)->update(['path' => $newPath]);
             } catch (\Exception $e) {
-                $this->error("⚠️ خطأ في المسار: {$path} - {$e->getMessage()}");
+                $this->error("⚠️ Error in path: {$path} - {$e->getMessage()}");
             }
 
             $bar->advance();
         }
 
         $bar->finish();
-        $this->info("\n✅ تم تحويل الصور وتحديث المسارات بنجاح!");
+        $this->info("\n✅ Images converted and paths updated successfully!");
     }
 }
