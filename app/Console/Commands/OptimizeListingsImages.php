@@ -9,11 +9,11 @@ use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 class OptimizeListingsImages extends Command
 {
     protected $signature = 'optimize:listings';
-    protected $description = 'Compress all images in storage/app/public/test';
+    protected $description = 'Compress all images in storage/app/public/listings_copy';
 
     public function handle(): void
     {
-        $directory = storage_path('app/public/test');
+        $directory = storage_path('app/public/listings_copy');
 
         if (!File::exists($directory)) {
             $this->error("❌ Directory not found: $directory");
