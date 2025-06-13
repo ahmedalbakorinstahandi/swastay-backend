@@ -17,47 +17,56 @@ class ConvertImagesToWebp extends Command
     {
         $manager = new ImageManager(new Driver());
 
-        $images = Image::where('path', 'like', '%.jpg')
-            ->orWhere('path', 'like', '%.jpeg')
-            ->orWhere('path', 'like', '%.png')
-            ->get();
+        $paths = Image::select('path')
+            ->distinct()
+            ->where(function ($q) {
+                $q->where('path', 'like', '%.jpg')
+                    ->orWhere('path', 'like', '%.jpeg')
+                    ->orWhere('path', 'like', '%.png');
+            })
+            ->pluck('path');
 
-        $bar = $this->output->createProgressBar(count($images));
+        $bar = $this->output->createProgressBar(count($paths));
         $bar->start();
 
-        foreach ($images as $image) {
-            $originalPath = storage_path("app/public/{$image->path}");
+        foreach ($paths as $path) {
+            $originalPath = storage_path("app/public/{$path}");
 
             if (!file_exists($originalPath)) {
                 $bar->advance();
                 continue;
             }
 
-            $originalExtension = pathinfo($image->path, PATHINFO_EXTENSION);
-            $originalDir = pathinfo($image->path, PATHINFO_DIRNAME);
-            $originalName = pathinfo($image->path, PATHINFO_FILENAME);
+            $originalSize = filesize($originalPath);
+            $targetSize = 300 * 1024;
+
+            // حساب الجودة الديناميكية، مع سقف 90 و أرضية 20
+            $scale = $targetSize / $originalSize;
+            $quality = min(90, max(10, intval($scale * 100)));
+
+            $originalExtension = pathinfo($path, PATHINFO_EXTENSION);
+            $originalDir = pathinfo($path, PATHINFO_DIRNAME);
+            $originalName = pathinfo($path, PATHINFO_FILENAME);
 
             $newName = $originalName . '.webp';
             $newPath = $originalDir . '/' . $newName;
             $fullNewPath = storage_path("app/public/{$newPath}");
 
             try {
-                // اضغط وحوّل
-                $img = $manager->read($originalPath)->toWebp(quality: 10);
+                $img = $manager->read($originalPath)->toWebp(quality: $quality);
                 $img->save($fullNewPath);
 
-                // احذف النسخة الأصلية
+                // حذف النسخة الأصلية
                 unlink($originalPath);
 
-                // حدّث السجل في قاعدة البيانات
-                $image->update(['path' => $newPath]);
+                // تحديث جميع السجلات المرتبطة بهذه الصورة
+                Image::where('path', $path)->update(['path' => $newPath]);
             } catch (\Exception $e) {
-                $this->error("خطأ في الصورة ID: {$image->id} - {$e->getMessage()}");
+                $this->error("⚠️ خطأ في المسار: {$path} - {$e->getMessage()}");
             }
 
             $bar->advance();
         }
-
 
         $bar->finish();
         $this->info("\n✅ تم تحويل الصور وتحديث المسارات بنجاح!");
