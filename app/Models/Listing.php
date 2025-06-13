@@ -157,7 +157,7 @@ class Listing extends Model
      // distance attribute
      public function getDistanceAttribute()
      {
-        return $this->address->distance;
+        return $this->address?->distance;
      }
 
     public function addressWithRandomizedCoordinates()
