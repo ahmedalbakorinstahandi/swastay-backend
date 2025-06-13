@@ -33,7 +33,7 @@ class ImageService
         $manager = new ImageManager(new Driver());
 
         $imageContent = $manager->read($image)
-            ->toWebp(quality: 10);
+            ->toWebp(quality: 5);
 
         $imageContent->save($new_path);
 
