@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ImageService
 {
@@ -18,18 +20,26 @@ class ImageService
     }
 
 
+
+
     public static function storeImage($image, $folder, $name = null)
     {
         self::MakeFolder($folder);
-        $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
-        if ($name) {
-            $imageName = $name . '-' . $imageName;
-        }
-        // $imageName = $name != null ? $name : uniqid() . '.' . $image->getClientOriginalExtension();
-        $new_path = storage_path(sprintf('app/public/%s/%s', $folder, $imageName));
-        move_uploaded_file($image, $new_path);
-        return sprintf('%s/%s', $folder, $imageName);
+
+        $baseName = $name ? $name . '-' . uniqid() : uniqid();
+        $imageName = $baseName . '.webp';
+        $new_path = storage_path("app/public/{$folder}/{$imageName}");
+
+        $manager = new ImageManager(new Driver());
+
+        $imageContent = $manager->read($image)
+            ->toWebp(quality: 75);
+
+        $imageContent->save($new_path);
+
+        return "{$folder}/{$imageName}";
     }
+
 
     public static function updateImage($image, $folder, $oldImageName): string|null
     {
