@@ -27,7 +27,6 @@ class UserVerificationController extends Controller
 
         return ResponseService::response([
             'success' => true,
-            'message' => 'messages.user_verification.index',
             'data' => $userVerifications,
             'resource' => UserVerificationResource::class,
             'status' => 200,
@@ -43,7 +42,6 @@ class UserVerificationController extends Controller
 
         return ResponseService::response([
             'success' => true,
-            'message' => 'messages.user_verification.show',
             'data' => $userVerification,
             'resource' => UserVerificationResource::class,
             'status' => 200,
