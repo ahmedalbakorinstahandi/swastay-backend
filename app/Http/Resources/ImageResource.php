@@ -13,6 +13,7 @@ class ImageResource extends JsonResource
             'path'           => $this->path,
             'type'           => $this->type,
             'url'            => $this->url,
+            'orders'         => $this->orders,
             'imageable_id'   => $this->imageable_id,
             'imageable_type' => $this->imageable_type,
             'created_at'     => $this->created_at->format('Y-m-d H:i:s'),

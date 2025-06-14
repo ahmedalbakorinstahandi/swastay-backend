@@ -11,6 +11,7 @@ class Image extends Model
         'type',
         'imageable_id',
         'imageable_type',
+        'orders',
     ];
 
     public function imageable()

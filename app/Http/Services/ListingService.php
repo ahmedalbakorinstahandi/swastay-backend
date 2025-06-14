@@ -14,6 +14,7 @@ use App\Services\ImageService;
 use App\Services\LanguageService;
 use App\Services\LocationService;
 use App\Services\MessageService;
+use App\Services\OrderHelper;
 
 class ListingService
 {
@@ -101,12 +102,13 @@ class ListingService
 
             $images = $data['images'] ?? [];
             foreach ($images as $image) {
-                Image::create([
+                $image =  Image::create([
                     'path' => $image,
                     'type' => 'image',
                     'imageable_id' => $listing->id,
                     'imageable_type' => Listing::class,
                 ]);
+                OrderHelper::assign($image);
             }
         }
 
@@ -188,12 +190,13 @@ class ListingService
         if (isset($data['images'])) {
             $images = $data['images'];
             foreach ($images as $image) {
-                Image::create([
+                $image = Image::create([
                     'path' => $image,
                     'type' => 'image',
                     'imageable_id' => $listing->id,
                     'imageable_type' => Listing::class,
                 ]);
+                OrderHelper::assign($image);
             }
         }
 

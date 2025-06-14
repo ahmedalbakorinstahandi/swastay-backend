@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Permissions\ListingPermission;
 use App\Http\Requests\Listing\AvailableDateRequest;
 use App\Http\Requests\Listing\CreateRequest;
+use App\Http\Requests\Listing\ReOrderRequest;
 use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Requests\ListingRule\UpdateRequest as ListingRuleUpdateRequest;
 use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
 use App\Models\User;
+use App\Services\OrderHelper;
 use App\Services\ResponseService;
 
 class ListingController extends Controller
@@ -168,7 +170,7 @@ class ListingController extends Controller
         $listing = $this->listingService->show($id);
 
         ListingPermission::canShow($listing);
-        
+
         $user = User::auth();
 
         if (!$user->favorites()->where('listing_id', $listing->id)->exists()) {
@@ -191,6 +193,33 @@ class ListingController extends Controller
             'data'    => $listing,
             'resource' => ListingResource::class,
             'status'  => 200,
+        ]);
+    }
+
+    public function reorderImage($id, $image_id, ReOrderRequest $request)
+    {
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canUpdate($listing);
+
+        $data = $request->validated();
+
+        $image = $listing->images()->find($image_id);
+
+        if (!$image) {
+            return ResponseService::response([
+                'success' => false,
+                'message' => 'messages.image.not_found',
+                'status' => 404,
+            ]);
+        }
+
+        OrderHelper::reorder($image, $data['orders']);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.image.reorder',
+            'data' => $image,
         ]);
     }
 }

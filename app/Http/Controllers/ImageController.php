@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Services\FileService;
 use App\Services\ImageService;
+use App\Services\OrderHelper;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
 
@@ -48,5 +50,27 @@ class ImageController extends Controller
             'message' => 'messages.file.uploaded',
             'status' => 201,
         ]);
+    }
+
+
+    public function reorder($id, Request $request)
+    {
+        $request->validate([
+            'orders' => 'required|array',
+        ]);
+
+        $image = Image::find($id);
+
+        if (!$image) {
+            return ResponseService::response([
+                'success' => false,
+                'message' => 'messages.image.not_found',
+                'status' => 404,
+            ]);
+        }
+
+        OrderHelper::reorder($image, $request->orders);
+
+        return $image;
     }
 }

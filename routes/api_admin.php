@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
 use App\Http\Controllers\TransactionController;
@@ -20,6 +21,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
 
     Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
     Route::put('/listings/{id}/rules', [ListingController::class, 'updateRule']);
+
+    Route::put('/listings/{id}/images/{image_id}/reorder', [ListingController::class, 'reorderImage']);
 
 
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -60,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
 
     Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+
 
 
     Route::get('/transactions', [TransactionController::class, 'index']);

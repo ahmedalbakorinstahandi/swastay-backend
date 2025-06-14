@@ -18,6 +18,8 @@ Route::group(['prefix' => 'host', 'middleware' => ['auth:sanctum']], function ()
     Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
     Route::put('/listings/{id}/rules', [ListingController::class, 'updateRule']);
 
+    Route::put('/listings/{id}/images/{image_id}/reorder', [ListingController::class, 'reorderImage']);
+
 
     Route::get('/listing-rules/{id}', [ListingRuleController::class, 'show']);
     Route::post('/listing-rules', [ListingRuleController::class, 'create']);
