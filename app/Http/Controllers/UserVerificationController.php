@@ -8,7 +8,7 @@ use App\Http\Resources\UserVerificationResource;
 use App\Http\Services\UserVerificationService;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
-use UserVerificationPermission;
+use App\Http\Permissions\UserVerificationPermission;
 
 class UserVerificationController extends Controller
 {

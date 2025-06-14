@@ -5,9 +5,8 @@ namespace App\Http\Services;
 use App\Models\User;
 use App\Models\UserVerification;
 use App\Services\MessageService;
-use App\Services\WhatsappMessageService;
 use App\Services\FilterService;
-use UserVerificationPermission;
+use App\Http\Permissions\UserVerificationPermission;
 
 class UserVerificationService
 {
