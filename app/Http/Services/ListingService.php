@@ -190,13 +190,18 @@ class ListingService
         if (isset($data['images'])) {
             $images = $data['images'];
             foreach ($images as $image) {
-                $image = Image::create([
-                    'path' => $image,
-                    'type' => 'image',
-                    'imageable_id' => $listing->id,
-                    'imageable_type' => Listing::class,
-                ]);
-                OrderHelper::assign($image);
+                // Check if image already exists for this listing
+                $existingImage = $listing->images()->where('path', $image)->first();
+                
+                if (!$existingImage) {
+                    $image = Image::create([
+                        'path' => $image,
+                        'type' => 'image', 
+                        'imageable_id' => $listing->id,
+                        'imageable_type' => Listing::class,
+                    ]);
+                    OrderHelper::assign($image);
+                }
             }
         }
 
