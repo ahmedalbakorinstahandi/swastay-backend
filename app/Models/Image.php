@@ -18,14 +18,14 @@ class Image extends Model
         'orders',
     ];
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-        
-    //     static::addGlobalScope('order', function ($query) {
-    //         $query->orderBy('orders', 'desc');
-    //     });
-    // }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('orders', 'asc');
+        });
+    }
 
     public function imageable()
     {
