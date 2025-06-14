@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Image extends Model
 {
+
+    use SoftDeletes;
+
     protected $fillable = [
         'path',
         'type',
@@ -19,7 +23,7 @@ class Image extends Model
         return $this->morphTo();
     }
 
-     public function getUrlAttribute(): string
+    public function getUrlAttribute(): string
     {
         return asset('storage/' . $this->path);
     }
