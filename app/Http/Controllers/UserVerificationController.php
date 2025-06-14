@@ -61,6 +61,7 @@ class UserVerificationController extends Controller
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.user_verification.create',
+            'resource' => UserVerificationResource::class,
             'data' => $userVerification,
         ]);
     }
@@ -74,6 +75,13 @@ class UserVerificationController extends Controller
         UserVerificationPermission::canUpdate($userVerification);
 
         $userVerification = $this->userVerificationService->update($userVerification, $request->validated());
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.user_verification.update',
+            'resource' => UserVerificationResource::class,
+            'data' => $userVerification,
+        ]);
     }
 
 
