@@ -40,6 +40,7 @@ class ListingResource extends JsonResource
             // 'weapons_on_property'         => $this->weapons_on_property,
             'floor_number'                => $this->floor_number,
             'average_rating'              => $this->reviews->avg('rating') ?? null,
+            'reviews_count'               => $this->reviews->count() ?? null,
             'min_booking_days'            => $this->min_booking_days,
             'max_booking_days'            => $this->max_booking_days,
             'is_published'                => $this->is_published,
