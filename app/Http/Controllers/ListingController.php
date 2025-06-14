@@ -217,10 +217,12 @@ class ListingController extends Controller
 
         OrderHelper::reorder($image, $data['orders']);
 
+        $images = $listing->images()->get();
+
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.image.reorder',
-            'data' => $image,
+            'data' => $images,
             'resource' => ImageResource::class,
         ]);
     }
