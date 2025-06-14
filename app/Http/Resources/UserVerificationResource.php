@@ -11,7 +11,7 @@ class UserVerificationResource extends JsonResource
         return [
             'id'           => $this->id,
             'user_id'      => $this->user_id,
-            'file_path'    => $this->file_path,
+            'file_path'    => $this->file_path ? asset('storage/' . $this->file_path) : null,
             'type'         => $this->type,
             'status'       => $this->status,
             'reviewed_by'  => $this->reviewed_by,
