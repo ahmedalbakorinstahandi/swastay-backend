@@ -33,6 +33,8 @@ class UserService
             MessageService::abort(404, 'messages.user.not_found');
         }
 
+        $user->load('verifications');
+
         return $user;
     }
 

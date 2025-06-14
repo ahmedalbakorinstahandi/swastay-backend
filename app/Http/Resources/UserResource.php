@@ -33,6 +33,7 @@ class UserResource extends JsonResource
             'bookings_as_guest'  => BookingResource::collection($this->whenLoaded('bookingsAsGuest')),
             'bookings_as_host'   => BookingResource::collection($this->whenLoaded('bookingsAsHost')),
             'my_listings_count' => $this->listings()->count(),
+            'verifications'     => UserVerificationResource::collection($this->whenLoaded('verifications')),
         ];
     }
 }

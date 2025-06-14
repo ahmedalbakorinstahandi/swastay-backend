@@ -8,6 +8,7 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function () {
@@ -74,5 +75,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
         Route::get('/{id}', [ListingReviewController::class, 'show']);
         Route::put('/{id}', [ListingReviewController::class, 'update']);
         Route::delete('/{id}', [ListingReviewController::class, 'destroy']);
+    });
+
+    Route::group(['prefix' => 'verifications'], function () {
+        Route::get('/', [UserVerificationController::class, 'index']);
+        Route::get('/{id}', [UserVerificationController::class, 'show']);
+        Route::put('/{id}', [UserVerificationController::class, 'update']);
+        Route::delete('/{id}', [UserVerificationController::class, 'destroy']);
     });
 });

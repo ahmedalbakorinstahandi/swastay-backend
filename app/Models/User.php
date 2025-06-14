@@ -71,6 +71,11 @@ class User extends Model
         return $this->hasMany(UserListingFavorite::class, 'user_id');
     }
 
+    public function verifications()
+    {
+        return $this->hasMany(UserVerification::class, 'user_id');
+    }
+
 
     public function isHost()
     {
