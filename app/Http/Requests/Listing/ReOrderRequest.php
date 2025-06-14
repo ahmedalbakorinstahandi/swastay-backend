@@ -13,7 +13,7 @@ class ReOrderRequest extends BaseFormRequest
     public function rules(): array
     {
         $rules = [
-            'orders' => 'required|integer|exists:images,orders,deleted_at,NULL',
+            'orders' => 'required|integer|exists:images,orders',
         ];
 
         return $rules;
