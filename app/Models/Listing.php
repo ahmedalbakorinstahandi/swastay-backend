@@ -64,7 +64,7 @@ class Listing extends Model
 
     public function similarListings()
     {
-        // same city or same house type
+        // same city or same house type and status approved and is_published true
         return $this->hasMany(Listing::class, 'house_type_id', 'house_type_id')
             ->where('id', '!=', $this->id)
             ->whereHas('address', function ($query) {
@@ -72,6 +72,8 @@ class Listing extends Model
                     $q->where('city', $this->address->city);
                 });
             })
+            ->where('status', 'approved')
+            ->where('is_published', true)
             ->limit(3);
     }
 
@@ -157,7 +159,7 @@ class Listing extends Model
      // distance attribute
      public function getDistanceAttribute()
      {
-        return $this->address?->distance;
+        return 0.1;
      }
 
     public function addressWithRandomizedCoordinates()

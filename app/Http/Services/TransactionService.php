@@ -18,8 +18,8 @@ class TransactionService
             ['description'],
             ['amount'],
             ['created_at'],
-            ['status', 'direction'],
-            ['direction', 'status'],
+            ['status', 'direction', 'method'],
+            ['direction', 'status', 'method'],
         );
 
         return $query;
