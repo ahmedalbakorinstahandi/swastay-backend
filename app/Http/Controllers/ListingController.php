@@ -8,6 +8,7 @@ use App\Http\Requests\Listing\CreateRequest;
 use App\Http\Requests\Listing\ReOrderRequest;
 use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Requests\ListingRule\UpdateRequest as ListingRuleUpdateRequest;
+use App\Http\Resources\ImageResource;
 use App\Http\Resources\ListingResource;
 use App\Http\Services\ListingService;
 use App\Models\User;
@@ -220,6 +221,7 @@ class ListingController extends Controller
             'success' => true,
             'message' => 'messages.image.reorder',
             'data' => $image,
+            'resource' => ImageResource::class,
         ]);
     }
 }
