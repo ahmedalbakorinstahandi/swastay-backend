@@ -23,7 +23,7 @@ class Image extends Model
         parent::boot();
         
         static::addGlobalScope('order', function ($query) {
-            $query->orderBy('orders', 'asc');
+            $query->orderBy('orders', 'desc');
         });
     }
 
