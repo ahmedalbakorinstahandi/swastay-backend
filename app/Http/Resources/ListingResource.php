@@ -39,6 +39,7 @@ class ListingResource extends JsonResource
             // 'noise_monitoring_device'     => $this->noise_monitoring_device,
             // 'weapons_on_property'         => $this->weapons_on_property,
             'floor_number'                => $this->floor_number,
+            'average_rating'              => $this->reviews->avg('rating') ?? null,
             'min_booking_days'            => $this->min_booking_days,
             'max_booking_days'            => $this->max_booking_days,
             'is_published'                => $this->is_published,
@@ -61,14 +62,5 @@ class ListingResource extends JsonResource
             'rule' => new ListingRuleResource($this->whenLoaded('rule')),
             'available_dates_pro' => $this->getAvailableDates(),
         ];
-
-        
     }
-
-
-   
 }
-
-
-
-  

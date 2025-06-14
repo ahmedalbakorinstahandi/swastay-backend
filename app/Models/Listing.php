@@ -136,7 +136,7 @@ class Listing extends Model
 
     public function reviews()
     {
-        return $this->hasManyThrough(ListingReview::class, Booking::class, 'listing_id', 'booking_id', 'id', 'id');
+        return $this->hasManyThrough(ListingReview::class, Booking::class, 'listing_id', 'booking_id', 'id', 'id')->whereNull('blocked_at');
     }
 
     public function availableDates()
@@ -155,12 +155,12 @@ class Listing extends Model
     }
 
 
-    
-     // distance attribute
-     public function getDistanceAttribute()
-     {
+
+    // distance attribute
+    public function getDistanceAttribute()
+    {
         return 0.1;
-     }
+    }
 
     public function addressWithRandomizedCoordinates()
     {
