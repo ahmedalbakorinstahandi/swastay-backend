@@ -32,9 +32,38 @@ class ImageService
 
         $manager = new ImageManager(new Driver());
 
-        $imageContent = $manager->read($image)
-            ->toWebp(quality: 10);
+        // Read image and get original size in bytes
+        $originalSize = is_string($image) && file_exists($image) ? filesize($image) : (is_object($image) && method_exists($image, 'getSize') ? $image->getSize() : null);
 
+        // Default quality
+        $quality = 90;
+
+        // If original size > 300KB, reduce quality
+        if ($originalSize && $originalSize > 300 * 1024) {
+            // Try to estimate quality needed to get under 300KB
+            // Start from 90, decrease by 10 until under 300KB or reach 10
+            $tempQuality = 90;
+            do {
+                $imageContent = $manager->read($image)->toWebp(quality: $tempQuality);
+                $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                $imageContent->save($tempFile);
+                $newSize = filesize($tempFile);
+                unlink($tempFile);
+
+                if ($newSize <= 300 * 1024) {
+                    $quality = $tempQuality;
+                    break;
+                }
+                $tempQuality -= 10;
+            } while ($tempQuality >= 10);
+
+            // If still too big, set to lowest quality
+            if ($newSize > 300 * 1024) {
+                $quality = 10;
+            }
+        }
+
+        $imageContent = $manager->read($image)->toWebp(quality: $quality);
         $imageContent->save($new_path);
 
         return "{$folder}/{$imageName}";
