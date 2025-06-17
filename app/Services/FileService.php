@@ -12,7 +12,7 @@ class FileService
 
         return $path;
     }
-R
+
     public static function updateFile($file, $folder, $oldFilePath)
     {
         if (Storage::disk('public')->exists($oldFilePath)) {
