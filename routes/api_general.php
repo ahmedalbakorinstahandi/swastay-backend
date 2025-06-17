@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'general'], function () {
     Route::post('images/upload', [ImageController::class, 'uploadImage']);
+    Route::post('files/upload', [ImageController::class, 'uploadFile']);
+
 
 
     Route::get('/categories', [CategoryController::class, 'index']);

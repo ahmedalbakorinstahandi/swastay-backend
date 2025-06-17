@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
 
@@ -11,6 +12,13 @@ class TransactionService
     public function index($data)
     {
         $query = Transaction::query();
+
+        $user = User::auth();
+
+        if (!$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+
 
         $query = FilterService::applyFilters(
             $query,
