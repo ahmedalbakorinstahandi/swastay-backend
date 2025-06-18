@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SettingResource;
+use App\Models\Setting;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+     
     public function index()
     {
-        //
+        $settings = Setting::all();
+
+        return ResponseService::response(
+            [
+                'success' => true,
+                'data' => SettingResource::collection($settings),
+                'status' => 200,
+            ]
+        );
     }
 
     /**

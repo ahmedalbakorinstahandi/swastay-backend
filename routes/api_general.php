@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::group(['prefix' => 'general'], function () {
     Route::get('/features/{id}', [FeatureController::class, 'show']);
 
     Route::get('/cities', [CityController::class, 'index']);
+
+    Route::get('/settings', [SettingController::class, 'index']);
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
