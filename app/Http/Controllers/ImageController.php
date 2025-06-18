@@ -35,7 +35,7 @@ class ImageController extends Controller
     public function uploadFile(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx|max:8192',
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpeg,png,jpg,gif,webp|max:8192',
             'folder' => 'required|string|in:users,transactions',
         ]);
 
