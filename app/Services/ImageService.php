@@ -119,9 +119,13 @@ class ImageService
             return $imageContent->toWebp(quality: $maxQuality);
         }
 
+        // متغير لتتبع ما إذا تم تقليل الحجم مسبقاً
+        $hasBeenResized = false;
+
         // إذا كان الحجم الأصلي كبير جداً (أكثر من 10 أضعاف الحجم المستهدف)، نبدأ بتقليل الحجم
         if ($originalSize && $originalSize > $targetSize * 10 && $forceTargetSize) {
             $imageContent = $imageContent->scale(0.5); // تقليل الحجم بنسبة 50%
+            $hasBeenResized = true;
         }
 
         // بدء من أعلى جودة وتقليلها تدريجياً حتى نصل للحجم المطلوب
@@ -172,16 +176,19 @@ class ImageService
             }
 
             // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع أقل جودة، نجرب تقليل الحجم أكثر
-            $resizedImage = $imageContent->scale(0.6); // تقليل الحجم بنسبة 40%
-            $compressedImage = $resizedImage->toWebp(quality: 1);
-            
-            $tempFile = tempnam(sys_get_temp_dir(), 'img_');
-            $compressedImage->save($tempFile);
-            $newSize = filesize($tempFile);
-            unlink($tempFile);
+            // لكن فقط إذا لم نكن قد قللنا الحجم مسبقاً
+            if (!$hasBeenResized) {
+                $resizedImage = $imageContent->scale(0.6); // تقليل الحجم بنسبة 40%
+                $compressedImage = $resizedImage->toWebp(quality: 1);
+                
+                $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                $compressedImage->save($tempFile);
+                $newSize = filesize($tempFile);
+                unlink($tempFile);
 
-            if ($newSize <= $targetSize) {
-                return $compressedImage;
+                if ($newSize <= $targetSize) {
+                    return $compressedImage;
+                }
             }
 
             // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع تقليل الحجم، نعيد أفضل نتيجة
