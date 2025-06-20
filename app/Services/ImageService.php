@@ -37,7 +37,7 @@ class ImageService
 
         if ($copyFolderMoreCompress) {
             // ضغط الصورة الأصلية مباشرة إلى 50KB (وليس الصورة المضغوطة)
-            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
+            $compressedImageMoreCompress = self::compressImage($compressedImage, 20 * 1024, 1, 90, true);
             self::MakeFolder("{$folder}-more-compress");
 
             $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
