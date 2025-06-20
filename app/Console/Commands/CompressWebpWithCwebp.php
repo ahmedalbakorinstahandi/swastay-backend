@@ -6,17 +6,16 @@ use Illuminate\Console\Command;
 
 class CompressWebpWithCwebp extends Command
 {
-    protected $signature = 'images:compress-cwebp 
-                            {source=storage/app/public/listings : Source folder} 
-                            {target=storage/app/public/listings-compressed : Target folder}';
+    protected $signature = 'images:compress-cwebp {source=storage/app/public/listings : Source folder} {target=storage/app/public/listings-compressed : Target folder}';
 
-    protected $description = 'Compress each WebP image to get ~75KB based on its current size';
+    protected $description = 'Compress WebP images to ~75KB dynamically using quality adjustment';
 
     public function handle()
     {
         $source = base_path($this->argument('source'));
         $target = base_path($this->argument('target'));
-        $targetSize = 75 * 1024; // 75 KB
+        $targetSize = 75 * 1024; // 75KB
+        $tolerance = 5 * 1024;   // ±5KB
 
         if (!file_exists($source)) {
             $this->error("❌ Source folder not found: $source");
@@ -30,7 +29,7 @@ class CompressWebpWithCwebp extends Command
         $files = glob("{$source}/*.webp");
         $total = count($files);
 
-        if ($total === 0) {
+        if (empty($files)) {
             $this->warn("⚠️ No .webp files found in: $source");
             return;
         }
@@ -40,32 +39,58 @@ class CompressWebpWithCwebp extends Command
             $output = "{$target}/{$filename}";
             $progress = round((($index + 1) / $total) * 100);
 
-            $originalSize = filesize($file);
+            $this->line("🔄 [$progress%] Processing: $filename");
 
-            // 1. احسب النسبة بين المطلوب والحجم الحالي
-            $ratio = $targetSize / $originalSize;
+            $low = 10;
+            $high = 100;
+            $bestMatch = null;
+            $bestSizeDiff = PHP_INT_MAX;
 
-            // 2. حوّلها إلى جودة تقريبية بين 10 و 100
-            $estimatedQuality = (int) max(10, min(100, round($ratio * 100)));
+            while ($low <= $high) {
+                $mid = (int)(($low + $high) / 2);
+                $tempFile = tempnam(sys_get_temp_dir(), 'webp_');
+                shell_exec("cwebp -q $mid \"$file\" -o \"$tempFile\"");
 
-            // 3. اضغط بجودة محسوبة
-            $tempFile = tempnam(sys_get_temp_dir(), 'webp_');
-            $cmd = "cwebp -q $estimatedQuality \"$file\" -o \"$tempFile\"";
-            shell_exec($cmd);
+                if (!file_exists($tempFile)) {
+                    $this->error("❌ Failed to generate: $filename at q=$mid");
+                    break;
+                }
 
-            if (!file_exists($tempFile)) {
-                $this->error("❌ [$progress%] Failed: $filename");
-                continue;
+                $size = filesize($tempFile);
+                $diff = abs($targetSize - $size);
+
+                // حفظ أفضل محاولة
+                if ($diff < $bestSizeDiff) {
+                    $bestSizeDiff = $diff;
+                    $bestMatch = [
+                        'file' => $tempFile,
+                        'quality' => $mid,
+                        'size' => $size
+                    ];
+                } else {
+                    unlink($tempFile);
+                }
+
+                if ($size > $targetSize + $tolerance) {
+                    $low = $low;  // نحتاج تقليل الجودة أكثر
+                    $high = $mid - 1;
+                } elseif ($size < $targetSize - $tolerance) {
+                    $low = $mid + 1;  // نحتاج رفع الجودة شوي
+                } else {
+                    // ضمن النطاق المطلوب
+                    break;
+                }
             }
 
-            $finalSize = filesize($tempFile);
-
-            copy($tempFile, $output);
-            unlink($tempFile);
-
-            $this->info("✅ [$progress%] $filename | Orig: ".round($originalSize/1024)." KB → Final: ".round($finalSize/1024)." KB | Q=$estimatedQuality");
+            if ($bestMatch) {
+                copy($bestMatch['file'], $output);
+                unlink($bestMatch['file']);
+                $this->info("✅ [$progress%] Saved: $filename @ q={$bestMatch['quality']} (" . round($bestMatch['size'] / 1024) . " KB)");
+            } else {
+                $this->warn("⚠️ [$progress%] Skipped: $filename (compression failed)");
+            }
         }
 
-        $this->info("🎯 Done compressing all images to ~75KB.");
+        $this->info("🎯 Finished compressing all images to ~75KB");
     }
 }
