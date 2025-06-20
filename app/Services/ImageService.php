@@ -163,6 +163,47 @@ class ImageService
                 }
             }
 
+            // إذا لم نتمكن من الوصول للحجم المطلوب، نجرب تحويل الصورة إلى JPEG أولاً ثم ضغطها
+            try {
+                // تحويل الصورة إلى JPEG بجودة منخفضة جداً
+                $jpegImage = $originalImageForResize->toJpeg(quality: 1);
+                
+                $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                $jpegImage->save($tempFile);
+                $jpegSize = filesize($tempFile);
+                unlink($tempFile);
+
+                if ($jpegSize <= $targetSize) {
+                    // تحويل JPEG إلى WebP
+                    $jpegContent = $manager->read($tempFile);
+                    return $jpegContent->toWebp(quality: 1);
+                }
+
+                // إذا كان JPEG كبير، نقوم بتقليل الحجم
+                foreach ($scaleFactors as $scaleFactor) {
+                    try {
+                        $resizedImage = $originalImageForResize->scale($scaleFactor);
+                        $jpegImage = $resizedImage->toJpeg(quality: 1);
+                        
+                        $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                        $jpegImage->save($tempFile);
+                        $newSize = filesize($tempFile);
+                        unlink($tempFile);
+
+                        if ($newSize <= $targetSize) {
+                            // تحويل JPEG إلى WebP
+                            $jpegContent = $manager->read($tempFile);
+                            return $jpegContent->toWebp(quality: 1);
+                        }
+                        
+                    } catch (\Exception $e) {
+                        break;
+                    }
+                }
+            } catch (\Exception $e) {
+                // تجاهل الأخطاء
+            }
+
             // إذا لم نتمكن من الوصول للحجم المطلوب، نعيد آخر نتيجة
             return $originalImageForResize->toWebp(quality: 1);
         }
