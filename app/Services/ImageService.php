@@ -30,7 +30,7 @@ class ImageService
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
 
         // ضغط الصورة إلى الحجم المطلوب
-        $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
+        $compressedImage = self::compressImage($image, 50 * 1024, 10, 90, false);
 
         // حفظ الصورة المضغوطة
         $compressedImage->save($new_path);
