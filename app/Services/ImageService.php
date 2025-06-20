@@ -165,6 +165,41 @@ class ImageService
 
                 $quality -= 1; // تقليل أبطأ في النهاية
             }
+
+            // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع أقل جودة، نجرب تقليل الحجم تدريجياً
+            $scaleFactors = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2];
+            
+            foreach ($scaleFactors as $scaleFactor) {
+                try {
+                    // التحقق من أبعاد الصورة قبل التقليل
+                    $width = $imageContent->width();
+                    $height = $imageContent->height();
+                    
+                    // إذا كانت الصورة صغيرة جداً، نتوقف
+                    if ($width < 50 || $height < 50) {
+                        break;
+                    }
+                    
+                    $resizedImage = $imageContent->scale($scaleFactor);
+                    $compressedImage = $resizedImage->toWebp(quality: 1);
+                    
+                    $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                    $compressedImage->save($tempFile);
+                    $newSize = filesize($tempFile);
+                    unlink($tempFile);
+
+                    if ($newSize <= $targetSize) {
+                        return $compressedImage;
+                    }
+                    
+                    // تحديث الصورة للجولة التالية
+                    $imageContent = $resizedImage;
+                    
+                } catch (\Exception $e) {
+                    // إذا فشل تقليل الحجم، نتوقف
+                    break;
+                }
+            }
         }
 
         // إرجاع أفضل نتيجة تم التوصل إليها
