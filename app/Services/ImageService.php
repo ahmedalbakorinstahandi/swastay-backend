@@ -122,28 +122,7 @@ class ImageService
         }
 
         if ($isWebP) {
-            // مسار WebP فقط
-            $scales = [0.3, 0.2, 0.1, 0.05];
-
-            foreach ($scales as $scale) {
-                try {
-                    $resized = $imageContent->scale($scale);
-                    $compressed = $resized->toWebp(quality: 1);
-
-                    $temp = tempnam(sys_get_temp_dir(), 'img_');
-                    $compressed->save($temp);
-                    $size = filesize($temp);
-                    unlink($temp);
-
-                    if ($size <= $targetSize || $forceTargetSize) {
-                        return $compressed;
-                    }
-                } catch (\Throwable) {
-                    continue;
-                }
-            }
-
-            return $imageContent->toWebp(quality: 1);
+            return self::aggressivelyCompressWebP($image, $targetSize);
         }
 
         // باقي الصيغ (JPEG, PNG...)
@@ -171,5 +150,49 @@ class ImageService
         } while ($quality >= $minQuality);
 
         return $bestImage ?: $imageContent->toWebp(quality: $minQuality);
+    }
+
+    private static function aggressivelyCompressWebP($image, $targetSize)
+    {
+        $manager = new ImageManager(new Driver());
+        $imageContent = $manager->read($image);
+
+        try {
+            // Step 1: تحويل WebP إلى JPEG بجودة منخفضة
+            $jpegTemp = tempnam(sys_get_temp_dir(), 'jpeg_');
+            $imageContent->toJpeg(quality: 10)->save($jpegTemp);
+
+            // Step 2: قراءة الـ JPEG الناتج وضغطه أكثر إذا لزم
+            $jpegImage = $manager->read($jpegTemp);
+            $scales = [1, 0.5, 0.3, 0.1];
+
+            $bestImage = null;
+            $bestSize = null;
+
+            foreach ($scales as $scale) {
+                $resized = $jpegImage->scale($scale);
+                $webpImage = $resized->toWebp(quality: 1);
+
+                $webpTemp = tempnam(sys_get_temp_dir(), 'webp_');
+                $webpImage->save($webpTemp);
+                $size = filesize($webpTemp);
+                unlink($webpTemp);
+
+                if ($bestSize === null || $size < $bestSize) {
+                    $bestImage = $webpImage;
+                    $bestSize = $size;
+                }
+
+                if ($size <= $targetSize) {
+                    unlink($jpegTemp);
+                    return $webpImage;
+                }
+            }
+
+            unlink($jpegTemp);
+            return $bestImage ?: $imageContent->toWebp(quality: 1);
+        } catch (\Throwable $e) {
+            return $imageContent->toWebp(quality: 1); // fallback
+        }
     }
 }
