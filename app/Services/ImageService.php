@@ -119,93 +119,57 @@ class ImageService
             return $imageContent->toWebp(quality: $maxQuality);
         }
 
-        // إذا كان forceTargetSize = true، نستخدم ضغط قوي جداً
+        // إذا كان forceTargetSize = true، نستخدم نهج قوي جداً
         if ($forceTargetSize) {
-            $originalImageForResize = $imageContent;
-            $currentSize = $originalSize;
-            
-            // محاولة 1: ضغط بجودة منخفضة جداً
-            $compressedImage = $originalImageForResize->toWebp(quality: 1);
-            
-            $tempFile = tempnam(sys_get_temp_dir(), 'img_');
-            $compressedImage->save($tempFile);
-            $newSize = filesize($tempFile);
-            unlink($tempFile);
-
-            if ($newSize <= $targetSize) {
-                return $compressedImage;
-            }
-            
-            $currentSize = $newSize;
-
-            // تقليل الحجم تدريجياً حتى نصل للحجم المطلوب
-            $scaleFactors = [0.8, 0.6, 0.4, 0.2, 0.1, 0.05];
-            
-            foreach ($scaleFactors as $scaleFactor) {
-                try {
-                    $resizedImage = $originalImageForResize->scale($scaleFactor);
-                    $compressedImage = $resizedImage->toWebp(quality: 1);
-                    
-                    $tempFile = tempnam(sys_get_temp_dir(), 'img_');
-                    $compressedImage->save($tempFile);
-                    $newSize = filesize($tempFile);
-                    unlink($tempFile);
-
-                    if ($newSize <= $targetSize) {
-                        return $compressedImage;
-                    }
-                    
-                    $currentSize = $newSize;
-                    
-                } catch (\Exception $e) {
-                    // إذا فشل تقليل الحجم، نتوقف
-                    break;
-                }
-            }
-
-            // إذا لم نتمكن من الوصول للحجم المطلوب، نجرب تحويل الصورة إلى JPEG أولاً ثم ضغطها
+            // نهج مباشر: تقليل الحجم مباشرة إلى 20% + ضغط قوي
             try {
-                // تحويل الصورة إلى JPEG بجودة منخفضة جداً
-                $jpegImage = $originalImageForResize->toJpeg(quality: 1);
+                $resizedImage = $imageContent->scale(0.2); // تقليل إلى 20%
+                $compressedImage = $resizedImage->toWebp(quality: 1);
                 
                 $tempFile = tempnam(sys_get_temp_dir(), 'img_');
-                $jpegImage->save($tempFile);
-                $jpegSize = filesize($tempFile);
+                $compressedImage->save($tempFile);
+                $newSize = filesize($tempFile);
                 unlink($tempFile);
 
-                if ($jpegSize <= $targetSize) {
-                    // تحويل JPEG إلى WebP
-                    $jpegContent = $manager->read($tempFile);
-                    return $jpegContent->toWebp(quality: 1);
-                }
-
-                // إذا كان JPEG كبير، نقوم بتقليل الحجم
-                foreach ($scaleFactors as $scaleFactor) {
-                    try {
-                        $resizedImage = $originalImageForResize->scale($scaleFactor);
-                        $jpegImage = $resizedImage->toJpeg(quality: 1);
-                        
-                        $tempFile = tempnam(sys_get_temp_dir(), 'img_');
-                        $jpegImage->save($tempFile);
-                        $newSize = filesize($tempFile);
-                        unlink($tempFile);
-
-                        if ($newSize <= $targetSize) {
-                            // تحويل JPEG إلى WebP
-                            $jpegContent = $manager->read($tempFile);
-                            return $jpegContent->toWebp(quality: 1);
-                        }
-                        
-                    } catch (\Exception $e) {
-                        break;
-                    }
+                if ($newSize <= $targetSize) {
+                    return $compressedImage;
                 }
             } catch (\Exception $e) {
                 // تجاهل الأخطاء
             }
 
-            // إذا لم نتمكن من الوصول للحجم المطلوب، نعيد آخر نتيجة
-            return $originalImageForResize->toWebp(quality: 1);
+            // إذا لم تصل، نجرب 10%
+            try {
+                $resizedImage = $imageContent->scale(0.1); // تقليل إلى 10%
+                $compressedImage = $resizedImage->toWebp(quality: 1);
+                
+                $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                $compressedImage->save($tempFile);
+                $newSize = filesize($tempFile);
+                unlink($tempFile);
+
+                if ($newSize <= $targetSize) {
+                    return $compressedImage;
+                }
+            } catch (\Exception $e) {
+                // تجاهل الأخطاء
+            }
+
+            // إذا لم تصل، نجرب 5%
+            try {
+                $resizedImage = $imageContent->scale(0.05); // تقليل إلى 5%
+                $compressedImage = $resizedImage->toWebp(quality: 1);
+                
+                $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                $compressedImage->save($tempFile);
+                $newSize = filesize($tempFile);
+                unlink($tempFile);
+
+                return $compressedImage; // نعيد النتيجة حتى لو لم تصل للحجم المطلوب
+            } catch (\Exception $e) {
+                // إذا فشل كل شيء، نعيد الصورة الأصلية مضغوطة بجودة منخفضة
+                return $imageContent->toWebp(quality: 1);
+            }
         }
 
         // إذا لم يكن forceTargetSize = true، نستخدم الضغط العادي
