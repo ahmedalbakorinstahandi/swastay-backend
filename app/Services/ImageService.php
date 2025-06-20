@@ -36,7 +36,8 @@ class ImageService
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
-            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 10, 90, true);
+            // ضغط الصورة الأصلية مباشرة إلى 50KB (وليس الصورة المضغوطة)
+            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
             self::MakeFolder("{$folder}-more-compress");
 
             $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
@@ -118,6 +119,11 @@ class ImageService
             return $imageContent->toWebp(quality: $maxQuality);
         }
 
+        // إذا كان الحجم الأصلي كبير جداً (أكثر من 10 أضعاف الحجم المستهدف)، نبدأ بتقليل الحجم
+        if ($originalSize && $originalSize > $targetSize * 10 && $forceTargetSize) {
+            $imageContent = $imageContent->scale(0.5); // تقليل الحجم بنسبة 50%
+        }
+
         // بدء من أعلى جودة وتقليلها تدريجياً حتى نصل للحجم المطلوب
         $quality = $maxQuality;
         $bestCompressedImage = null;
@@ -162,10 +168,23 @@ class ImageService
                     return $compressedImage;
                 }
 
-                $quality -= 5; // تقليل أبطأ في النهاية
+                $quality -= 1; // تقليل أبطأ في النهاية
             }
 
-            // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع أقل جودة، نعيد أفضل نتيجة
+            // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع أقل جودة، نجرب تقليل الحجم أكثر
+            $resizedImage = $imageContent->scale(0.6); // تقليل الحجم بنسبة 40%
+            $compressedImage = $resizedImage->toWebp(quality: 1);
+            
+            $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+            $compressedImage->save($tempFile);
+            $newSize = filesize($tempFile);
+            unlink($tempFile);
+
+            if ($newSize <= $targetSize) {
+                return $compressedImage;
+            }
+
+            // إذا لم نتمكن من الوصول للحجم المطلوب حتى مع تقليل الحجم، نعيد أفضل نتيجة
             return $bestCompressedImage;
         }
 

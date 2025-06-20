@@ -69,8 +69,8 @@ class CompressListingsImages extends Command
                 // ضغط الصورة إلى 50KB
                 $compressedImage = ImageService::compressImage(
                     $file->getRealPath(),
-                    75 * 1024, // 50KB
-                    10,        // minQuality
+                    50 * 1024, // 50KB
+                    1,         // minQuality - أقل جودة ممكنة
                     90,        // maxQuality
                     true       // forceTargetSize
                 );

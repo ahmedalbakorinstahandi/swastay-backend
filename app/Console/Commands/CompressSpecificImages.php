@@ -75,7 +75,7 @@ class CompressSpecificImages extends Command
                 $compressedImage = ImageService::compressImage(
                     $sourcePath,
                     50 * 1024, // 50KB
-                    10,        // minQuality
+                    1,         // minQuality - أقل جودة ممكنة
                     90,        // maxQuality
                     true       // forceTargetSize
                 );
