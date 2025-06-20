@@ -121,11 +121,11 @@ class ImageService
 
         // إذا كان forceTargetSize = true، نستخدم ضغط قوي جداً
         if ($forceTargetSize) {
-            $currentImage = $imageContent;
+            $originalImageForResize = $imageContent;
             $currentSize = $originalSize;
             
             // محاولة 1: ضغط بجودة منخفضة جداً
-            $compressedImage = $currentImage->toWebp(quality: 1);
+            $compressedImage = $originalImageForResize->toWebp(quality: 1);
             
             $tempFile = tempnam(sys_get_temp_dir(), 'img_');
             $compressedImage->save($tempFile);
@@ -136,7 +136,6 @@ class ImageService
                 return $compressedImage;
             }
             
-            $currentImage = $compressedImage;
             $currentSize = $newSize;
 
             // تقليل الحجم تدريجياً حتى نصل للحجم المطلوب
@@ -144,7 +143,7 @@ class ImageService
             
             foreach ($scaleFactors as $scaleFactor) {
                 try {
-                    $resizedImage = $currentImage->scale($scaleFactor);
+                    $resizedImage = $originalImageForResize->scale($scaleFactor);
                     $compressedImage = $resizedImage->toWebp(quality: 1);
                     
                     $tempFile = tempnam(sys_get_temp_dir(), 'img_');
@@ -156,8 +155,6 @@ class ImageService
                         return $compressedImage;
                     }
                     
-                    // تحديث الصورة للجولة التالية
-                    $currentImage = $resizedImage;
                     $currentSize = $newSize;
                     
                 } catch (\Exception $e) {
@@ -167,7 +164,7 @@ class ImageService
             }
 
             // إذا لم نتمكن من الوصول للحجم المطلوب، نعيد آخر نتيجة
-            return $currentImage->toWebp(quality: 1);
+            return $originalImageForResize->toWebp(quality: 1);
         }
 
         // إذا لم يكن forceTargetSize = true، نستخدم الضغط العادي
