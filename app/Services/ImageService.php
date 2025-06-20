@@ -121,7 +121,65 @@ class ImageService
 
         // إذا كان forceTargetSize = true، نستخدم نهج قوي جداً
         if ($forceTargetSize) {
-            // نهج مباشر: تقليل الحجم مباشرة إلى 20% + ضغط قوي
+            // التحقق من نوع الصورة
+            $isWebP = false;
+            if (is_string($image) && file_exists($image)) {
+                $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+                $isWebP = ($extension === 'webp');
+            }
+
+            // إذا كانت الصورة WebP، نستخدم نهج مختلف
+            if ($isWebP) {
+                // نهج WebP: تحويل إلى JPEG أولاً ثم ضغط
+                try {
+                    // تحويل WebP إلى JPEG بجودة منخفضة
+                    $jpegImage = $imageContent->toJpeg(quality: 10);
+                    
+                    $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                    $jpegImage->save($tempFile);
+                    $jpegSize = filesize($tempFile);
+                    unlink($tempFile);
+
+                    if ($jpegSize <= $targetSize) {
+                        // تحويل JPEG إلى WebP
+                        $jpegContent = $manager->read($tempFile);
+                        return $jpegContent->toWebp(quality: 1);
+                    }
+
+                    // إذا كان JPEG كبير، نقوم بتقليل الحجم
+                    $resizedImage = $imageContent->scale(0.3); // تقليل إلى 30%
+                    $jpegImage = $resizedImage->toJpeg(quality: 5);
+                    
+                    $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                    $jpegImage->save($tempFile);
+                    $newSize = filesize($tempFile);
+                    unlink($tempFile);
+
+                    if ($newSize <= $targetSize) {
+                        // تحويل JPEG إلى WebP
+                        $jpegContent = $manager->read($tempFile);
+                        return $jpegContent->toWebp(quality: 1);
+                    }
+
+                    // إذا لم تصل، نجرب تقليل أكثر
+                    $resizedImage = $imageContent->scale(0.1); // تقليل إلى 10%
+                    $jpegImage = $resizedImage->toJpeg(quality: 1);
+                    
+                    $tempFile = tempnam(sys_get_temp_dir(), 'img_');
+                    $jpegImage->save($tempFile);
+                    $newSize = filesize($tempFile);
+                    unlink($tempFile);
+
+                    // تحويل JPEG إلى WebP
+                    $jpegContent = $manager->read($tempFile);
+                    return $jpegContent->toWebp(quality: 1);
+
+                } catch (\Exception $e) {
+                    // إذا فشل، نعود للنهج العادي
+                }
+            }
+
+            // نهج مباشر للصور الأخرى: تقليل الحجم مباشرة إلى 20% + ضغط قوي
             try {
                 $resizedImage = $imageContent->scale(0.2); // تقليل إلى 20%
                 $compressedImage = $resizedImage->toWebp(quality: 1);
