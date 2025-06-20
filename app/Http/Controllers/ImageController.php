@@ -18,7 +18,7 @@ class ImageController extends Controller
             'folder' => 'required|string|in:users,listings,house_types,categories,features',
         ]);
 
-        $imageName = ImageService::storeImage($request->image, $request->folder);
+        $imageName = ImageService::storeImage($request->image, $request->folder, $request->folder == 'listings');
 
         return ResponseService::response([
             'success' => true,
