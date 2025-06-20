@@ -8,17 +8,15 @@ class CompressWebpWithCwebp extends Command
 {
     protected $signature = 'images:compress-cwebp 
                             {source=storage/app/public/listings : Source folder} 
-                            {target=storage/app/public/listings-compressed : Target folder} 
-                            {--quality=30 : Compression quality (1-100)}';
+                            {target=storage/app/public/listings-compressed : Target folder}';
 
-    protected $description = 'Compress .webp images using cwebp and avoid going under 75KB';
+    protected $description = 'Compress each WebP image to get ~75KB based on its current size';
 
     public function handle()
     {
         $source = base_path($this->argument('source'));
         $target = base_path($this->argument('target'));
-        $quality = (int) $this->option('quality');
-        $minSize = 75 * 1024; // 75KB
+        $targetSize = 75 * 1024; // 75 KB
 
         if (!file_exists($source)) {
             $this->error("❌ Source folder not found: $source");
@@ -42,30 +40,32 @@ class CompressWebpWithCwebp extends Command
             $output = "{$target}/{$filename}";
             $progress = round((($index + 1) / $total) * 100);
 
-            $this->line("🔄 [$progress%] Processing: $filename");
+            $originalSize = filesize($file);
 
+            // 1. احسب النسبة بين المطلوب والحجم الحالي
+            $ratio = $targetSize / $originalSize;
+
+            // 2. حوّلها إلى جودة تقريبية بين 10 و 100
+            $estimatedQuality = (int) max(10, min(100, round($ratio * 100)));
+
+            // 3. اضغط بجودة محسوبة
             $tempFile = tempnam(sys_get_temp_dir(), 'webp_');
-            $cmd = "cwebp -q $quality \"$file\" -o \"$tempFile\"";
+            $cmd = "cwebp -q $estimatedQuality \"$file\" -o \"$tempFile\"";
             shell_exec($cmd);
 
             if (!file_exists($tempFile)) {
-                $this->error("❌ Failed to compress: $filename");
+                $this->error("❌ [$progress%] Failed: $filename");
                 continue;
             }
 
-            $compressedSize = filesize($tempFile);
+            $finalSize = filesize($tempFile);
 
-            if ($compressedSize >= $minSize) {
-                copy($tempFile, $output);
-                $this->info("✅ [$progress%] Compressed: $filename (" . round($compressedSize / 1024) . " KB)");
-            } else {
-                copy($file, $output);
-                $this->warn("⚠️ [$progress%] Skipped compression (too small): $filename (" . round($compressedSize / 1024) . " KB)");
-            }
-
+            copy($tempFile, $output);
             unlink($tempFile);
+
+            $this->info("✅ [$progress%] $filename | Orig: ".round($originalSize/1024)." KB → Final: ".round($finalSize/1024)." KB | Q=$estimatedQuality");
         }
 
-        $this->info("🎉 Done compressing all images.");
+        $this->info("🎯 Done compressing all images to ~75KB.");
     }
 }
