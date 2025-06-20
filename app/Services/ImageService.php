@@ -36,8 +36,7 @@ class ImageService
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
-            // ضغط الصورة الأصلية مباشرة إلى 50KB (وليس الصورة المضغوطة)
-            $compressedImageMoreCompress = self::compressImage($compressedImage, 20 * 1024, 1, 90, true);
+            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
             self::MakeFolder("{$folder}-more-compress");
 
             $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
@@ -171,5 +170,51 @@ class ImageService
         } while ($quality >= $minQuality);
 
         return $bestImage ?: $imageContent->toWebp(quality: $minQuality);
+    }
+
+    // use Intervention\Image\Drivers\Gd\Driver;
+    // use Intervention\Image\ImageManager;
+
+    function aggressivelyRecompressWebpFolder($folderPath, $targetSize = 50 * 1024)
+    {
+        $manager = new ImageManager(new Driver());
+        $fullPath = storage_path("app/public/{$folderPath}");
+        $files = glob("{$fullPath}/*.webp");
+
+        foreach ($files as $filePath) {
+            echo "Processing: $filePath\n";
+
+            try {
+                $originalSize = filesize($filePath);
+                if ($originalSize <= $targetSize) {
+                    echo "- Already small enough ({$originalSize} bytes), skipping.\n";
+                    continue;
+                }
+
+                $image = $manager->read($filePath);
+
+                $scales = [0.5, 0.3, 0.1, 0.05];
+                foreach ($scales as $scale) {
+                    $resized = $image->scale($scale);
+                    $compressed = $resized->toWebp(quality: 1);
+
+                    $temp = tempnam(sys_get_temp_dir(), 'webp_');
+                    $compressed->save($temp);
+                    $size = filesize($temp);
+
+                    if ($size <= $targetSize) {
+                        copy($temp, $filePath);
+                        unlink($temp);
+                        echo "- Compressed and replaced: {$size} bytes\n";
+                        break;
+                    }
+
+                    unlink($temp);
+                }
+            } catch (\Throwable $e) {
+                echo "- Failed to process: $filePath\n";
+                continue;
+            }
+        }
     }
 }
