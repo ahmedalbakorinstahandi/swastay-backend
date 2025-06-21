@@ -31,7 +31,7 @@ class ImageService
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
         $main_path = storage_path("app/public/{$folder}-main/{$imageName}");
 
-        $path = $image->storeAs($folder . '-main', $baseName . $image->getClientOriginalExtension(), 'public');
+        $path = $image->storeAs($folder . '-main', $baseName . '.' . $image->getClientOriginalExtension(), 'public');
 
         Log::info($path);
 
