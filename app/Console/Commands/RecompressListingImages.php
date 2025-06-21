@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\File;
 class RecompressListingImages extends Command
 {
     protected $signature = 'images:recompress-listings';
-    protected $description = 'Compress listings-main images and override matching ones in listings-compressed if original exists';
+    protected $description = 'Compress listings-main images and override matching ones in listings-compressed if original exists and compressed is > 75KB';
 
     public function handle()
     {
         $originalsPath = storage_path('app/public/listings-main');
         $compressedPath = storage_path('app/public/listings-compressed');
+        $targetSize = 75 * 1024;
 
         $files = File::files($originalsPath);
         $manager = new ImageManager(new Driver());
@@ -26,61 +27,53 @@ class RecompressListingImages extends Command
         foreach ($files as $file) {
             $index++;
             $filename = $file->getFilename();
-            $baseName = pathinfo($filename, PATHINFO_FILENAME);
+            $compressedFilePath = $compressedPath . '/' . pathinfo($filename, PATHINFO_FILENAME) . '.webp';
 
-            // ابحث عن أول ملف يطابق الاسم الأساسي في compressed
-            $match = collect(File::files($compressedPath))
-                ->first(fn($f) => pathinfo($f->getFilename(), PATHINFO_FILENAME) === $baseName);
-
-            if (!$match) {
+            // Skip if compressed version doesn't exist
+            if (!File::exists($compressedFilePath)) {
                 $this->info("[{$index}/{$count}] Skipping: {$filename} (no match in listings-compressed)");
                 continue;
             }
 
-            $compressedFilePath = $match->getPathname();
-
-            try {
-                $image = $manager->read($file->getPathname());
-            } catch (\Throwable $e) {
-                $this->warn("[{$index}/{$count}] ❌ Failed to read image: {$filename}");
+            // Skip if compressed version is already small enough
+            if (filesize($compressedFilePath) <= $targetSize) {
+                $this->line("[{$index}/{$count}] Skipping: {$filename} (already <= 75KB)");
                 continue;
             }
 
-            $quality = 90;
-            $targetSize = 75 * 1024;
-            $best = null;
-            $bestSize = null;
+            try {
+                $image = $manager->read($file->getPathname());
+                $quality = 90;
+                $best = null;
+                $bestSize = null;
 
-            while ($quality >= 10) {
-                $temp = tempnam(sys_get_temp_dir(), 'webp_');
-                try {
+                while ($quality >= 10) {
+                    $temp = tempnam(sys_get_temp_dir(), 'webp_');
                     $compressed = $image->toWebp(quality: $quality);
                     $compressed->save($temp);
                     $size = filesize($temp);
-                } catch (\Throwable $e) {
                     unlink($temp);
-                    break;
+
+                    if ($bestSize === null || $size < $bestSize) {
+                        $best = $compressed;
+                        $bestSize = $size;
+                    }
+
+                    if ($size <= $targetSize) {
+                        break;
+                    }
+
+                    $quality -= 10;
                 }
 
-                if ($bestSize === null || $size < $bestSize) {
-                    $best = $compressed;
-                    $bestSize = $size;
+                if ($best) {
+                    $best->save($compressedFilePath);
+                    $this->info("[{$index}/{$count}] ✅ {$filename} compressed to " . round($bestSize / 1024) . " KB");
+                } else {
+                    $this->warn("[{$index}/{$count}] ❌ Failed to compress {$filename}");
                 }
-
-                unlink($temp);
-
-                if ($size <= $targetSize) {
-                    break;
-                }
-
-                $quality -= 10;
-            }
-
-            if ($best) {
-                $best->save($compressedFilePath);
-                $this->info("[{$index}/{$count}] ✅ {$filename} compressed to " . round($bestSize / 1024) . " KB");
-            } else {
-                $this->warn("[{$index}/{$count}] ❌ Failed to compress {$filename}");
+            } catch (\Throwable $e) {
+                $this->warn("[{$index}/{$count}] ❌ Error processing {$filename}: " . $e->getMessage());
             }
         }
 
