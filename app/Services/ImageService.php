@@ -36,10 +36,10 @@ class ImageService
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
-            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
-            self::MakeFolder("{$folder}-more-compress");
+            $compressedImageMoreCompress = self::compressImage($image, 75 * 1024, 1, 90, true);
+            self::MakeFolder("{$folder}-compressed");
 
-            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
+            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-compressed/{$imageName}"));
         }
 
         return "{$folder}/{$imageName}";
