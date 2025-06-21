@@ -19,43 +19,27 @@ class ImageService
         }
     }
 
+
+
     public static function storeImage($image, $folder, $copyFolderMoreCompress = false)
     {
-        $baseName = uniqid();
-        $imageName = $baseName . '.webp';
+        self::MakeFolder($folder);
 
-        // حفظ الصورة الأصلية
-        if ($image instanceof \Illuminate\Http\UploadedFile) {
-            $manager = new ImageManager(new Driver());
-            $imageContent = $manager->read($image->getPathname());
-            
-            // حفظ الصورة الأصلية
-            Storage::disk('public')->put("{$folder}-main/{$imageName}", $imageContent->toWebp(quality: 90));
-            
-            // ضغط الصورة
-            $compressedImage = self::compressImage($image->getPathname(), 300 * 1024, 10, 90, false);
-            Storage::disk('public')->put("{$folder}/{$imageName}", $compressedImage->toWebp(quality: 90));
-            
-            if ($copyFolderMoreCompress) {
-                $compressedImageMoreCompress = self::compressImage($image->getPathname(), 50 * 1024, 1, 90, true);
-                Storage::disk('public')->put("{$folder}-compressed/{$imageName}", $compressedImageMoreCompress->toWebp(quality: 90));
-            }
-        } else {
-            // إذا كان مسار ملف
-            $manager = new ImageManager(new Driver());
-            $imageContent = $manager->read($image);
-            
-            // حفظ الصورة الأصلية
-            Storage::disk('public')->put("{$folder}-main/{$imageName}", $imageContent->toWebp(quality: 90));
-            
-            // ضغط الصورة
-            $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
-            Storage::disk('public')->put("{$folder}/{$imageName}", $compressedImage->toWebp(quality: 90));
-            
-            if ($copyFolderMoreCompress) {
-                $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
-                Storage::disk('public')->put("{$folder}-compressed/{$imageName}", $compressedImageMoreCompress->toWebp(quality: 90));
-            }
+        $baseName =  uniqid();
+        $imageName = $baseName . '.webp';
+        $new_path = storage_path("app/public/{$folder}/{$imageName}");
+
+        // ضغط الصورة إلى الحجم المطلوب
+        $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
+
+        // حفظ الصورة المضغوطة
+        $compressedImage->save($new_path);
+
+        if ($copyFolderMoreCompress) {
+            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
+            self::MakeFolder("{$folder}-more-compress");
+
+            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
         }
 
         return "{$folder}/{$imageName}";
