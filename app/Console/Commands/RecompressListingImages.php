@@ -37,7 +37,7 @@ class RecompressListingImages extends Command
 
             $image = $manager->read($file->getPathname());
             $quality = 90;
-            $targetSize = 75 * 1024;
+            $targetSize = 100 * 1024;
             $best = null;
             $bestSize = null;
 
