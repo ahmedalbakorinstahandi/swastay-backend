@@ -34,14 +34,14 @@ class ImageService
         $main_path = storage_path("app/public/{$folder}-main/{$imageName}");
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
 
-        // // حفظ الصورة الأصلية
-        // if ($image instanceof \Illuminate\Http\UploadedFile) {
-        //     $manager = new ImageManager(new Driver());
-        //     $manager->read($image->getPathname())->save($main_path);
-        // } else {
-        //     // إذا كان مسار ملف
-        //     copy($image, $main_path);
-        // }
+        // حفظ الصورة الأصلية
+        if ($image instanceof \Illuminate\Http\UploadedFile) {
+            $manager = new ImageManager(new Driver());
+            $manager->read($image->getPathname())->save($main_path);
+        } else {
+            // إذا كان مسار ملف
+            copy($image, $main_path);
+        }
 
         $compressedImage = self::compressImage($main_path, 300 * 1024, 10, 90, false);
         $compressedImage->save($new_path);
