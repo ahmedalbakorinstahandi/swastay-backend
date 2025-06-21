@@ -19,30 +19,35 @@ class ImageService
         }
     }
 
-
-
     public static function storeImage($image, $folder, $copyFolderMoreCompress = false)
     {
+        // إنشاء جميع المجلدات المطلوبة
         self::MakeFolder($folder);
+        self::MakeFolder("{$folder}-main");
+        if ($copyFolderMoreCompress) {
+            self::MakeFolder("{$folder}-compressed");
+        }
 
         $baseName =  uniqid();
         $imageName = $baseName . '.webp';
 
         $main_path = storage_path("app/public/{$folder}-main/{$imageName}");
-
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
 
-        $manager = new ImageManager(new Driver());
-        $manager->read($image->getPathname())->save($main_path);
+        // حفظ الصورة الأصلية
+        if ($image instanceof \Illuminate\Http\UploadedFile) {
+            $manager = new ImageManager(new Driver());
+            $manager->read($image->getPathname())->save($main_path);
+        } else {
+            // إذا كان مسار ملف
+            copy($image, $main_path);
+        }
 
-        $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
-
+        $compressedImage = self::compressImage($main_path, 300 * 1024, 10, 90, false);
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
-            $compressedImageMoreCompress = self::compressImage($image, 75 * 1024, 1, 90, true);
-            self::MakeFolder("{$folder}-compressed");
-
+            $compressedImageMoreCompress = self::compressImage($main_path, 75 * 1024, 1, 90, true);
             $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-compressed/{$imageName}"));
         }
 
