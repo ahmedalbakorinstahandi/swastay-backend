@@ -27,12 +27,15 @@ class ImageService
 
         $baseName =  uniqid();
         $imageName = $baseName . '.webp';
+
+        $main_path = storage_path("app/public/{$folder}-main/{$imageName}");
+
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
 
-        // ضغط الصورة إلى الحجم المطلوب
+        $image->save($main_path);
+
         $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
 
-        // حفظ الصورة المضغوطة
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
