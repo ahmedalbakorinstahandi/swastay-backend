@@ -24,6 +24,7 @@ class ImageService
     public static function storeImage($image, $folder, $copyFolderMoreCompress = false)
     {
         self::MakeFolder($folder);
+        self::MakeFolder("{$folder}-main");
 
         $baseName =  uniqid();
         $imageName = $baseName . '.webp';
@@ -31,19 +32,23 @@ class ImageService
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
 
         // حفظ الصورة الأصلية
-        $image->save($main_path);
-
+        if ($image instanceof \Illuminate\Http\UploadedFile) {
+            $manager = new ImageManager(new Driver());
+            $imageContent = $manager->read($image->getPathname());
+            $imageContent->save($main_path);
+        }
+        
         // ضغط الصورة إلى الحجم المطلوب
-        $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
+        $compressedImage = self::compressImage($main_path, 300 * 1024, 10, 90, false);
 
         // حفظ الصورة المضغوطة
         $compressedImage->save($new_path);
 
         if ($copyFolderMoreCompress) {
-            $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
-            self::MakeFolder("{$folder}-more-compress");
+            $compressedImageMoreCompress = self::compressImage($main_path, 50 * 1024, 1, 90, true);
+            self::MakeFolder("{$folder}-compressed");
 
-            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
+            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-compressed/{$imageName}"));
         }
 
         return "{$folder}/{$imageName}";
