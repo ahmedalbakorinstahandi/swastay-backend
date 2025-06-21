@@ -28,6 +28,9 @@ class ImageService
         $baseName =  uniqid();
         $imageName = $baseName . '.webp';
         $new_path = storage_path("app/public/{$folder}/{$imageName}");
+        $main_path = storage_path("app/public/{$folder}-main/{$imageName}");
+
+        $path = $image->storeAs($folder, $baseName . $image->getClientOriginalExtension(), 'public');
 
         // ضغط الصورة إلى الحجم المطلوب
         $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
