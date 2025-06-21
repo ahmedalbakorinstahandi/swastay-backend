@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 class RecompressListingImages extends Command
 {
     protected $signature = 'images:recompress-listings {--start=1}';
-    protected $description = 'Compress listings-main images and override matching ones in listings-compressed if original exists';
+    protected $description = 'Recompress listings-main images only if existing compressed version is > 100KB';
 
     public function handle()
     {
@@ -31,7 +31,13 @@ class RecompressListingImages extends Command
             $compressedFilePath = $compressedPath . '/' . pathinfo($filename, PATHINFO_FILENAME) . '.webp';
 
             if (!File::exists($compressedFilePath)) {
-                $this->info("[{$position}/{$total}] Skipping: {$filename} (no match in listings-compressed)");
+                $this->line("[{$position}/{$total}] Skipping: {$filename} (no match in listings-compressed)");
+                continue;
+            }
+
+            $currentSize = filesize($compressedFilePath);
+            if ($currentSize <= 100 * 1024) {
+                $this->line("[{$position}/{$total}] Skipping: {$filename} (already <= 100KB)");
                 continue;
             }
 
@@ -52,10 +58,13 @@ class RecompressListingImages extends Command
                     $bestSize = $size;
                 }
 
-                if ($size <= $targetSize) break;
+                if ($size <= $targetSize) {
+                    unlink($temp);
+                    break;
+                }
 
-                $quality -= 10;
                 unlink($temp);
+                $quality -= 10;
             }
 
             if ($best) {
