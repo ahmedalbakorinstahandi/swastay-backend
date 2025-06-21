@@ -26,14 +26,26 @@ class RecompressListingImages extends Command
         foreach ($files as $file) {
             $index++;
             $filename = $file->getFilename();
-            $compressedFilePath = $compressedPath . '/' . pathinfo($filename, PATHINFO_FILENAME) . '.webp';
+            $baseName = pathinfo($filename, PATHINFO_FILENAME);
 
-            if (!File::exists($compressedFilePath)) {
+            // ابحث عن أول ملف يطابق الاسم الأساسي في compressed
+            $match = collect(File::files($compressedPath))
+                ->first(fn($f) => pathinfo($f->getFilename(), PATHINFO_FILENAME) === $baseName);
+
+            if (!$match) {
                 $this->info("[{$index}/{$count}] Skipping: {$filename} (no match in listings-compressed)");
                 continue;
             }
 
-            $image = $manager->read($file->getPathname());
+            $compressedFilePath = $match->getPathname();
+
+            try {
+                $image = $manager->read($file->getPathname());
+            } catch (\Throwable $e) {
+                $this->warn("[{$index}/{$count}] ❌ Failed to read image: {$filename}");
+                continue;
+            }
+
             $quality = 90;
             $targetSize = 75 * 1024;
             $best = null;
@@ -41,14 +53,21 @@ class RecompressListingImages extends Command
 
             while ($quality >= 10) {
                 $temp = tempnam(sys_get_temp_dir(), 'webp_');
-                $compressed = $image->toWebp(quality: $quality);
-                $compressed->save($temp);
-                $size = filesize($temp);
+                try {
+                    $compressed = $image->toWebp(quality: $quality);
+                    $compressed->save($temp);
+                    $size = filesize($temp);
+                } catch (\Throwable $e) {
+                    unlink($temp);
+                    break;
+                }
 
                 if ($bestSize === null || $size < $bestSize) {
                     $best = $compressed;
                     $bestSize = $size;
                 }
+
+                unlink($temp);
 
                 if ($size <= $targetSize) {
                     break;
