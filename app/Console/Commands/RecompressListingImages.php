@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 class RecompressListingImages extends Command
 {
     protected $signature = 'images:recompress-listings {--start=1}';
-    protected $description = 'Recompress listings-main images only if existing compressed version is > 100KB';
+    protected $description = 'Recompress only oversized compressed images using originals';
 
     public function handle()
     {
@@ -42,36 +42,31 @@ class RecompressListingImages extends Command
             }
 
             $image = $manager->read($file->getPathname());
-            $quality = 90;
             $targetSize = 100 * 1024;
-            $best = null;
-            $bestSize = null;
+            $quality = 90;
+            $success = false;
 
             while ($quality >= 10) {
-                $temp = tempnam(sys_get_temp_dir(), 'webp_');
+                $tempPath = tempnam(sys_get_temp_dir(), 'webp_');
                 $compressed = $image->toWebp(quality: $quality);
-                $compressed->save($temp);
-                $size = filesize($temp);
+                $compressed->save($tempPath);
 
-                if ($bestSize === null || $size < $bestSize) {
-                    $best = $compressed;
-                    $bestSize = $size;
-                }
+                $size = filesize($tempPath);
 
                 if ($size <= $targetSize) {
-                    unlink($temp);
+                    File::copy($tempPath, $compressedFilePath);
+                    $this->info("[{$position}/{$total}] ✅ {$filename} compressed to " . round($size / 1024) . " KB");
+                    $success = true;
+                    unlink($tempPath);
                     break;
                 }
 
-                unlink($temp);
+                unlink($tempPath);
                 $quality -= 10;
             }
 
-            if ($best) {
-                $best->save($compressedFilePath);
-                $this->info("[{$position}/{$total}] ✅ {$filename} compressed to " . round($bestSize / 1024) . " KB");
-            } else {
-                $this->warn("[{$position}/{$total}] ❌ Failed to compress {$filename}");
+            if (!$success) {
+                $this->warn("[{$position}/{$total}] ❌ Could not compress {$filename} below 100KB");
             }
         }
 
