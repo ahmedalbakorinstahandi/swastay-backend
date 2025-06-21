@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -32,6 +33,8 @@ class ImageService
 
         $path = $image->storeAs($folder, $baseName . $image->getClientOriginalExtension(), 'public');
 
+        Log::info($path);
+
         // ضغط الصورة إلى الحجم المطلوب
         $compressedImage = self::compressImage($image, 300 * 1024, 10, 90, false);
 
@@ -40,9 +43,9 @@ class ImageService
 
         if ($copyFolderMoreCompress) {
             $compressedImageMoreCompress = self::compressImage($image, 50 * 1024, 1, 90, true);
-            self::MakeFolder("{$folder}-more-compress");
+            self::MakeFolder("{$folder}-compressed");
 
-            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-more-compress/{$imageName}"));
+            $compressedImageMoreCompress->save(storage_path("app/public/{$folder}-compressed/{$imageName}"));
         }
 
         return "{$folder}/{$imageName}";
