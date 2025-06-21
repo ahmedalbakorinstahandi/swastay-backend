@@ -20,6 +20,7 @@ class UpdateRequest extends BaseFormRequest
             'house_type_id' => 'nullable|exists:house_types,id,deleted_at,NULL',
             'property_type' => 'nullable|in:House,Apartment,Guesthouse',
             'price' => 'nullable|numeric|min:0',
+            'price_weekend' => 'nullable|numeric|min:0',
             'guests_count' => 'nullable|integer|min:1',
             'bedrooms_count' => 'nullable|integer|min:1',
             'beds_count' => 'nullable|integer|min:1',

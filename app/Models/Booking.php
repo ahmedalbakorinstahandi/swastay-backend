@@ -47,6 +47,24 @@ class Booking extends Model
         'pets_count'     => 'integer',
     ];
 
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->prices()->sum('price');
+    }
+
+    // get final total price
+    public function getFinalTotalPriceAttribute()
+    {
+        return $this->total_price + ((1 - $this->service_fees / 100) * $this->total_price);
+    }
+
+    // get final price for host
+    public function getFinalPriceForHostAttribute()
+    {
+        return $this->total_price - ((1 - $this->commission / 100) * $this->total_price);
+    }
+
     public function listing()
     {
         return $this->belongsTo(Listing::class)->withTrashed();
@@ -70,5 +88,10 @@ class Booking extends Model
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(BookingPrice::class);
     }
 }

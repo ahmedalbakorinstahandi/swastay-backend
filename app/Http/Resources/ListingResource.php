@@ -26,6 +26,8 @@ class ListingResource extends JsonResource
             'house_type_id'               => $this->house_type_id,
             'property_type'               => $this->property_type,
             'price'                       => $this->price,
+            'price_weekend'               => $this->price_weekend,
+            'final_price'               => $this->final_price,
             'currency'                    => $this->currency,
             'commission'                  => $this->commission,
             'status'                      => $this->status,

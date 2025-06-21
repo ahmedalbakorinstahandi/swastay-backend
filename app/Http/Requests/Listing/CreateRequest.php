@@ -18,6 +18,7 @@ class CreateRequest extends BaseFormRequest
             'house_type_id' => 'required|exists:house_types,id,deleted_at,NULL',
             'property_type' => 'required|in:House,Apartment,Guesthouse',
             'price' => 'required|numeric|min:0',
+            'price_weekend' => 'nullable|numeric|min:0',
             'guests_count' => 'required|integer|min:1',
             'bedrooms_count' => 'required|integer|min:1',
             'beds_count' => 'required|integer|min:1',

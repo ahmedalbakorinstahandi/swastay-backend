@@ -12,10 +12,10 @@ class CreateRequest extends BaseFormRequest
     {
 
         $user = User::auth();
-        
+
         $rules = [
             'listing_id' => 'required|exists:listings,id,deleted_at,NULL',
-            'start_date' => 'required|date_format:Y-m-d',
+            'start_date' => 'required|date_format:Y-m-d|after:today',
             'end_date'   => 'required|date_format:Y-m-d|after:start_date',
             'message'    => 'required|string|max:500',
             'adults_count' => 'required|integer|min:0',
@@ -24,7 +24,7 @@ class CreateRequest extends BaseFormRequest
             'pets_count' => 'required|integer|min:0',
             'payment_proof' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx,xls,xlsx,txt|max:4096',
         ];
-        
+
         $admin_rules = [];
         if ($user->isAdmin()) {
             $admin_rules = [

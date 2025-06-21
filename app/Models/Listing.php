@@ -19,6 +19,7 @@ class Listing extends Model
         'house_type_id',
         'property_type',
         'price',
+        'price_weekend',
         'currency',
         'commission',
         'status',
@@ -40,6 +41,7 @@ class Listing extends Model
 
     protected $casts = [
         'price' => 'float',
+        'price_weekend' => 'float',
         'commission' => 'float',
         'guests_count' => 'integer',
         'bedrooms_count' => 'integer',
@@ -61,6 +63,16 @@ class Listing extends Model
         'camera_locations',
     ];
 
+
+    public function getFinalPriceAttribute()
+    {
+        $date = now();
+        if ($date->isWeekend()) {
+            return $this->price_weekend ?? $this->price;
+        }
+
+        return $this->price;
+    }
 
     public function similarListings()
     {
