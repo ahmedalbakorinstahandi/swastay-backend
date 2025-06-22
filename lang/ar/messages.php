@@ -111,6 +111,11 @@ return [
         'code_message_forgot_password' => 'مرحباً :first_name، رمز التحقق الخاص بك هو: :otp. يرجى استخدام هذا الرمز لإعادة تعيين كلمة المرور الخاصة بك. لاحظ أن الرمز سينتهي صلاحيته خلال :minutes دقيقة. إذا لم تطلب هذا، يرجى تجاهل هذه الرسالة.',
     ],
 
+    'notification' => [
+        'send_notification_successfully' => 'تم إرسال الإشعار بنجاح.',
+        'item_deleted_successfully' => 'تم حذف الإشعار بنجاح.',
+        'failed_delete_item' => 'فشل حذف الإشعار.',
+    ],
 
 
 

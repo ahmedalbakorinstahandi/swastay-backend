@@ -110,5 +110,10 @@ return [
         'code_message_forgot_password' => 'Hello :first_name, your verification code is: :otp. Please use this code to reset your password. Note that the code will expire in :minutes minutes. If you did not request this, please ignore this message.',
     ],
 
+    'notification' => [
+        'send_notification_successfully' => 'Notification sent successfully.',
+        'item_deleted_successfully' => 'Notification deleted successfully.',
+        'failed_delete_item' => 'Failed to delete notification.',
+    ],
 
 ];
