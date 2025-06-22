@@ -103,4 +103,6 @@ class NotificationController extends Controller
             'data' => NotificationResource::collection($notifications),
         ]);
     }
+
+    
 }

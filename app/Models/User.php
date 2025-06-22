@@ -129,4 +129,15 @@ class User extends Model
     {
         return $this->role === 'user';
     }
+
+
+    public static function notificationsUnreadCount()
+    {
+        $user = User::auth();
+        if ($user) {
+            return  Notification::where('user_id', $user->id)->whereNull('read_at')->count();
+        } else {
+            return  Notification::whereNull('user_id')->count();
+        }
+    }
 }
