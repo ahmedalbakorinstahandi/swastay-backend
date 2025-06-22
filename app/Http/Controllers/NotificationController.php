@@ -2,47 +2,105 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Permissions\NotificationPermission;
+use App\Http\Requests\Notification\SendNotificationToAllUsersRequest;
+use App\Http\Services\NotificationService;
+use App\Http\Resources\NotificationResource;
+use App\Models\User;
+use App\Services\ResponseService;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function index()
     {
-        //
+        $notifications = $this->notificationService->index(request()->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => NotificationResource::collection($notifications->items()),
+            'meta' => ResponseService::meta($notifications),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        //
+        $notification = $this->notificationService->show($id);
+
+        NotificationPermission::canShow($notification);
+
+        return response()->json([
+            'success' => true,
+            'data' => new NotificationResource($notification),
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function destroy($id)
     {
-        //
+        $notification = $this->notificationService->show($id);
+
+        NotificationPermission::canDelete($notification);
+
+        $deleted = $this->notificationService->destroy($notification);
+
+        return response()->json([
+            'success' => $deleted,
+            'message' => $deleted
+                ? trans('messages.notification.item_deleted_successfully')
+                : trans('messages.notification.failed_delete_item'),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+
+    public function sendNotificationToAllUsers(SendNotificationToAllUsersRequest $request)
     {
-        //
+        $last_notification = $this->notificationService->sendNotificationToAllUsers($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => trans('messages.notification.send_notification_successfully'),
+            'data' => new NotificationResource($last_notification),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function unreadCount()
     {
-        //
+
+        $count = User::notificationsUnreadCount();
+
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'count' => $count,
+                'test' => Auth::check(),
+            ],
+        ]);
+    }
+
+    public function readNotification($id)
+    {
+
+
+        $notification = $this->notificationService->show($id);
+
+
+        $notifications = $this->notificationService->readNotification($notification->id);
+
+        return response()->json([
+            'success' => true,
+            'data' => NotificationResource::collection($notifications),
+        ]);
     }
 }

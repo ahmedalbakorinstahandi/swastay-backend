@@ -43,5 +43,11 @@ Route::group(['prefix' => 'guest'], function () {
             Route::put('/{id}', [ListingReviewController::class, 'update']);
             Route::delete('/{id}', [ListingReviewController::class, 'destroy']);
         });
+
+        Route::get('/reviews', [ListingReviewController::class, 'index']);
+        Route::get('/reviews/{id}', [ListingReviewController::class, 'show']);
+        Route::post('/reviews', [ListingReviewController::class, 'create']);
+        Route::put('/reviews/{id}', [ListingReviewController::class, 'update']);
+        Route::delete('/reviews/{id}', [ListingReviewController::class, 'destroy']);
     });
 });
