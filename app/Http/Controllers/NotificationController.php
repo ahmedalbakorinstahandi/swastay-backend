@@ -8,7 +8,7 @@ use App\Http\Requests\Notification\SendNotificationToAllUsersRequest;
 use App\Http\Services\NotificationService;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
-use App\Services\ResponseService;
+use App\Services\ResponseService; 
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
