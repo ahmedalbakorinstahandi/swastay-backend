@@ -87,21 +87,9 @@ class BookingService
         $data['price'] = 0;
         $data['currency'] = $listing->currency;
 
-        $booking_prices = [];
+      
+        
 
-        $start_date = Carbon::parse($data['start_date']);
-        $end_date = Carbon::parse($data['end_date']);
-
-        for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
-            $price = $listing->getFinalPriceAttribute();
-            $booking_prices[] = [
-                'price' => $price,
-                'type' => $date->isWeekend() ? 'weekend' : 'normal',
-                'date' => $date,
-            ];
-        }
-
-        $booking_prices = BookingPrice::insert($booking_prices);
 
 
         $data['commission'] = $listing->commission;
@@ -112,10 +100,32 @@ class BookingService
 
         $booking = Booking::create($data);
 
+        $booking_prices = [];
+
+        $start_date = Carbon::parse($data['start_date']);
+        $end_date = Carbon::parse($data['end_date']);
+
+        for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
+            $price = $listing->getFinalPriceAttribute();
+            $booking_prices[] = [
+                'price' => $price,
+                'type' => $date->isWeekend() ? 'weekend' : 'normal',
+                'date' => $date, 
+                'booking_id' => $booking->id,
+            ];
+        }
+
+        $booking_prices = BookingPrice::insert($booking_prices);
+
+
         $booking->load(['host', 'guest', 'listing', 'transactions', 'prices']);
 
         return $booking;
     }
+
+    
+
+    
 
     public function update(Booking $booking, array $data)
     {
