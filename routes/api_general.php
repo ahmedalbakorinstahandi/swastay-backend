@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,11 @@ Route::group(['prefix' => 'general'], function () {
 
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-       
+        Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/unread-count', 'unreadCount');
+            Route::post('/{id}/read',  'readNotification');
+            Route::get('{id}', 'show');
+        });
     });
 });
