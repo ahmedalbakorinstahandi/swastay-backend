@@ -115,6 +115,7 @@ return [
         'send_notification_successfully' => 'تم إرسال الإشعار بنجاح.',
         'item_deleted_successfully' => 'تم حذف الإشعار بنجاح.',
         'failed_delete_item' => 'فشل حذف الإشعار.',
+        'item_not_found' => 'الإشعار غير موجود.',
     ],
 
 

@@ -114,6 +114,7 @@ return [
         'send_notification_successfully' => 'Notification sent successfully.',
         'item_deleted_successfully' => 'Notification deleted successfully.',
         'failed_delete_item' => 'Failed to delete notification.',
+        'item_not_found' => 'Notification not found.',
     ],
 
 ];
