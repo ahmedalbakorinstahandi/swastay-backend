@@ -84,7 +84,7 @@ class NotificationController extends Controller
             'success' => true,
             'data' => [
                 'count' => $count,
-                'auth' => Auth::check(),
+                'auth' => User::auth() ? true : false,
             ],
         ]);
     }
