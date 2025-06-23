@@ -31,9 +31,12 @@ class SettingService
 
 
 
-    public function show($id)
+    public function show($idOrKey)
     {
-        $item = Setting::find($id);
+        $item = Setting::where('key', $idOrKey)
+            ->orWhere('id', $idOrKey)
+            ->first();
+
         if (!$item) {
             MessageService::abort(404, 'messages.setting.item_not_found');
         }
@@ -79,7 +82,7 @@ class SettingService
         if (!$setting) {
             MessageService::abort(404, 'messages.setting.item_not_found');
         }
-        
+
         $setting->update(['value' => $data['value']]);
 
         return $setting;

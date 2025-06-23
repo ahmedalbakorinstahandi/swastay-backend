@@ -91,10 +91,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
 
     Route::group(['prefix' => 'settings'], function () {
         Route::get('/', [SettingController::class, 'index']);
-        Route::get('/{id}', [SettingController::class, 'show']);
+        Route::get('/{idOrKey}', [SettingController::class, 'show']);
         Route::post('/', [SettingController::class, 'create']);
         Route::put('/', [SettingController::class, 'updateMany']);
         Route::put('/{idOrKey}', [SettingController::class, 'updateOne']);
-        Route::delete('/{id}', [SettingController::class, 'delete']);
+        Route::delete('/{idOrKey}', [SettingController::class, 'delete']);
     });
 });

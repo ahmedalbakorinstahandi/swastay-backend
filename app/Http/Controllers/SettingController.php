@@ -75,10 +75,10 @@ class SettingController extends Controller
 
 
 
-    public function delete($id)
+    public function delete($idOrKey)
     {
 
-        $setting = $this->settingService->show($id);
+        $setting = $this->settingService->show($idOrKey);
 
         $this->settingService->delete($setting);
 
