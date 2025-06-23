@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Settings\CreateSettingRequest;
+use App\Http\Requests\Settings\UpdateSettingRequest;
 use App\Http\Requests\Settings\UpdateSettingsRequest;
 use App\Http\Resources\SettingResource;
 use App\Http\Services\SettingService;
@@ -51,7 +52,7 @@ class SettingController extends Controller
 
     public function update(UpdateSettingsRequest $request)
     {
-        $this->settingService->update($request->validated()['settings']);
+        $this->settingService->updateMany($request->validated()['settings']);
 
 
 
@@ -62,9 +63,18 @@ class SettingController extends Controller
         ]);
     }
 
+    public function updateOne($idOrKey, UpdateSettingRequest $request)
+    {
+        $setting = $this->settingService->updateOne($idOrKey, $request->validated());
+
+        return response()->json([
+            'success' => true,
+            'data' => new SettingResource($setting),
+        ]);
+    }
 
 
-    // delete
+
     public function delete($id)
     {
 

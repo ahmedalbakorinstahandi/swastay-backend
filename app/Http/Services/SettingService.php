@@ -29,19 +29,7 @@ class SettingService
     }
 
 
-    // multi data updates
-    public function update($data)
-    {
-        foreach ($data as $item) {
-            $setting = Setting::where('key', $item['key'])->first();
-            if (!$setting) {
-                MessageService::abort(404, 'messages.setting.item_not_found');
-            }
-            $setting->update(['value' => $item['value']]);
-        }
 
-        return [];
-    }
 
     public function show($id)
     {
@@ -64,12 +52,39 @@ class SettingService
         return $setting;
     }
 
-    public function update($item, $data)
+
+    public function updateMany($data)
     {
-        $item->update($data);
-        
-        return $item;
+        foreach ($data as $item) {
+            $setting = Setting::where('key', $item['key'])->first();
+            if (!$setting) {
+                MessageService::abort(404, 'messages.setting.item_not_found');
+            }
+            $setting->update(['value' => $item['value']]);
+        }
+
+        return [];
     }
+
+
+    public function updateOne($idOrKey, $data)
+    {
+        $setting = Setting::where('key', $idOrKey)
+            ->orWhere('id', $idOrKey)
+            ->first();
+
+        if (!$setting) {
+            $setting = Setting::find($idOrKey);
+        }
+        if (!$setting) {
+            MessageService::abort(404, 'messages.setting.item_not_found');
+        }
+        
+        $setting->update(['value' => $data['value']]);
+
+        return $setting;
+    }
+
 
     public function delete($item)
     {
