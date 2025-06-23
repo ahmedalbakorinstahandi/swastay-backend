@@ -50,7 +50,7 @@ class SettingController extends Controller
         ]);
     }
 
-    public function update(UpdateSettingsRequest $request)
+    public function updateMany(UpdateSettingsRequest $request)
     {
         $this->settingService->updateMany($request->validated()['settings']);
 

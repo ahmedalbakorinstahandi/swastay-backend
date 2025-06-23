@@ -48,6 +48,7 @@ class SettingService
         $data['is_settings'] = true;
 
         $setting = Setting::where('key', $data['key'])->first();
+        
         if ($setting) {
             MessageService::abort(400, 'messages.setting.item_already_exists');
         }
