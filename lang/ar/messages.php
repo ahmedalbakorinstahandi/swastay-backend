@@ -119,5 +119,13 @@ return [
     ],
 
 
+    'setting' => [
+        'item_already_exists' => 'الإعداد موجود بالفعل.',
+        'item_not_found' => 'الإعداد غير موجود.',
+        'item_created_successfully' => 'تم إنشاء الإعداد بنجاح.',
+        'item_updated_successfully' => 'تم تحديث الإعداد بنجاح.',
+        'item_deleted_successfully' => 'تم حذف الإعداد بنجاح.',
+    ],
+
 
 ];

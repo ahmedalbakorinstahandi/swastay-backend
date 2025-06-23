@@ -2,56 +2,80 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Settings\CreateSettingRequest;
+use App\Http\Requests\Settings\UpdateSettingsRequest;
 use App\Http\Resources\SettingResource;
-use App\Models\Setting;
+use App\Http\Services\SettingService;
 use App\Services\ResponseService;
-use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-     
+
+    protected $settingService;
+    public function __construct(SettingService $settingService)
+    {
+        $this->settingService = $settingService;
+    }
+
+
     public function index()
     {
-        $settings = Setting::all();
+        $settings = $this->settingService->index(request()->all());
 
-        return ResponseService::response(
-            [
-                'success' => true,
-                'data' => SettingResource::collection($settings),
-                'status' => 200,
-            ]
-        );
+        return response()->json([
+            'success' => true,
+            'data' => SettingResource::collection($settings->items()),
+            'meta' => ResponseService::meta($settings),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        //
+        $setting = $this->settingService->show($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => new SettingResource($setting),
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function create(CreateSettingRequest $request)
     {
-        //
+        $setting = $this->settingService->create($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'data' => new SettingResource($setting),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateSettingsRequest $request)
     {
-        //
+        $this->settingService->update($request->validated()['settings']);
+
+
+
+        return response()->json([
+            'success' => true,
+            'data' => [],
+            'message' => trans('messages.setting.item_updated_successfully'),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+
+    // delete
+    public function delete($id)
     {
-        //
+
+        $setting = $this->settingService->show($id);
+
+        $this->settingService->delete($setting);
+
+        return response()->json([
+            'success' => true,
+            'data' => [],
+            'message' => trans('messages.setting.item_deleted_successfully'),
+        ]);
     }
 }

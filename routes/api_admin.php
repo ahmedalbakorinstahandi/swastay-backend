@@ -7,6 +7,7 @@ use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserVerificationController;
@@ -86,5 +87,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
         Route::get('/{id}', [UserVerificationController::class, 'show']);
         Route::put('/{id}', [UserVerificationController::class, 'update']);
         Route::delete('/{id}', [UserVerificationController::class, 'destroy']);
+    });
+
+    Route::group(['prefix' => 'settings'], function () {
+        Route::get('/', [SettingController::class, 'index']);
+        Route::get('/{id}', [SettingController::class, 'show']);
+        Route::post('/', [SettingController::class, 'create']);
+        Route::put('/', [SettingController::class, 'update']);
+        Route::delete('/{id}', [SettingController::class, 'delete']);
     });
 });

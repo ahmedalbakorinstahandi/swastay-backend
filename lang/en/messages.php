@@ -115,6 +115,14 @@ return [
         'item_deleted_successfully' => 'Notification deleted successfully.',
         'failed_delete_item' => 'Failed to delete notification.',
         'item_not_found' => 'Notification not found.',
+    ],          
+
+    'setting' => [
+        'item_already_exists' => 'Setting already exists.',
+        'item_not_found' => 'Setting not found.',
+        'item_created_successfully' => 'Setting created successfully.',
+        'item_updated_successfully' => 'Setting updated successfully.',
+        'item_deleted_successfully' => 'Setting deleted successfully.',
     ],
 
 ];
