@@ -33,12 +33,14 @@ Route::group(['prefix' => 'general'], function () {
     Route::get('/settings', [SettingController::class, 'index']);
 
 
+    Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/unread-count', 'unreadCount');
+        Route::get('{id}', 'show');
+    });
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/unread-count', 'unreadCount');
             Route::post('/{id}/read',  'readNotification');
-            Route::get('{id}', 'show');
         });
     });
 });
