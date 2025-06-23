@@ -2,11 +2,10 @@
 
 namespace App\Http\Services;
 
-use App\Models\Notification;
 use App\Services\FilterService;
 use App\Services\MessageService;
 use App\Http\Permissions\NotificationPermission;
-use App\Models\Notification as ModelsNotification;
+use App\Models\Notification;
 use App\Models\User;
 use App\Services\FirebaseService;
 
@@ -14,7 +13,7 @@ class NotificationService
 {
     public function index($data)
     {
-        $query = ModelsNotification::query()->with(['user', 'notificationable']);
+        $query = Notification::query()->with(['user', 'notificationable']);
 
         $query = NotificationPermission::filterIndex($query);
 
@@ -53,13 +52,13 @@ class NotificationService
     {
         $notification->update($validatedData);
 
-    
+
         return $notification;
     }
 
     public function destroy($notification)
     {
-        
+
         return $notification->delete();
     }
 

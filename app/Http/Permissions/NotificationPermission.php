@@ -6,7 +6,6 @@ namespace App\Http\Permissions;
 use App\Models\Notification;
 use App\Models\User;
 use App\Services\MessageService;
-use Illuminate\Support\Facades\Auth;
 
 class NotificationPermission
 {
@@ -15,10 +14,6 @@ class NotificationPermission
         $user = User::auth();
         if ($user) {
             $query->where('user_id', $user->id)->orWhereNull('user_id');
-            // if ($user->isCustomer()) {
-            //     $query->where('user_id', $user->id)->orWhereNull('user_id');
-            // } else {
-            // }
         } else {
             $query->whereNull('user_id');
         }
