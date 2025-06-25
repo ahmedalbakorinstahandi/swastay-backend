@@ -56,7 +56,7 @@ class Booking extends Model
     // get final total price
     public function getFinalTotalPriceAttribute()
     {
-        return $this->total_price + ((1 - $this->service_fees / 100) * $this->total_price);
+        return $this->total_price + (($this->service_fees / 100) * $this->total_price);
     }
 
     // get final price for host

@@ -84,7 +84,6 @@ class SettingController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => [],
             'message' => trans('messages.setting.item_deleted_successfully'),
         ]);
     }
