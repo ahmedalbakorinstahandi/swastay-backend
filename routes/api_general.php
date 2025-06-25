@@ -31,6 +31,7 @@ Route::group(['prefix' => 'general'], function () {
     Route::get('/cities', [CityController::class, 'index']);
 
     Route::get('/settings', [SettingController::class, 'index']);
+    Route::get('/settings/{id}', [SettingController::class, 'show']);
 
 
     Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
