@@ -41,6 +41,13 @@ class AuthServices
             );
         }
 
+        if (!Hash::check($data['password'], $user->password)) {
+            MessageService::abort(
+                401,
+                'auth.login_invalid',
+            );
+        }
+
         if ($user->status === 'banneded') {
             MessageService::abort(
                 401,
@@ -55,12 +62,7 @@ class AuthServices
             );
         }
 
-        if (!Hash::check($data['password'], $user->password)) {
-            MessageService::abort(
-                401,
-                'auth.login_invalid',
-            );
-        }
+        
 
         $token = $user->createToken($user->first_name . 'auth_token')->plainTextToken;
 
