@@ -353,7 +353,8 @@ class ListingService
 
         $listing_index = $data['listing_index'];
 
-        $listing_ids = Listing::orderBy('id')->pluck('id')->toArray();
+        // asc order by id with trashed listings
+        $listing_ids = Listing::withTrashed()->orderBy('id', 'asc')->pluck('id')->toArray();
 
         $listing_selected_id = $listing_ids[$listing_index];
 
