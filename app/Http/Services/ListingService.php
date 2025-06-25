@@ -355,17 +355,17 @@ class ListingService
 
         $listing_ids = Listing::withTrashed()->orderBy('id', 'asc')->pluck('id')->toArray();
 
-        abort(
-            response()->json([
-                'message' => 'Listing index is out of range',
-                'status' => 422,
-                'data' => $listing_ids,
-                'listing_index' => $listing_index,
-                'listings_count' => count($listing_ids),
-            ], 422)
-        );
+        // abort(
+        //     response()->json([
+        //         'message' => 'Listing index is out of range',
+        //         'status' => 422,
+        //         'data' => $listing_ids,
+        //         'listing_index' => $listing_index,
+        //         'listings_count' => count($listing_ids),
+        //     ], 422)
+        // );
 
-        $listing_selected_id = $listing_ids[$listing_index];
+        $listing_selected_id = $listing_ids[$listing_index - 1];
 
         $listing_selected = Listing::find($listing_selected_id);
 
