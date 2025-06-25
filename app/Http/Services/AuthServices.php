@@ -55,14 +55,14 @@ class AuthServices
             );
         }
 
-        if (!$user->is_verified) {
+        if ($user->is_verified === 0) {
             MessageService::abort(
                 401,
                 'auth.account_not_verified',
             );
         }
 
-        
+
 
         $token = $user->createToken($user->first_name . 'auth_token')->plainTextToken;
 
