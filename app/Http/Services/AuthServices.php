@@ -48,7 +48,7 @@ class AuthServices
             );
         }
 
-        if ($user->is_verified === false) {
+        if (!$user->is_verified) {
             MessageService::abort(
                 401,
                 'auth.account_not_verified',
