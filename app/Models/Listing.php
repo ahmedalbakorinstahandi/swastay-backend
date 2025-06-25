@@ -121,6 +121,13 @@ class Listing extends Model
         return $this->belongsTo(HouseType::class)->withTrashed();
     }
 
+    // first image of the listing
+    // replace the path (listings) with (listings-compressed)
+    public function firstImage()
+    {
+        return $this->images()->first()->path->replace('listings', 'listings-compressed');
+    }
+
     public function images() // morphMany
     {
         return $this->morphMany(Image::class, 'imageable');
