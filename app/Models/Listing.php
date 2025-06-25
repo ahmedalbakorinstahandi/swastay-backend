@@ -125,7 +125,11 @@ class Listing extends Model
     // replace the path (listings) with (listings-compressed)
     public function firstImage()
     {
-        return $this->images()->first()->path->replace('listings', 'listings-compressed');
+        $image = $this->images()->first();
+        if (!$image) {
+            return null;
+        }
+        return str_replace('listings', 'listings-compressed', $image->path);
     }
 
     public function images() // morphMany
