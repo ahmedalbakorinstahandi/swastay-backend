@@ -353,8 +353,17 @@ class ListingService
 
         $listing_index = $data['listing_index'];
 
-        // asc order by id with trashed listings
         $listing_ids = Listing::withTrashed()->orderBy('id', 'asc')->pluck('id')->toArray();
+
+        abort(
+            response()->json([
+                'message' => 'Listing index is out of range',
+                'status' => 422,
+                'data' => $listing_ids,
+                'listing_index' => $listing_index,
+                'listings_count' => count($listing_ids),
+            ], 422)
+        );
 
         $listing_selected_id = $listing_ids[$listing_index];
 
