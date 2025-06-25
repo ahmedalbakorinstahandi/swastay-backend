@@ -129,7 +129,8 @@ class Listing extends Model
         if (!$image) {
             return null;
         }
-        return str_replace('listings', 'listings-compressed', $image->path);
+        $image->path = str_replace('listings', 'listings-compressed', $image->path);
+        return $image;
     }
 
     public function images() // morphMany
