@@ -64,9 +64,9 @@ class Listing extends Model
     ];
 
 
-    public function getFinalPriceAttribute()
+    public function getFinalPriceAttribute($date = null)
     {
-        $date = now();
+        $date = $date ?? now();
         if ($date->isWeekend()) {
             return $this->price_weekend ?? $this->price;
         }

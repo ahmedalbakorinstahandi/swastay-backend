@@ -102,11 +102,11 @@ class BookingService
 
         $booking_prices = [];
 
-        $start_date = Carbon::parse($data['start_date']);
-        $end_date = Carbon::parse($data['end_date']);
+        $start_date = Carbon::parse($data['start_date']); 
+        $end_date = Carbon::parse($data['end_date'])->subDay();
 
         for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
-            $price = $listing->getFinalPriceAttribute();
+            $price = $listing->getFinalPriceAttribute($date);
             $booking_prices[] = [
                 'price' => $price,
                 'type' => $date->isWeekend() ? 'weekend' : 'normal',
