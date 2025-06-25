@@ -20,6 +20,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::put('/listings/{id}', [ListingController::class, 'update']);
     Route::delete('/listings/{id}', [ListingController::class, 'destroy']);
 
+    Route::put('/listings/{id}/reorder', [ListingController::class, 'reorderListing']);
+
     Route::put('/listings/{id}/available-dates', [ListingController::class, 'updateAvailableDate']);
     Route::put('/listings/{id}/rules', [ListingController::class, 'updateRule']);
 

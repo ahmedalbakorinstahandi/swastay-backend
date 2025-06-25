@@ -192,11 +192,11 @@ class ListingService
             foreach ($images as $image) {
                 // Check if image already exists for this listing
                 $existingImage = $listing->images()->where('path', $image)->first();
-                
+
                 if (!$existingImage) {
                     $image = Image::create([
                         'path' => $image,
-                        'type' => 'image', 
+                        'type' => 'image',
                         'imageable_id' => $listing->id,
                         'imageable_type' => Listing::class,
                     ]);
@@ -342,6 +342,26 @@ class ListingService
         } else {
             $rule = $listing->rule()->create($data);
         }
+
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+
+        return $listing;
+    }
+
+    public function reorderListing($listing, $data)
+    {
+
+        $listing_index = $data['listing_index'];
+
+        $listing_ids = Listing::orderBy('id')->pluck('id')->toArray();
+
+        $listing_selected_id = $listing_ids[$listing_index];
+
+        $listing_selected = Listing::find($listing_selected_id);
+
+
+        OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
+
 
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
 

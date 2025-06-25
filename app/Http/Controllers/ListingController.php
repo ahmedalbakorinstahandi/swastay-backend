@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Permissions\ListingPermission;
 use App\Http\Requests\Listing\AvailableDateRequest;
 use App\Http\Requests\Listing\CreateRequest;
-use App\Http\Requests\Listing\ReOrderRequest;
+use App\Http\Requests\Listing\ReOrderListingImagesRequest;
+use App\Http\Requests\Listing\ReOrderListingRequest;
 use App\Http\Requests\Listing\UpdateRequest;
 use App\Http\Requests\ListingRule\UpdateRequest as ListingRuleUpdateRequest;
 use App\Http\Resources\ImageResource;
@@ -197,7 +198,27 @@ class ListingController extends Controller
         ]);
     }
 
-    public function reorderImage($id, $image_id, ReOrderRequest $request)
+    // Reorder Listing
+    public function reorderListing($id, ReOrderListingRequest $request)
+    {
+        $listing = $this->listingService->show($id);
+
+        ListingPermission::canUpdate($listing);
+
+        $data = $request->validated();
+
+        $listing = $this->listingService->reorderListing($listing, $data);
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.listing.reorder',
+            'data'    => $listing,
+            'resource' => ListingResource::class,
+            'status'  => 200,
+        ]);
+    }
+
+    public function reorderImage($id, $image_id, ReOrderListingImagesRequest $request)
     {
         $listing = $this->listingService->show($id);
 

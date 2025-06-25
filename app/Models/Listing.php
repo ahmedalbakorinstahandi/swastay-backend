@@ -37,6 +37,7 @@ class Listing extends Model
         'min_booking_days',
         'max_booking_days',
         'addedd_by',
+        'orders',
     ];
 
     protected $casts = [
