@@ -53,7 +53,7 @@ class ListingResource extends JsonResource
             // علاقات عند التحميل
             'host'         => new UserResource($this->whenLoaded('host')),
             'house_type'   => new HouseTypeResource($this->whenLoaded('houseType')),
-            'first_image'  => $this->firstImage(),
+            'first_image'  => $this->firstImage() != null ? new ImageResource($this->firstImage()) : null,
             'images'       => ImageResource::collection($this->whenLoaded('images')),
             'categories'   => CategoryResource::collection($this->whenLoaded('categories')),
             'features'     => FeatureResource::collection($this->whenLoaded('features')),
