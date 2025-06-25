@@ -367,7 +367,7 @@ class ListingService
 
         $listing_selected_id = $listing_ids[$listing_index - 1];
 
-        $listing_selected = Listing::find($listing_selected_id);
+        $listing_selected = Listing::withTrashed()->find($listing_selected_id);
 
 
         OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
