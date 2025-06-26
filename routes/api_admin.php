@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function (
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::get('/bookings/{id}', [BookingController::class, 'show']);
     Route::post('/bookings', [BookingController::class, 'create']);
-    // Route::put('/bookings/{id}', [BookingController::class, 'update']);
+    Route::put('/bookings/{id}', [BookingController::class, 'update']);
     Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
 
     Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);

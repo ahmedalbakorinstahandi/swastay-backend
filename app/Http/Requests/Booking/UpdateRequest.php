@@ -2,27 +2,32 @@
 
 namespace App\Http\Requests\Booking;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\User;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends BaseFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
+
+        $user = User::auth();
+
+        if ($user->isAdmin()) {
+            return [
+                'status' => 'nullable|in:accepted,confirmed,completed,cancelled,rejected',
+                'admin_notes' => 'nullable|string',
+            ];
+        }
+
         return [
-            //
+            'status' => 'nullable|in:completed',
+            'host_notes' => 'nullable|string',
         ];
     }
 }
+
+
+ 
+
+// $table->enum('status', ['pending', 'accepted', 'confirmed', 'completed', 'cancelled', 'rejected']);
