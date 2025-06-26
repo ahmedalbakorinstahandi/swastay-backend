@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\ListingReview;
+use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
 
@@ -40,6 +41,14 @@ class ListingReviewService
         if (!$review) {
             MessageService::abort(404, 'messages.listing_review.not_found');
         }
+
+        abort(
+            response()->json([
+                'user' => User::auth(),
+                'review' => $review,
+                'review_id' => $review->id,
+            ], 403)
+        );
 
         $review = $review->with(['user', 'booking'])->first();
 
