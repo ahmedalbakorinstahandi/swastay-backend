@@ -52,7 +52,7 @@ class ListingReviewPermission
     public static function canUpdate($review)
     {
         $user = User::auth();
-        if (!$user || $review->user_id !== $user->id) {
+        if (!$user || $review->user_id != $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
     }
@@ -61,7 +61,7 @@ class ListingReviewPermission
     {
         $user = User::auth();
 
-        if ($user && $user->isGuest() && $review->user_id !== $user->id) {
+        if (!$user || $review->user_id != $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
     }
