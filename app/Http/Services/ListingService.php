@@ -73,7 +73,7 @@ class ListingService
             MessageService::abort(404, 'messages.listing.not_found');
         }
 
-        $list->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $list->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
 
         $user = User::auth();
         if (!$user || $user->isGuest()) {
@@ -158,7 +158,7 @@ class ListingService
             'allows_families_only' => $data['rule']['allows_families_only'] ?? null,
         ]);
 
-        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -274,7 +274,7 @@ class ListingService
 
 
 
-        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -325,7 +325,7 @@ class ListingService
             );
         }
 
-        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
         return $listing;
     }
 
@@ -343,7 +343,7 @@ class ListingService
             $rule = $listing->rule()->create($data);
         }
 
-        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
 
         return $listing;
     }
@@ -373,7 +373,7 @@ class ListingService
         OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
 
 
-        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews', 'availableDates', 'rule']);
+        $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
 
         return $listing;
     }

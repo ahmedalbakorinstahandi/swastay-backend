@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
+    Schema::disableForeignKeyConstraints();
 
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->float('price');
             $table->float('commission')->default(0);
             $table->float('service_fees')->nullable();
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->bigInteger('adults_count');
             $table->bigInteger('children_count');
             $table->bigInteger('infants_count');
