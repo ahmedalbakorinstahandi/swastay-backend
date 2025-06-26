@@ -61,6 +61,13 @@ class ListingReviewPermission
     {
         $user = User::auth();
 
+        abort(
+            response()->json([
+                'user' => $user,
+                'review' => $review,
+            ], 403)
+        );
+
         if (!$user || $review->user_id != $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
