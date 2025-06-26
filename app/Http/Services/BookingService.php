@@ -18,7 +18,7 @@ class BookingService
     public function index($filters = [])
     {
 
-        $query = Booking::query()->with(['host', 'guest', 'listing', 'prices']);
+        $query = Booking::query()->with(['host', 'guest', 'listing', 'prices', 'review.user']);
 
         $query = BookingPermission::filterIndex($query);
 
@@ -60,7 +60,7 @@ class BookingService
             MessageService::abort(404, 'messages.booking.not_found');
         }
 
-        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices']);
+        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
         return $booking;
     }
@@ -87,8 +87,8 @@ class BookingService
         $data['price'] = 0;
         $data['currency'] = $listing->currency;
 
-      
-        
+
+
 
 
 
@@ -102,7 +102,7 @@ class BookingService
 
         $booking_prices = [];
 
-        $start_date = Carbon::parse($data['start_date']); 
+        $start_date = Carbon::parse($data['start_date']);
         $end_date = Carbon::parse($data['end_date'])->subDay();
 
         for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
@@ -110,7 +110,7 @@ class BookingService
             $booking_prices[] = [
                 'price' => $price,
                 'type' => $date->isWeekend() ? 'weekend' : 'normal',
-                'date' => $date, 
+                'date' => $date,
                 'booking_id' => $booking->id,
             ];
         }
@@ -118,20 +118,20 @@ class BookingService
         $booking_prices = BookingPrice::insert($booking_prices);
 
 
-        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices']);
+        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
         return $booking;
     }
 
-    
 
-    
+
+
 
     public function update(Booking $booking, array $data)
     {
         $booking->update($data);
 
-        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices']);
+        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
         return $booking;
     }
@@ -163,7 +163,7 @@ class BookingService
             'transactionable_type' => Booking::class,
         ]);
 
-        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices']);
+        $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
         return $booking;
     }
