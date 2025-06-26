@@ -42,6 +42,8 @@ class ListingReviewService
             MessageService::abort(404, 'messages.listing_review.not_found');
         }
 
+        
+        $review = $review->with(['user', 'booking'])->first();
         abort(
             response()->json([
                 'user' => User::auth(),
@@ -49,8 +51,6 @@ class ListingReviewService
                 'review_id' => $review->id,
             ], 403)
         );
-
-        $review = $review->with(['user', 'booking'])->first();
 
         return $review;
     }
