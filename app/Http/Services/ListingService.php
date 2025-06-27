@@ -40,6 +40,9 @@ class ListingService
             });
         }
 
+        $data['sort_field'] = $data['sort_field'] ?? 'orders';
+        $data['sort_order'] = $data['sort_order'] ?? 'asc';
+
         $query = FilterService::applyFilters(
             $query,
             $data,
