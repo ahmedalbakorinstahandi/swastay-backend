@@ -56,6 +56,7 @@ class Listing extends Model
         'max_booking_days' => 'integer',
         'is_contains_cameras' => 'boolean',
         'addedd_by' => 'integer',
+        'orders' => 'integer',
     ];
 
     protected $translatable = [
