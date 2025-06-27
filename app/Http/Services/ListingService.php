@@ -96,6 +96,8 @@ class ListingService
 
         $listing = Listing::create($data);
 
+        OrderHelper::assign($listing);
+
 
         // images
         if (isset($data['images'])) {
