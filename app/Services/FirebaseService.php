@@ -111,21 +111,24 @@ class FirebaseService
             return self::handleException($e);
         }
     }
-    public static function sendToTopicAndStorage($topic, $users_ids, $notificationable, $title, $body, $type, $data = [], $channelId = null)
+
+    //general 
+    //custom
+    public static function sendToTopicAndStorage($topic, $users_ids, $notificationable, $title, $body, $replace, $data = [], $channelId = null)
     {
         $messaging = self::getFirebaseMessaging()->createMessaging();
 
         NotificationService::storeNotification(
             $users_ids,
             $notificationable,
-            $type,
             $title,
+            $replace,
             $body,
             $data,
         );
 
         $data['notifiable_id'] = $notificationable['id'] ?? null;
-        $data['notifiable_type'] = $notificationable['type'] ?? 'Custom';
+        $data['notifiable_type'] = $notificationable['type'] ?? 'custom';
         // $data['notificationable'] = $notificationable;
 
         $messageConfig = self::createMessageConfig($topic, $title, $body, $data, $channelId);

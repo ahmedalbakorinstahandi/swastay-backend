@@ -23,8 +23,8 @@ class UserResource extends JsonResource
             'role'            => $this->role,
             'id_verified'   => $this->id_verified,
             'status'          => $this->status,
-            'otp'             => $this->otp,
-            'otp_expire_at'   => $this->otp_expire_at,
+            // 'otp'             => $this->otp,
+            // 'otp_expire_at'   => $this->otp_expire_at,
             'is_verified'     => $this->is_verified,
             'created_at'     => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
 

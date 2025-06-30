@@ -3,7 +3,9 @@
 
 namespace App\Http\Services;
 
+use App\Http\Notifications\AuthNotification;
 use App\Models\User;
+use App\Services\FirebaseService;
 use App\Services\MessageService;
 use App\Services\PhoneService;
 use App\Services\WhatsappMessageService;
@@ -125,6 +127,8 @@ class AuthServices
 
 
         WhatsappMessageService::send($phoneNumber, $message);
+
+        AuthNotification::welcome($user);
 
         return [
             'user' => $user,

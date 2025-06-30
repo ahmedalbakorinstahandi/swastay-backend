@@ -9,6 +9,8 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\VerifyCodeRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\AuthServices;
+use App\Models\User;
+use App\Services\FirebaseService;
 use App\Services\ResponseService;
 
 class AuthController extends Controller
@@ -24,6 +26,8 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $data = $this->authServices->login($request->validated());
+
+        FirebaseService::subscribeToAllTopic($request, $data['user']);
 
         return ResponseService::response([
             'status' => 200,

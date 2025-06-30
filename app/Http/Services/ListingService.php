@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Http\Permissions\ListingPermission;
+use App\Http\Notifications\ListingNotification;
 use App\Models\Address;
 use App\Models\Image;
 use App\Models\Listing;
@@ -174,22 +175,21 @@ class ListingService
         $data = LanguageService::prepareTranslatableData($data, $listing);
 
 
-        //  $images_count = count($listing->images);
-
-        //   if (isset($data['images'])) {
-        //       $images_count += count($data['images']);
-        //   }
-
-        //   if (isset($data['delete_images'])) {
-        //       $images_count -= count($data['delete_images']);
-        //   }
-
-        //  if ($images_count < 5) {
-        //      MessageService::abort(422, 'messages.listing.min_images_limit', ['limit' => 5]);
-        // }
-
+        $last_status = $listing->status;
 
         $listing->update($data);
+
+
+        //"draft", "in_review", "approved", "paused", "rejected"
+        if ($last_status != $listing->status) {
+            if ($listing->status == 'approved') {
+                ListingNotification::listingApproved($listing);
+            } else if ($listing->status == 'rejected') {
+                ListingNotification::listingRejected($listing);
+            } else if ($listing->status == 'paused') {
+                ListingNotification::listingPaused($listing);
+            }
+        }
 
         // images
         if (isset($data['images'])) {
