@@ -49,17 +49,17 @@ return [
             'guest' => [
                 'created' => [
                     'title' => 'Booking Request Received',
-                    'body' => 'Your booking request #:booking_id has been received successfully. We will check the property availability and get back to you shortly.',
+                    'body' => 'Your booking request #:booking_id for listing #:listing_id has been received successfully. We will check the property availability and get back to you shortly.',
                     'message' => 'Welcome to SawaStay! 👋\nThank you for choosing SawaStay for your stay. Your booking request #:booking_id for listing #:listing_id has been received successfully ✨\nOur team will verify the property availability and get back to you shortly.\nWe are here to help you anytime! 🌟',
                 ],
                 'accepted' => [
                     'title' => 'Booking Request Accepted',
-                    'body' => 'Your booking request #:booking_id has been accepted successfully. The property availability has been verified, please complete the payment to confirm your booking.',
+                    'body' => 'Your booking request #:booking_id for listing #:listing_id has been accepted successfully. The property availability has been verified, please complete the payment to confirm your booking.',
                     'message' => 'Welcome to SawaStay! 👋\nThank you for choosing SawaStay for your stay. Your booking request #:booking_id for listing #:listing_id has been accepted successfully ✨\nThe property availability has been verified, please complete the payment to confirm your booking.\nYou can upload your payment proof through the following link:\nhttps://www.sawastay.com/en/bookings/:booking_id/transactions\nWe are here to help you anytime! 🌟',
                 ],
                 'confirmed' => [
                     'title' => 'Booking Confirmed',
-                    'body' => 'Your booking #:booking_id has been confirmed successfully. Have a wonderful stay!',
+                    'body' => 'Your booking #:booking_id for listing #:listing_id has been confirmed successfully. Have a wonderful stay!',
                     'message' => 'Welcome to SawaStay! 👋\nThank you for choosing SawaStay for your stay. Your booking #:booking_id for listing #:listing_id has been confirmed successfully ✨\nYour payment has been verified and your booking is confirmed.\nHave a wonderful stay! 🌟\nWe are here to help you anytime! 🏠',
                 ],
                 'completed' => [
@@ -69,7 +69,7 @@ return [
                 ],
                 'cancelled' => [
                     'title' => 'Booking Cancelled',
-                    'body' => 'Your booking #:booking_id has been cancelled. We hope to see you soon on another trip.',
+                    'body' => 'Your booking #:booking_id for listing #:listing_id has been cancelled. We hope to see you soon on another trip.',
                     'message' => 'Hello :first_name! 👋\nWe would like to inform you that your booking #:booking_id for listing #:listing_id has been cancelled ✨\nWe understand that circumstances may change, and we hope to see you soon on another trip 🌟\nThe SawaStay team is always at your service! 🏠',
                 ],
                 'rejected' => [

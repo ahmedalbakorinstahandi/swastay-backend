@@ -24,6 +24,7 @@ class BookingNotification
             'notifications.booking.host.created.body',
             [
                 'booking_id' => '#' . $booking->id,
+                'listing_id' => '#' . $booking->listing_id,
             ],
             [],
         );
@@ -44,6 +45,7 @@ class BookingNotification
             'notifications.booking.employee.created.body',
             [
                 'booking_id' => '#' . $booking->id,
+                'listing_id' => '#' . $booking->listing_id,
             ],
             [],
         );
