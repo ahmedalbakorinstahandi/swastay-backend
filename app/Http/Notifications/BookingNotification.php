@@ -8,7 +8,7 @@ use App\Services\WhatsappMessageService;
 
 class BookingNotification
 {
-    public static function bookingCreated($booking)
+    public static function created($booking)
     {
         // to host , to admin , to employee , to guest
         FirebaseService::sendToTopicAndStorage(

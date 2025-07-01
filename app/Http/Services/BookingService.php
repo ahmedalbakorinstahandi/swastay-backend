@@ -101,6 +101,8 @@ class BookingService
 
         $booking = Booking::create($data);
 
+        BookingNotification::created($booking);
+
         $booking_prices = [];
 
         $start_date = Carbon::parse($data['start_date']);
