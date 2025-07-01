@@ -84,8 +84,8 @@ class Notification extends Model
         return $this->belongsTo(User::class)->withTrashed();
     }
 
-    public function notificationable()
-    {
-        return $this->morphTo();
-    }
+    // public function notificationable()
+    // {
+    //     return $this->morphTo();
+    // }
 }
