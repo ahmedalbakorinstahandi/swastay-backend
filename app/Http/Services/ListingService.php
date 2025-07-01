@@ -100,6 +100,8 @@ class ListingService
 
         $listing = Listing::create($data);
 
+        ListingNotification::listingCreated($listing);
+
         OrderHelper::assign($listing);
 
 
@@ -163,8 +165,9 @@ class ListingService
             'check_out_time' => $data['check_out_time'] ?? null,
             'allows_families_only' => $data['rule']['allows_families_only'] ?? null,
         ]);
-
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
+
+
 
         return $listing;
     }
@@ -184,6 +187,7 @@ class ListingService
         if ($last_status != $listing->status) {
             if ($listing->status == 'approved') {
                 ListingNotification::listingApproved($listing);
+                ListingNotification::listingFirstCreated($listing);
             } else if ($listing->status == 'rejected') {
                 ListingNotification::listingRejected($listing);
             } else if ($listing->status == 'paused') {

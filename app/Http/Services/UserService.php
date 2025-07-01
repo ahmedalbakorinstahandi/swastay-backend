@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Notifications\UserNotification;
 use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
@@ -69,9 +70,9 @@ class UserService
 
 
         $message1 = "مرحباً {$user->first_name} {$user->last_name}، نحن سعداء بانضمامك إلينا! لقد تم إنشاء حسابك بنجاح ويمكنك الآن الاستفادة من خدماتنا. إذا كنت بحاجة إلى أي مساعدة، لا تتردد في التواصل معنا. يمكنك زيارة موقعنا على الرابط التالي: https://sawastay.com/";
-        
+
         $phone = $user->country_code . $user->phone_number;
-        
+
         WhatsappMessageService::send($phone, $message1);
 
 
@@ -89,7 +90,6 @@ class UserService
             $data['password'] = Hash::make($data['password']);
 
             $user->tokens()->delete();
-
         }
 
         if (isset($data['phone'])) {
@@ -113,10 +113,31 @@ class UserService
         //     unset($data['bank_details']);
         // }
 
+        $lastStatus = $user->status;
+
+
         $user->update($data);
+
+        // "approved", "rejected", "stopped"
+        if ($lastStatus != $user->status) {
+            if ($user->status == 'approved') {
+                UserNotification::approvedVerification($user);
+            }
+            if ($user->status == 'rejected') {
+                UserNotification::rejectedVerification($user);
+            }
+            if ($user->status == 'stopped') {
+                UserNotification::stoppedVerification($user);
+                
+
+                $user->tokens()->delete();
+            }
+        }
 
         return $user;
     }
+
+
 
     public function destroy(User $user)
     {

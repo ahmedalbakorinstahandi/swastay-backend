@@ -3,6 +3,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Notifications\BookingNotification;
 use App\Http\Permissions\BookingPermission;
 use App\Models\Booking;
 use App\Models\BookingPrice;
@@ -131,6 +132,22 @@ class BookingService
     {
         $booking->update($data);
 
+        $lastStatus = $booking->status;
+
+        if ($lastStatus != $booking->status) {
+            // "pending", "accepted", "confirmed", "completed", "cancelled", "rejected"
+            if ($booking->status == 'accepted') {
+                BookingNotification::accepted($booking);
+            }elseif ($booking->status == 'confirmed') {
+                BookingNotification::confirmed($booking);
+            }elseif ($booking->status == 'completed') {
+                BookingNotification::completed($booking);
+            }elseif ($booking->status == 'cancelled') {
+                BookingNotification::cancelled($booking);
+            }elseif ($booking->status == 'rejected') {
+                BookingNotification::rejected($booking);
+            }
+        }
         $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
         return $booking;
@@ -147,7 +164,7 @@ class BookingService
 
         $user = User::auth();
 
-        $booking->transactions()->create([
+        $transaction = $booking->transactions()->create([
             'user_id' => $user->id,
             'amount' => $data['amount'],
             'description' => [
@@ -162,6 +179,8 @@ class BookingService
             'transactionable_id' => $booking->id,
             'transactionable_type' => Booking::class,
         ]);
+
+        BookingNotification::addTransaction($transaction);
 
         $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 

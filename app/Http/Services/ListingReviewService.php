@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Notifications\ListingReviewNotification;
 use App\Models\ListingReview;
 use App\Models\User;
 use App\Services\FilterService;
@@ -52,7 +53,9 @@ class ListingReviewService
     {
         $review = ListingReview::create($data);
 
+        ListingReviewNotification::guestCreated($review);
 
+        
         $review->load(['user', 'booking']);
 
         return $review;
@@ -64,6 +67,8 @@ class ListingReviewService
 
         if (isset($data['block'])) {
             $data['blocked_at'] = now();
+
+            ListingReviewNotification::blocked($review);
         }
 
         $review->update($data);

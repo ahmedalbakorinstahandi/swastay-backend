@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Notifications\UserVerificationNotification;
 use App\Models\User;
 use App\Models\UserVerification;
 use App\Services\MessageService;
@@ -53,7 +54,7 @@ class UserVerificationService
                 $user->id_verified = 'in_review';
                 $user->save();
 
-                // TODO: send notification to admin
+                UserVerificationNotification::send($userVerification);
             }
         }
 
