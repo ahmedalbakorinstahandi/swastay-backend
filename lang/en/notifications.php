@@ -24,11 +24,11 @@ return [
                 'title' => 'Listing First Created',
                 'body' => 'Your listing :listing_id has been created successfully. Guests can now book your listing and enjoy a wonderful stay. We wish you a great success in your journey with SawaStay.',
             ],
-            'admin' => [
-                'created' => [
-                    'title' => 'Listing Created',
-                    'body' => 'A new listing has been created by :full_name. Please review the listing and approve or reject it.',
-                ],
+        ],
+        'admin' => [
+            'created' => [
+                'title' => 'Listing Created',
+                'body' => 'A new listing has been created by :full_name. Please review the listing and approve or reject it.',
             ],
         ],
 
@@ -78,6 +78,7 @@ return [
                     'message' => 'Hello :first_name! 👋\nWe regret to inform you that your booking request #:booking_id for listing #:listing_id has been rejected due to unavailability during the requested time ✨\nWe have many other options and suggestions that might suit you! We would be happy to help you find the perfect place for your stay 🏠\nOur team is ready to provide assistance and suitable recommendations for you 🌟\nWe are always here to serve you! 💫',
                 ],
             ],
+
 
 
         ],
