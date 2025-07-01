@@ -132,9 +132,10 @@ class BookingService
 
     public function update(Booking $booking, array $data)
     {
+        $lastStatus = $booking->status;
+        
         $booking->update($data);
 
-        $lastStatus = $booking->status;
 
         if ($lastStatus != $booking->status) {
             // "pending", "accepted", "confirmed", "completed", "cancelled", "rejected"
