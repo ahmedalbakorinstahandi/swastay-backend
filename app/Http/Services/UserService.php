@@ -69,14 +69,23 @@ class UserService
 
 
 
-        $message1 = "مرحباً {$user->first_name} {$user->last_name}، نحن سعداء بانضمامك إلينا! لقد تم إنشاء حسابك بنجاح ويمكنك الآن الاستفادة من خدماتنا. إذا كنت بحاجة إلى أي مساعدة، لا تتردد في التواصل معنا. يمكنك زيارة موقعنا على الرابط التالي: https://sawastay.com/";
+
+        $message1 = __('notifications.welcome.message1', [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+        ], $user->language);
 
         $phone = $user->country_code . $user->phone_number;
 
         WhatsappMessageService::send($phone, $message1);
 
 
-        $message2 = "مرحبًا بك في SawaStay!\n\nشكرًا لانضمامك إلى عائلة SawaStay!\nيسعدنا أن نعلن بأن موعد الانطلاق الرسمي لمنصتنا سيكون في 1 حزيران 2025، ونتطلع إلى تقديم تجربة استثنائية للمضيفين والضيوف على حد سواء.\n\nنحن هنا لدعمك في كل خطوة من خطوات رحلتك كمضيف. إذا كان لديك أي استفسار أو تحتاج إلى مساعدة، لا تتردد في التواصل معنا عبر:\n\nالبريد الإلكتروني: contact@sawastay.com\nرقم الهاتف: +963 935 919 671\n\nمع أطيب التحيات،\nفريق SawaStay";
+
+        $message2 = __('notifications.welcome.message2', [
+            'first_name' => $user->first_name,
+        ], $user->language);
+
+        
 
         WhatsappMessageService::send($phone, $message2);
 
@@ -128,7 +137,7 @@ class UserService
             }
             if ($user->status == 'stopped') {
                 UserNotification::stoppedVerification($user);
-                
+
 
                 $user->tokens()->delete();
             }

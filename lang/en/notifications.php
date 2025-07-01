@@ -4,6 +4,8 @@ return [
     'welcome' => [
         'title' => 'Welcome to SawaStay',
         'body' => 'Welcome to the SawaStay family, we wish you a wonderful stay experience :first_name',
+        'message1' => 'Hello :first_name :last_name, we are happy to have you with us! Your account has been created successfully and you can now enjoy our services. If you need any help, please contact us. You can visit our website at the following link: https://sawastay.com/',
+        'message2' => 'Welcome to SawaStay!\n\nThank you for joining the SawaStay family!\nWe are excited to announce that our official launch date will be June 1, 2025, and we look forward to providing an exceptional experience for both hosts and guests alike.\n\nWe are here to support you every step of your journey as a host. If you have any questions or need any assistance, please contact us through:\n\nEmail: contact@sawastay.com\nPhone: +963 935 919 671\n\nWith best regards,\nThe SawaStay Team',
     ],
 
     'listing' => [

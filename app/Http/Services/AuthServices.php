@@ -123,7 +123,7 @@ class AuthServices
             'first_name' => $user->first_name,
             'otp' => $otp,
             'minutes' => $minutes,
-        ]);
+        ], $user->language);
 
 
         WhatsappMessageService::send($phoneNumber, $message);
@@ -217,7 +217,7 @@ class AuthServices
             'first_name' => $user->first_name,
             'otp' => $code,
             'minutes' => $minutes,
-        ]);
+        ], $user->language);
 
         WhatsappMessageService::send($phoneNumber, $message);
 

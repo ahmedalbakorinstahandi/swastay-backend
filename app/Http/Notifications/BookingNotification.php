@@ -89,11 +89,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.created.message', [
-                'booking_id' => '#' . $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.created.message',
+                [
+                    'booking_id' => '#' . $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 
@@ -122,11 +126,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.accepted.message', [
-                'booking_id' =>  $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.accepted.message',
+                [
+                    'booking_id' =>  $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 
@@ -153,11 +161,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.confirmed.message', [
-                'booking_id' => '#' . $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.confirmed.message',
+                [
+                    'booking_id' => '#' . $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 
@@ -184,11 +196,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.completed.message', [
-                'booking_id' => '#' . $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.completed.message',
+                [
+                    'booking_id' => '#' . $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 
@@ -215,11 +231,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.rejected.message', [
-                'booking_id' => '#' . $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.rejected.message',
+                [
+                    'booking_id' => '#' . $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 
@@ -246,11 +266,15 @@ class BookingNotification
 
         WhatsappMessageService::send(
             $booking->guest->country_code . $booking->guest->phone_number,
-            __('notifications.booking.guest.cancelled.message', [
-                'booking_id' => '#' . $booking->id,
-                'listing_id' => '#' . $booking->listing_id,
-                'first_name' => $booking->guest->first_name,
-            ]),
+            __(
+                'notifications.booking.guest.cancelled.message',
+                [
+                    'booking_id' => '#' . $booking->id,
+                    'listing_id' => '#' . $booking->listing_id,
+                    'first_name' => $booking->guest->first_name,
+                ],
+                $booking->guest->language
+            ),
         );
     }
 

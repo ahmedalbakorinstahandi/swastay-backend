@@ -29,8 +29,9 @@ class UserNotification
         // whatsapp message
         $message = __('notifications.user.verification.approved.message', [
             'user_first_name' => $user->first_name,
-        ]);
+        ], $user->language);
         $phone = $user->country_code . $user->phone_number;
+
         WhatsappMessageService::send($phone, $message);
     }
 
@@ -55,8 +56,9 @@ class UserNotification
         // whatsapp message
         $message = __('notifications.user.verification.rejected.message', [
             'user_first_name' => $user->first_name,
-        ]);
+        ], $user->language);
         $phone = $user->country_code . $user->phone_number;
+
         WhatsappMessageService::send($phone, $message);
     }
 
@@ -81,7 +83,7 @@ class UserNotification
         // whatsapp message
         $message = __('notifications.user.verification.stopped.message', [
             'user_first_name' => $user->first_name,
-        ]);
+        ], $user->language);
         $phone = $user->country_code . $user->phone_number;
         WhatsappMessageService::send($phone, $message);
     }
