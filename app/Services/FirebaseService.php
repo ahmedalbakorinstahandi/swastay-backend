@@ -122,8 +122,8 @@ class FirebaseService
             $users_ids,
             $notificationable,
             $title,
-            $replace,
             $body,
+            $replace,
             $data,
         );
 
