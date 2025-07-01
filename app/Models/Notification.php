@@ -46,6 +46,13 @@ class Notification extends Model
                     return $raw['cu'];
                 }
 
+                if (is_array($raw)) {
+                    $locale = app()->getLocale();
+                    if (isset($raw[$locale])) {
+                        return $raw[$locale];
+                    }
+                }
+
                 return $value;
             }
         );
@@ -62,6 +69,13 @@ class Notification extends Model
 
                 if (is_array($raw) && isset($raw['cu'])) {
                     return $raw['cu'];
+                }
+
+                if (is_array($raw)) {
+                    $locale = app()->getLocale();
+                    if (isset($raw[$locale])) {
+                        return $raw[$locale];
+                    }
                 }
 
                 return $value;
