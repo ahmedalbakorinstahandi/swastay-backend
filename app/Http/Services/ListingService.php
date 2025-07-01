@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Image;
 use App\Models\Listing;
 use App\Models\ListingRule;
+use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\FilterService;
@@ -187,7 +188,8 @@ class ListingService
         if ($last_status != $listing->status) {
             if ($listing->status == 'approved') {
                 ListingNotification::listingApproved($listing);
-                ListingNotification::listingFirstCreated($listing);
+                 
+                // ListingNotification::listingFirstCreated($listing);
             } else if ($listing->status == 'rejected') {
                 ListingNotification::listingRejected($listing);
             } else if ($listing->status == 'paused') {
