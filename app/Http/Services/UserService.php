@@ -86,7 +86,7 @@ class UserService
             'first_name' => $user->first_name,
         ], $user->language);
 
-        
+
 
         WhatsappMessageService::send($phone, $message2);
 
@@ -123,27 +123,22 @@ class UserService
         //     unset($data['bank_details']);
         // }
 
-        $lastStatus = $user->status;
+        $lastid_verified = $user->id_verified;
 
 
-        Log::info('lastStatus', ['lastStatus' => $lastStatus]);
 
         $user->update($data);
 
-        // new status
-        Log::info('newStatus', ['newStatus' => $user->status]);
 
         // "approved", "rejected", "stopped"
-        if ($lastStatus != $user->status) {
-            if ($user->status == 'approved') {
-                Log::info('approvedVerification', ['user' => $user]);
+        if ($lastid_verified != $user->id_verified) {
+            if ($user->id_verified == 'approved') {
                 UserNotification::approvedVerification($user);
-                
             }
-            if ($user->status == 'rejected') {
+            if ($user->id_verified == 'rejected') {
                 UserNotification::rejectedVerification($user);
             }
-            if ($user->status == 'stopped') {
+            if ($user->id_verified == 'stopped') {
                 UserNotification::stoppedVerification($user);
 
 
