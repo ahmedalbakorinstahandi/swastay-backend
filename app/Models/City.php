@@ -17,6 +17,7 @@ class City extends Model
     protected $fillable = [
         'name',
         'place_id',
+        'orders',
     ];
 
     public $translatable = [
