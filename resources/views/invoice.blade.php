@@ -19,18 +19,30 @@
       max-width: 800px;
       margin: auto;
       background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e0e0e0;
     }
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
-      border-bottom: 2px solid #0d47a1;
-      padding-bottom: 20px;
+      margin-bottom: 35px;
+      border-bottom: 3px solid #0d47a1;
+      padding-bottom: 25px;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: #ff6b35;
     }
 
     .logo {
@@ -109,12 +121,15 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
     table th, table td {
-      border: 1px solid #ccc;
-      padding: 12px;
+      border: 1px solid #e0e0e0;
+      padding: 15px 12px;
       text-align: right;
     }
 
@@ -132,10 +147,16 @@
     }
 
     .payment-method {
-      background-color: #f8f9fa;
-      padding: 15px;
-      border-radius: 5px;
-      border-left: 4px solid #0d47a1;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 5px solid #0d47a1;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .payment-method p {
+      margin: 8px 0;
+      font-size: 14px;
     }
 
     .links {
@@ -148,31 +169,37 @@
 
     .links a {
       display: inline-block;
-      padding: 10px 15px;
+      padding: 12px 18px;
       color: #0d47a1;
       text-decoration: none;
-      border: 1px solid #0d47a1;
-      border-radius: 5px;
+      border: 2px solid #0d47a1;
+      border-radius: 8px;
       transition: all 0.3s ease;
       font-weight: 500;
       font-size: 13px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .links a:hover {
-      background-color: #0d47a1;
+      background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
       color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
     }
 
     .footer {
       text-align: center;
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #e8f5e8;
-      border-radius: 5px;
+      margin-top: 35px;
+      padding: 25px;
+      background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+      border-radius: 10px;
       font-weight: 600;
-      color: #388e3c;
+      color: #2e7d32;
       font-size: 16px;
       line-height: 1.8;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+      border: 1px solid #c8e6c9;
     }
 
     .qr-code {
@@ -181,9 +208,19 @@
     }
 
     .qr-code img {
-      width: 100px;
-      height: 100px;
-      border: 1px solid #ddd;
+      width: 120px;
+      height: 120px;
+      border: 2px solid #0d47a1;
+      border-radius: 8px;
+      padding: 5px;
+      background: white;
+    }
+
+    .qr-code p {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      font-weight: 500;
     }
 
     @media print {
@@ -312,12 +349,12 @@
 
     <div class="qr-code">
       <p><strong>رمز QR للحجز</strong></p>
-      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0id2hpdGUiLz4KICA8dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iYmxhY2siIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJBUkNPREU8L3RleHQ+Cjwvc3ZnPgo=" alt="QR Code">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://sawastay.com/booking/{{ $booking->id ?? 'BK-2025-001' }}" alt="QR Code for SawaStay">
     </div>
 
     <div class="section">
-      <div class="section-title">ملاحظات مهمة</div>
-      <ul style="font-size: 14px; line-height: 1.8; color: #555; padding-right: 20px;">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 10px;">ملاحظات مهمة</div>
+      <ul style="font-size: 11px; line-height: 1.5; color: #666; padding-right: 15px; margin: 0;">
         <li>يرجى الاحتفاظ بهذه الفاتورة لأغراض السكن أو الاسترداد</li>
         <li>تم تأكيد الحجز من قبل إدارة SawaStay</li>
         <li>يرجى الوصول في الوقت المحدد (عادةً الساعة 2:00 مساءً)</li>
