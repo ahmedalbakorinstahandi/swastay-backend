@@ -232,6 +232,48 @@
         box-shadow: none;
         border: 1px solid #ccc;
       }
+      
+      /* جعل الروابط قابلة للنقر في الطباعة */
+      .links a {
+        color: #0d47a1 !important;
+        text-decoration: underline !important;
+        border: none !important;
+        background: none !important;
+        box-shadow: none !important;
+        padding: 5px 10px !important;
+        margin: 5px !important;
+        display: inline-block !important;
+      }
+      
+      .links a::after {
+        content: " (" attr(href) ")";
+        font-size: 10px;
+        color: #666;
+      }
+      
+      /* إخفاء التأثيرات في الطباعة */
+      .links a:hover {
+        background: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      
+      /* تحسين مظهر الجدول في الطباعة */
+      table {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+      }
+      
+      table th, table td {
+        border: 1px solid #000 !important;
+        background: white !important;
+      }
+      
+      /* تحسين مظهر الباركود في الطباعة */
+      .qr-code img {
+        border: 1px solid #000 !important;
+        background: white !important;
+      }
     }
   </style>
 </head>
@@ -364,10 +406,10 @@
     </div>
 
     <div class="section links">
-      <a href="https://sawastay.com/terms">📜 الشروط والأحكام</a>
-      <a href="https://sawastay.com/privacy">🔒 سياسة الخصوصية</a>
-      <a href="https://sawastay.com/cancellation">↩️ سياسة الإلغاء</a>
-      <a href="https://sawastay.com/contact">📞 اتصل بنا</a>
+      <a href="https://sawastay.com/terms" target="_blank" rel="noopener noreferrer">📜 الشروط والأحكام</a>
+      <a href="https://sawastay.com/privacy" target="_blank" rel="noopener noreferrer">🔒 سياسة الخصوصية</a>
+      <a href="https://sawastay.com/cancellation" target="_blank" rel="noopener noreferrer">↩️ سياسة الإلغاء</a>
+      <a href="https://sawastay.com/contact" target="_blank" rel="noopener noreferrer">📞 اتصل بنا</a>
     </div>
 
     <div class="footer">
@@ -376,5 +418,35 @@
       <small>www.sawastay.com</small>
     </div>
   </div>
+
+  <script>
+    // تحسين تجربة النقر على الروابط
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('.links a');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          // إضافة تأثير بصري عند النقر
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 150);
+          
+          // فتح الرابط في نافذة جديدة
+          window.open(this.href, '_blank');
+          e.preventDefault();
+        });
+        
+        // إضافة title للروابط
+        link.setAttribute('title', 'انقر لفتح ' + link.textContent);
+      });
+    });
+    
+    // تحسين الطباعة
+    window.addEventListener('beforeprint', function() {
+      // إضافة معلومات إضافية قبل الطباعة
+      console.log('جاري إعداد الفاتورة للطباعة...');
+    });
+  </script>
 </body>
 </html>
