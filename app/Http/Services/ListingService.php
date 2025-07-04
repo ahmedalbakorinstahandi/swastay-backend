@@ -8,7 +8,6 @@ use App\Models\Address;
 use App\Models\Image;
 use App\Models\Listing;
 use App\Models\ListingRule;
-use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\FilterService;
