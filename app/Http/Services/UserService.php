@@ -10,6 +10,7 @@ use App\Services\PhoneService;
 use App\Services\WhatsappMessageService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -125,12 +126,19 @@ class UserService
         $lastStatus = $user->status;
 
 
+        Log::info('lastStatus', ['lastStatus' => $lastStatus]);
+
         $user->update($data);
+
+        // new status
+        Log::info('newStatus', ['newStatus' => $user->status]);
 
         // "approved", "rejected", "stopped"
         if ($lastStatus != $user->status) {
             if ($user->status == 'approved') {
+                Log::info('approvedVerification', ['user' => $user]);
                 UserNotification::approvedVerification($user);
+                
             }
             if ($user->status == 'rejected') {
                 UserNotification::rejectedVerification($user);
