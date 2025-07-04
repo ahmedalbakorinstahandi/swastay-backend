@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('cities', function (Blueprint $table) {
             //
-            $table->integer('orders')->default(0);
+            $table->unsignedBigInteger('orders')->nullable()->after('place_id');
+            $table->boolean('availability')->default(true)->after('orders');
         });
     }
 
