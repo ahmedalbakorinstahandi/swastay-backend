@@ -30,7 +30,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 35px;
-      border-bottom: 3px solid #0d47a1;
+      border-bottom: 3px solid #F2506D;
       padding-bottom: 25px;
       position: relative;
     }
@@ -42,7 +42,7 @@
       left: 0;
       width: 50px;
       height: 3px;
-      background: #ff6b35;
+      background: #F2506D;
     }
 
     .logo {
@@ -57,7 +57,7 @@
     .invoice-number {
       font-size: 18px;
       font-weight: 700;
-      color: #0d47a1;
+      color: #F2506D;
       margin-bottom: 5px;
       letter-spacing: 0.5px;
     }
@@ -70,7 +70,7 @@
 
     h1 {
       text-align: center;
-      color: #0d47a1;
+      color: #F2506D;
       margin: 0;
       font-weight: 800;
       font-size: 28px;
@@ -85,7 +85,7 @@
     .section-title {
       font-size: 18px;
       font-weight: 600;
-      color: #0d47a1;
+      color: #F2506D;
       margin-bottom: 15px;
       border-bottom: 2px solid #e0e0e0;
       padding-bottom: 8px;
@@ -134,7 +134,7 @@
     }
 
     table th {
-      background-color: #e3f2fd;
+      background-color: #fef2f4;
       font-weight: 600;
       font-size: 14px;
       letter-spacing: 0.2px;
@@ -147,10 +147,10 @@
     }
 
     .payment-method {
-      background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+      background: linear-gradient(135deg, #f8f9fa 0%, #fef2f4 100%);
       padding: 20px;
       border-radius: 10px;
-      border-left: 5px solid #0d47a1;
+      border-left: 5px solid #F2506D;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
@@ -170,9 +170,9 @@
     .links a {
       display: inline-block;
       padding: 12px 18px;
-      color: #0d47a1;
+      color: #F2506D;
       text-decoration: none;
-      border: 2px solid #0d47a1;
+      border: 2px solid #F2506D;
       border-radius: 8px;
       transition: all 0.3s ease;
       font-weight: 500;
@@ -187,15 +187,15 @@
     }
 
     .links a:hover {
-      background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+      background: linear-gradient(135deg, #F2506D 0%, #e91e63 100%);
       color: white;
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+      box-shadow: 0 4px 12px rgba(242, 80, 109, 0.3);
     }
     
     .links a:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: 0 2px 8px rgba(13, 71, 161, 0.2);
+      box-shadow: 0 2px 8px rgba(242, 80, 109, 0.2);
     }
 
     .footer {
@@ -220,7 +220,7 @@
     .qr-code img {
       width: 120px;
       height: 120px;
-      border: 2px solid #0d47a1;
+      border: 2px solid #F2506D;
       border-radius: 8px;
       padding: 5px;
       background: white;
@@ -243,24 +243,9 @@
         border: 1px solid #ccc;
       }
       
-      /* جعل الروابط قابلة للنقر في الطباعة بدون إظهار النص */
-      .links a {
-        color: #0d47a1 !important;
-        text-decoration: none !important;
-        border: 2px solid #0d47a1 !important;
-        background: white !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
-        padding: 12px 18px !important;
-        margin: 5px !important;
-        display: inline-block !important;
-        border-radius: 8px !important;
-        font-weight: 500 !important;
-        font-size: 13px !important;
-      }
-      
-      /* إخفاء النص الإضافي في الطباعة */
-      .links a::after {
-        content: none !important;
+      /* إخفاء الروابط تماماً في الطباعة */
+      .links {
+        display: none !important;
       }
       
       /* تحسين مظهر الجدول في الطباعة */
