@@ -37,9 +37,16 @@ class ListingService
         }
 
         if (isset($data['city_id'])) {
-            $query->whereHas('address', function ($q) use ($data) {
-                $q->where('city', $data['city_id']);
-            });
+
+            if ($data['city_id'] == 2) {
+                $query->whereHas('address', function ($q) use ($data) {
+                    $q->whereIn('city', [2, 14]);
+                });
+            } else {
+                $query->whereHas('address', function ($q) use ($data) {
+                    $q->where('city', $data['city_id']);
+                });
+            }
         }
 
         $data['sort_field'] = $data['sort_field'] ?? 'orders';
@@ -188,7 +195,7 @@ class ListingService
         if ($last_status != $listing->status) {
             if ($listing->status == 'approved') {
                 ListingNotification::listingApproved($listing);
-                 
+
                 // ListingNotification::listingFirstCreated($listing);
             } else if ($listing->status == 'rejected') {
                 ListingNotification::listingRejected($listing);

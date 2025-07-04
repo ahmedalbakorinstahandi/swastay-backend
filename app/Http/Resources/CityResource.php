@@ -18,6 +18,8 @@ class CityResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'place_id' => $this->place_id,
+            'orders' => $this->orders,
+            'availability' => $this->availability,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

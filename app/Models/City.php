@@ -18,10 +18,15 @@ class City extends Model
         'name',
         'place_id',
         'orders',
+        'availability',
     ];
 
     public $translatable = [
         'name',
+    ];
+
+    protected $casts = [
+        'availability' => 'boolean',
     ];
 
 
