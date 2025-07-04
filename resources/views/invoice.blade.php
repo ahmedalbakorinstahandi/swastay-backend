@@ -179,6 +179,11 @@
       font-size: 13px;
       background: white;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
     .links a:hover {
@@ -186,6 +191,11 @@
       color: white;
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+    }
+    
+    .links a:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 8px rgba(13, 71, 161, 0.2);
     }
 
     .footer {
@@ -233,29 +243,24 @@
         border: 1px solid #ccc;
       }
       
-      /* جعل الروابط قابلة للنقر في الطباعة */
+      /* جعل الروابط قابلة للنقر في الطباعة بدون إظهار النص */
       .links a {
         color: #0d47a1 !important;
-        text-decoration: underline !important;
-        border: none !important;
-        background: none !important;
-        box-shadow: none !important;
-        padding: 5px 10px !important;
+        text-decoration: none !important;
+        border: 2px solid #0d47a1 !important;
+        background: white !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+        padding: 12px 18px !important;
         margin: 5px !important;
         display: inline-block !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        font-size: 13px !important;
       }
       
+      /* إخفاء النص الإضافي في الطباعة */
       .links a::after {
-        content: " (" attr(href) ")";
-        font-size: 10px;
-        color: #666;
-      }
-      
-      /* إخفاء التأثيرات في الطباعة */
-      .links a:hover {
-        background: none !important;
-        transform: none !important;
-        box-shadow: none !important;
+        content: none !important;
       }
       
       /* تحسين مظهر الجدول في الطباعة */
@@ -425,9 +430,15 @@
       const links = document.querySelectorAll('.links a');
       
       links.forEach(link => {
+        // إضافة title للروابط
+        link.setAttribute('title', 'انقر لفتح ' + link.textContent);
+        
+        // إضافة تأثير بصري عند النقر
         link.addEventListener('click', function(e) {
-          // إضافة تأثير بصري عند النقر
+          // تأثير النقر
           this.style.transform = 'scale(0.95)';
+          this.style.transition = 'transform 0.15s ease';
+          
           setTimeout(() => {
             this.style.transform = '';
           }, 150);
@@ -437,15 +448,25 @@
           e.preventDefault();
         });
         
-        // إضافة title للروابط
-        link.setAttribute('title', 'انقر لفتح ' + link.textContent);
+        // إضافة تأثير hover
+        link.addEventListener('mouseenter', function() {
+          this.style.cursor = 'pointer';
+        });
+        
+        link.addEventListener('mouseleave', function() {
+          this.style.cursor = 'default';
+        });
       });
     });
     
     // تحسين الطباعة
     window.addEventListener('beforeprint', function() {
-      // إضافة معلومات إضافية قبل الطباعة
       console.log('جاري إعداد الفاتورة للطباعة...');
+    });
+    
+    // إضافة دعم للطباعة كـ PDF
+    window.addEventListener('afterprint', function() {
+      console.log('تم الانتهاء من الطباعة');
     });
   </script>
 </body>
