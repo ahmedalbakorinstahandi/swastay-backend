@@ -48,6 +48,7 @@ class CreateRequest extends BaseFormRequest
 
             'rule' => 'nullable|array',
             'rule.allows_families_only' => 'nullable|boolean',
+            
 
         ];
 
@@ -56,6 +57,8 @@ class CreateRequest extends BaseFormRequest
 
         if ($user->isAdmin() || $user->isEmployee()) {
             $rules['host_id'] = 'required|exists:users,id,deleted_at,NULL';
+            $rules['vip'] = 'nullable|boolean';
+            $rules['starts'] = 'nullable|integer|min:0|max:5';
         }
 
 

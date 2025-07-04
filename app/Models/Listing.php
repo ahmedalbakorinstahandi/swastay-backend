@@ -38,6 +38,8 @@ class Listing extends Model
         'max_booking_days',
         'addedd_by',
         'orders',
+        'vip',
+        'starts',
     ];
 
     protected $casts = [
@@ -57,6 +59,8 @@ class Listing extends Model
         'is_contains_cameras' => 'boolean',
         'addedd_by' => 'integer',
         'orders' => 'integer',
+        'vip' => 'boolean',
+        'starts' => 'integer',
     ];
 
     protected $translatable = [

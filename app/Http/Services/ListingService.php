@@ -69,7 +69,7 @@ class ListingService
                 'address.city'
             ],
             [],
-            ['host_id', 'house_type_id', 'status', 'is_contains_cameras'],
+            ['host_id', 'house_type_id', 'status', 'is_contains_cameras', 'vip', 'starts'],
             ['host_id', 'status'],
         );
 

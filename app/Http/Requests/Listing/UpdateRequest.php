@@ -49,7 +49,7 @@ class UpdateRequest extends BaseFormRequest
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'nullable|exists:images,id,deleted_at,NULL',
 
-            'rule' => 'nullable|array',
+            'rule' => 'nullable|array', 
             'rule.allows_families_only' => 'nullable|boolean',
 
         ];
@@ -59,6 +59,8 @@ class UpdateRequest extends BaseFormRequest
                 'commission' => 'nullable|numeric|min:0|max:100',
                 'status' => 'nullable|in:in_review,approved,paused,rejected',
                 'is_published' => 'nullable|boolean',
+                'vip' => 'nullable|boolean',    
+                'starts' => 'nullable|integer|min:0|max:5',
             ];
         }
 
