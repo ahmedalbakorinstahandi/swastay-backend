@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <title>فاتورة حجز - SawaStay</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+    
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 40px;
       color: #333;
       background: #f9f9f9;
+      font-weight: 400;
+      line-height: 1.6;
     }
 
     .invoice {
@@ -40,20 +44,26 @@
 
     .invoice-number {
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 700;
       color: #0d47a1;
       margin-bottom: 5px;
+      letter-spacing: 0.5px;
     }
 
     .invoice-date {
       color: #666;
       font-size: 14px;
+      font-weight: 400;
     }
 
     h1 {
       text-align: center;
       color: #0d47a1;
       margin: 0;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
     }
 
     .section {
@@ -61,12 +71,13 @@
     }
 
     .section-title {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 600;
       color: #0d47a1;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #e0e0e0;
-      padding-bottom: 5px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 8px;
+      letter-spacing: 0.3px;
     }
 
     .guest-info {
@@ -84,12 +95,15 @@
     }
 
     .info-label {
-      font-weight: bold;
+      font-weight: 600;
       color: #555;
+      font-size: 14px;
     }
 
     .info-value {
       color: #333;
+      font-weight: 500;
+      font-size: 14px;
     }
 
     table {
@@ -106,12 +120,15 @@
 
     table th {
       background-color: #e3f2fd;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.2px;
     }
 
     .total-row {
       background-color: #f5f5f5;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 15px;
     }
 
     .payment-method {
@@ -137,6 +154,8 @@
       border: 1px solid #0d47a1;
       border-radius: 5px;
       transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 13px;
     }
 
     .links a:hover {
@@ -150,8 +169,10 @@
       padding: 20px;
       background-color: #e8f5e8;
       border-radius: 5px;
-      font-weight: bold;
+      font-weight: 600;
       color: #388e3c;
+      font-size: 16px;
+      line-height: 1.8;
     }
 
     .qr-code {
@@ -295,13 +316,13 @@
     </div>
 
     <div class="section">
-      <p><strong>ملاحظات مهمة:</strong></p>
-      <ul>
+      <div class="section-title">ملاحظات مهمة</div>
+      <ul style="font-size: 14px; line-height: 1.8; color: #555; padding-right: 20px;">
         <li>يرجى الاحتفاظ بهذه الفاتورة لأغراض السكن أو الاسترداد</li>
         <li>تم تأكيد الحجز من قبل إدارة SawaStay</li>
         <li>يرجى الوصول في الوقت المحدد (عادةً الساعة 2:00 مساءً)</li>
         <li>يرجى المغادرة في الوقت المحدد (عادةً الساعة 11:00 صباحاً)</li>
-        <li>للاستفسارات، يرجى التواصل معنا على: +963-xxx-xxxxxxx</li>
+        <li>للاستفسارات، يرجى التواصل معنا على: <strong>+963-xxx-xxxxxxx</strong></li>
       </ul>
     </div>
 
