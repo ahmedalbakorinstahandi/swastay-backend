@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Transaction\UpdateTransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Http\Services\TransactionService;
 use App\Services\ResponseService;
@@ -39,6 +40,20 @@ class TransactionController extends Controller
         return ResponseService::response([
             'success' => true,
             'data' => $transaction,
+        ]);
+    }
+
+    public function update(UpdateTransactionRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        $transaction = $this->transactionService->update($id, $data);
+
+        return ResponseService::response([
+            'success' => true,
+            'data' => $transaction,
+            'resource' => TransactionResource::class,
+            'status' => 200,
         ]);
     }
 }

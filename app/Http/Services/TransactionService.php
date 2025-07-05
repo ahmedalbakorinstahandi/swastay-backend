@@ -46,7 +46,14 @@ class TransactionService
         return $transaction;
     }
 
-    public function update($transaction, $data) {}
+    public function update($transaction, $data) 
+    {
+        $transaction->update($data);
+
+        
+
+        return $transaction;
+    }
 
 
     public function destroy($transaction)

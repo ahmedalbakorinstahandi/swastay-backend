@@ -52,6 +52,11 @@ class ListingReviewPermission
     public static function canUpdate($review)
     {
         $user = User::auth();
+
+        if ($user->isAdmin()) {
+            return;
+        }
+
         if (!$user || $review->user_id != $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
