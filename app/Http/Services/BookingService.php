@@ -18,82 +18,49 @@ class BookingService
 {
     public function index($filters = [])
     {
-        $query = Booking::query()->with(['host', 'guest', 'listing', 'prices', 'review.user']);
+        $baseQuery = Booking::query()->with(['host', 'guest', 'listing', 'prices', 'review.user']);
 
-        $searchFields = [
-            'message',
-            'host_notes', 
-            'admin_notes',
-            'listing.title',
-            'host.first_name',
-            'host.last_name',
-            'guest.first_name',
-            'guest.last_name',
-            'id',
-        ];
-        $numericFields = ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'];
-        $dateFields = ['start_date', 'end_date', 'created_at'];
-        $exactMatchFields = [
-            'id',
-            'host_id',
-            'guest_id',
-            'listing_id',
-            'status',
-            'payment_method',
-            'currency',
-        ];
-        $inFields = [];
+        $baseQuery = BookingPermission::filterIndex($baseQuery);
 
-        $query = BookingPermission::filterIndex($query);
+        $statsQuery = clone $baseQuery;
 
-        $filteredQuery = FilterService::applyFilters(
-            $query,
+        $statsQuery = FilterService::applyFilters(
+            $statsQuery,
             $filters,
-            $searchFields,
-            $numericFields,
-            $dateFields,
-            $exactMatchFields,
-            $inFields,
+            ['message', 'host_notes', 'admin_notes'],
+            ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'],
+            ['start_date', 'end_date'],
+            [],
+            [],
             false,
         );
 
-        $countQuery = (clone $filteredQuery);
-        $countQuery->getQuery()->orders = null;
+        $allBookings = $statsQuery->get();
 
-        $statusCounts = $countQuery
-            ->selectRaw('status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status');
+        $bookings_status_count = [
+            'all_count' => $allBookings->count(),
+            'pending_count' => $allBookings->where('status', 'pending')->count(),
+            'accepted_count' => $allBookings->where('status', 'accepted')->count(),
+            'confirmed_count' => $allBookings->where('status', 'confirmed')->count(),
+            'completed_count' => $allBookings->where('status', 'completed')->count(),
+            'cancelled_count' => $allBookings->where('status', 'cancelled')->count(),
+            'rejected_count' => $allBookings->where('status', 'rejected')->count(),
+        ];
 
-        // Count all bookings (without status filter)
-        $allCountQuery = (clone $query);
-        $allCountQuery->getQuery()->orders = null;
-        $allCount = $allCountQuery->count();
-
-        $statusCounts['ALL'] = $allCount;
-
-        $finalQuery = FilterService::applyFilters(
-            $filteredQuery,
+        $displayQuery = FilterService::applyFilters(
+            $baseQuery,
             $filters,
-            [],
-            [],
-            [],
-            ['status'],
-            ['status'],
+            ['message', 'host_notes', 'admin_notes'],
+            ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'],
+            ['start_date', 'end_date'],
+            ['status', 'payment_method', 'currency'],
+            ['status', 'payment_method'],
             false,
         );
 
         return [
-            'bookings' => $finalQuery->latest()->paginate($filters['limit'] ?? 20),
-            'bookings_status_count' => [
-                'all_count' => $statusCounts['ALL'] ?? 0,
-                'pending_count' => $statusCounts['pending'] ?? 0,
-                'accepted_count' => $statusCounts['accepted'] ?? 0,
-                'confirmed_count' => $statusCounts['confirmed'] ?? 0,
-                'completed_count' => $statusCounts['completed'] ?? 0,
-                'cancelled_count' => $statusCounts['cancelled'] ?? 0,
-                'rejected_count' => $statusCounts['rejected'] ?? 0,
-            ],
+            'bookings' => $displayQuery->paginate($filters['limit'] ?? 20),
+            'bookings_status_count' => $bookings_status_count,
         ];
     }
 
@@ -177,7 +144,7 @@ class BookingService
     public function update(Booking $booking, array $data)
     {
         $lastStatus = $booking->status;
-        
+
         $booking->update($data);
 
 
@@ -185,13 +152,13 @@ class BookingService
             // "pending", "accepted", "confirmed", "completed", "cancelled", "rejected"
             if ($booking->status == 'accepted') {
                 BookingNotification::accepted($booking);
-            }elseif ($booking->status == 'confirmed') {
+            } elseif ($booking->status == 'confirmed') {
                 BookingNotification::confirmed($booking);
-            }elseif ($booking->status == 'completed') {
+            } elseif ($booking->status == 'completed') {
                 BookingNotification::completed($booking);
-            }elseif ($booking->status == 'cancelled') {
+            } elseif ($booking->status == 'cancelled') {
                 BookingNotification::cancelled($booking);
-            }elseif ($booking->status == 'rejected') {
+            } elseif ($booking->status == 'rejected') {
                 BookingNotification::rejected($booking);
             }
         }
