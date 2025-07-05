@@ -20,9 +20,16 @@ class UpdateRequest extends BaseFormRequest
 
         $user = User::auth();
 
-        if (!$booking || $booking->host_id != $user->id) {
+
+        if (!$user) {
             MessageService::abort(403, 'messages.permission.error');
         }
+
+
+        if (!$booking) {
+            MessageService::abort(404, 'messages.booking.not_found');
+        }
+
 
 
         if ($user->isAdmin()) {

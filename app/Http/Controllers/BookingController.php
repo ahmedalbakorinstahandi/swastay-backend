@@ -70,8 +70,7 @@ class BookingController extends Controller
     {
         $data = $request->validated();
 
-        return Auth::check();
-
+ 
         $booking = $this->bookingService->show($id);
 
         BookingPermission::canUpdate($booking);
