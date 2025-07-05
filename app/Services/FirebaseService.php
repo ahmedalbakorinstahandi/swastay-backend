@@ -131,6 +131,7 @@ class FirebaseService
         $data['notifiable_type'] = $notificationable['type'] ?? 'custom';
         // $data['notificationable'] = $notificationable;
 
+
         $language = 'ar';
 
         if (count($users_ids) == 1) {
@@ -138,6 +139,8 @@ class FirebaseService
 
             $language = $user->language;
         }
+
+
 
         $messageConfig = self::createMessageConfig($topic, __($title, $replace, $language), __($body, $replace, $language), $data, $channelId);
         $message = CloudMessage::fromArray($messageConfig);

@@ -13,7 +13,8 @@ class TransactionService
 {
     public function index($data)
     {
-        $query = Transaction::query();
+        // with user
+        $query = Transaction::query()->with('user');
 
         $user = User::auth();
 
@@ -39,7 +40,7 @@ class TransactionService
     public function show($id)
     {
 
-        $transaction = Transaction::where('id', $id)->first();
+        $transaction = Transaction::where('id', $id)->with('user')->first();
 
         if (!$transaction) {
             MessageService::abort(404, 'messages.transaction.not_found');
@@ -53,6 +54,7 @@ class TransactionService
         $transaction->update($data);
 
 
+        $transaction->load('user');
 
         return $transaction;
     }
