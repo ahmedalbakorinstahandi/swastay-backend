@@ -70,6 +70,11 @@ class BookingPermission
             MessageService::abort(403, 'messages.permission.error');
         }
 
+        // if admin
+        if ($user->isAdmin()) {
+            return;
+        }
+
         if ($user->isHost() && $booking->host_id != $user->id) {
             MessageService::abort(403, 'messages.permission.error');
         }
