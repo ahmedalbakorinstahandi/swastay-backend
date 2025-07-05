@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function generateInvoice($booking_id)
+    public function generateInvoice($booking_id, Request $request)
     {
 
-        $language = 'ar';
+        $language = explode(',', $request->header('Accept-Language', 'en'))[0];
 
         $booking = Booking::find($booking_id);
 
-        
+        $phone = Setting::where('key', 'phone')->first()->value;
+
 
         // تجهيز مصفوفة البيانات
         $invoice_data = [
@@ -31,7 +33,7 @@ class InvoiceController extends Controller
             'guests_count' => $booking->adults_count + $booking->children_count + $booking->infants_count,
             'payment_method' => $booking->transactions->first()->method ?? 'none',
             'payment_status' => $booking->transactions->first()->status ?? 'pending',
-            'payment_date' => $booking->transactions->first()->created_at->format('Y-m-d'),
+            'payment_date' => $booking->transactions->first()->created_at->format('Y-m-d') ?? $booking->created_at->format('Y-m-d'),
             'currency' => 'دولار',
 
             // تفصيل الأسعار حسب نوع اليوم
@@ -44,29 +46,35 @@ class InvoiceController extends Controller
             'total_amount' => $booking->getFinalTotalPriceAttribute(),
 
             'qr_code_url' => "https://sawastay.com/bookings/{$booking->id}",
-            'contact_phone' => '+963-xxx-xxxxxxx',
+            'contact_phone' => $phone,
 
-            'notes' => [
-                'يرجى الاحتفاظ بهذه الفاتورة لأغراض السكن أو الاسترداد',
-                'تم تأكيد الحجز من قبل إدارة SawaStay',
-                'يرجى الوصول في الوقت المحدد (عادةً الساعة 2:00 مساءً)',
-                'يرجى المغادرة في الوقت المحدد (عادةً الساعة 11:00 صباحاً)',
-                'للاستفسارات، يرجى التواصل معنا على: +963-xxx-xxxxxxx'
-            ],
+            'notes' =>
+
+            $language == 'ar' ?
+                [
+                    'يرجى الاحتفاظ بهذه الفاتورة لأغراض السكن أو الاسترداد',
+                    'تم تأكيد الحجز من قبل إدارة SawaStay',
+                    'يرجى الوصول في الوقت المحدد (عادةً الساعة ' . $booking->rule->check_in_time->format('h:i A') . ')',
+                    'يرجى المغادرة في الوقت المحدد (عادةً الساعة ' . $booking->rule->check_out_time->format('h:i A') . ')',
+                    'للاستفسارات، يرجى التواصل معنا على: ' . $phone
+                ] :
+                [
+                    'Please keep this invoice for your stay or refund',
+                    'The booking has been confirmed by SawaStay',
+                    'Please arrive at the specified time (usually at ' . $booking->rule->check_in_time->format('h:i A') . ')',
+                    'Please leave at the specified time (usually at ' . $booking->rule->check_out_time->format('h:i A') . ')',
+                    'For inquiries, please contact us on: ' . $phone
+                ],
 
             'links' => [
-                ['url' => 'https://sawastay.com/terms', 'text' => '📜 الشروط والأحكام'],
-                ['url' => 'https://sawastay.com/privacy', 'text' => '🔒 سياسة الخصوصية'],
-                ['url' => 'https://sawastay.com/cancellation', 'text' => '↩️ سياسة الإلغاء'],
-                ['url' => 'https://sawastay.com/contact', 'text' => '📞 اتصل بنا']
+                ['url' => 'https://www.sawastay.com/pages/terms', 'text' => $language == 'ar' ? '📜 الشروط والأحكام' : '📜 Terms and Conditions'],
+                ['url' => 'https://www.sawastay.com/pages/privacy', 'text' => $language == 'ar' ? '🔒 سياسة الخصوصية' : '🔒 Privacy Policy'],
+                ['url' => 'https://www.sawastay.com/pages/booking-policy', 'text' => $language == 'ar' ? '↩️ سياسة الحجز والإلغاء' : '↩️ Booking and Cancellation Policy'],
+                ['url' => 'https://sawastay.com/contact', 'text' => $language == 'ar' ? '📞 اتصل بنا' : '📞 Contact Us']
             ]
         ];
 
-        // إرجاع الفاتورة العربية
-        return view('invoice_ar', compact('invoice_data'));
-
-        // أو إرجاع الفاتورة الإنجليزية
-        // return view('invoice_en', compact('invoice_data'));
+        return view('invoice_' . $language, compact('invoice_data'));
     }
 
 

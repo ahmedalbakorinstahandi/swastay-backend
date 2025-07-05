@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ListingReviewController;
 use App\Http\Controllers\TransactionController;
@@ -29,6 +30,8 @@ Route::group(['prefix' => 'guest'], function () {
         // Route::delete('/bookings/{id}', [BookingController::class, 'delete']);
 
         Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
+
+        Route::get('/bookings/{id}/invoice', [InvoiceController::class, 'generateInvoice']);
 
         Route::get('/transactions', [TransactionController::class, 'index']);
         Route::get('/transactions/{id}', [TransactionController::class, 'show']);
