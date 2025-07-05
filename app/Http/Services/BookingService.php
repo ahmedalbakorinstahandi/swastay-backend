@@ -18,51 +18,82 @@ class BookingService
 {
     public function index($filters = [])
     {
-
         $query = Booking::query()->with(['host', 'guest', 'listing', 'prices', 'review.user']);
+
+        $searchFields = [
+            'message',
+            'host_notes', 
+            'admin_notes',
+            'listing.title',
+            'host.first_name',
+            'host.last_name',
+            'guest.first_name',
+            'guest.last_name',
+            'id',
+        ];
+        $numericFields = ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'];
+        $dateFields = ['start_date', 'end_date', 'created_at'];
+        $exactMatchFields = [
+            'id',
+            'host_id',
+            'guest_id',
+            'listing_id',
+            'status',
+            'payment_method',
+            'currency',
+        ];
+        $inFields = [];
 
         $query = BookingPermission::filterIndex($query);
 
-        $query = FilterService::applyFilters(
+        $filteredQuery = FilterService::applyFilters(
             $query,
             $filters,
-            ['message', 'host_notes', 'admin_notes'],
-            ['price', 'commission', 'service_fees', 'adults_count', 'children_count', 'infants_count', 'pets_count'],
-            ['start_date', 'end_date'],
-            ['status', 'payment_method', 'currency'],
-            ['status', 'payment_method'],
+            $searchFields,
+            $numericFields,
+            $dateFields,
+            $exactMatchFields,
+            $inFields,
             false,
         );
 
-
-        // Clone query for counting without any ordering
-        $countQuery = (clone $query);
+        $countQuery = (clone $filteredQuery);
         $countQuery->getQuery()->orders = null;
 
-        // Get counts grouped by status
         $statusCounts = $countQuery
             ->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status');
 
-        // Get total count without status filter
+        // Count all bookings (without status filter)
         $allCountQuery = (clone $query);
         $allCountQuery->getQuery()->orders = null;
         $allCount = $allCountQuery->count();
 
-        $bookings_status_count = [
-            'all_count' => $allCount,
-            'pending_count' => $statusCounts['pending'] ?? 0,
-            'accepted_count' => $statusCounts['accepted'] ?? 0, 
-            'confirmed_count' => $statusCounts['confirmed'] ?? 0,
-            'completed_count' => $statusCounts['completed'] ?? 0,
-            'cancelled_count' => $statusCounts['cancelled'] ?? 0,
-            'rejected_count' => $statusCounts['rejected'] ?? 0,
-        ];
+        $statusCounts['ALL'] = $allCount;
+
+        $finalQuery = FilterService::applyFilters(
+            $filteredQuery,
+            $filters,
+            [],
+            [],
+            [],
+            ['status'],
+            ['status'],
+            false,
+        );
 
         return [
-            'bookings' => $query->paginate($filters['limit'] ?? 20),
-            'bookings_status_count' => $bookings_status_count,
+            'bookings' => $finalQuery->latest()->paginate($filters['limit'] ?? 20),
+            'bookings_status_count' => [
+                'all_count' => $statusCounts['ALL'] ?? 0,
+                'pending_count' => $statusCounts['pending'] ?? 0,
+                'accepted_count' => $statusCounts['accepted'] ?? 0,
+                'confirmed_count' => $statusCounts['confirmed'] ?? 0,
+                'completed_count' => $statusCounts['completed'] ?? 0,
+                'cancelled_count' => $statusCounts['cancelled'] ?? 0,
+                'rejected_count' => $statusCounts['rejected'] ?? 0,
+            ],
         ];
     }
 
