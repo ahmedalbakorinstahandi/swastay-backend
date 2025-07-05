@@ -59,4 +59,16 @@ class TransactionController extends Controller
             'status' => 200,
         ]);
     }
+
+    // send to me by whatsapp western union details
+    public function sendWesternUnionDetails()
+    {
+        $this->transactionService->sendWesternUnionDetails();
+
+        return ResponseService::response([
+            'success' => true,
+            'message' => 'messages.transaction.western_union.sent',
+            'status' => 200,
+        ]);
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Services;
 
+use App\Models\Setting;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Services\FilterService;
 use App\Services\MessageService;
+use App\Services\WhatsappMessageService;
 
 class TransactionService
 {
@@ -46,11 +48,11 @@ class TransactionService
         return $transaction;
     }
 
-    public function update($transaction, $data) 
+    public function update($transaction, $data)
     {
         $transaction->update($data);
 
-        
+
 
         return $transaction;
     }
@@ -59,5 +61,34 @@ class TransactionService
     public function destroy($transaction)
     {
         $transaction->delete();
+    }
+
+
+    public function sendWesternUnionDetails()
+    {
+
+        $westernUnionDetails = Setting::where('key', 'western_union')->first()->value;
+
+        if (!$westernUnionDetails) {
+            MessageService::abort(404, 'messages.setting.not_found');
+        }
+
+        $user = User::auth();
+
+        $message = "messages.transaction.western_union.details";
+
+        $fullPhone = $user->country_code . $user->phone_number;
+
+        WhatsappMessageService::send(
+            $fullPhone,
+            __(
+                $message,
+                [
+                    'name' => $user->first_name,
+                    'western_union_details' => $westernUnionDetails
+                ],
+                $user->language,
+            )
+        );
     }
 }

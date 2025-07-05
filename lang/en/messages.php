@@ -97,6 +97,10 @@ return [
     'transaction' => [
         'not_found' => 'Transaction not found.',
         'add_transaction' => 'Transaction added successfully.',
+        'western_union' => [
+            'details' => 'Hello :name, here are the details for Western Union to complete the booking: :western_union_details',
+            'sent' => 'Western Union details sent successfully to your WhatsApp.',
+        ],
     ],
 
     'user_verification' => [

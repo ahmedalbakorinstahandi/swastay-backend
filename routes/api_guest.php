@@ -35,6 +35,8 @@ Route::group(['prefix' => 'guest'], function () {
         // Route::post('/transactions', [TransactionController::class, 'create']);
         Route::put('/transactions/{id}', [TransactionController::class, 'update']);
         Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
+        Route::post('/transactions/western-union/send-details', [TransactionController::class, 'sendWesternUnionDetails']);
+
 
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', [ListingReviewController::class, 'index']);
