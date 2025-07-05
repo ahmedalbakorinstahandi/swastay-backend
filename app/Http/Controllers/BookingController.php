@@ -9,6 +9,7 @@ use App\Http\Requests\Booking\UpdateRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Services\BookingService;
 use App\Services\ResponseService;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -68,6 +69,8 @@ class BookingController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->validated();
+
+        return Auth::check();
 
         $booking = $this->bookingService->show($id);
 

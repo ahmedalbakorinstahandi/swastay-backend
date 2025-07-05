@@ -5,6 +5,7 @@ namespace App\Http\Permissions;
 
 use App\Models\User;
 use App\Services\MessageService;
+use Illuminate\Support\Facades\Auth;
 
 class BookingPermission
 {
@@ -66,9 +67,14 @@ class BookingPermission
     {
         $user = User::auth();
 
+
+       
+
         if (!$user) {
             MessageService::abort(403, 'messages.permission.error');
         }
+
+
 
         // if admin
         if ($user->isAdmin()) {
