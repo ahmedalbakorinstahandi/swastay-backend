@@ -35,20 +35,33 @@ class BookingService
         );
 
 
-        $bookings = $query->get();
+        // Clone query for counting without any ordering
+        $countQuery = (clone $query);
+        $countQuery->getQuery()->orders = null;
+
+        // Get counts grouped by status
+        $statusCounts = $countQuery
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status');
+
+        // Get total count without status filter
+        $allCountQuery = (clone $query);
+        $allCountQuery->getQuery()->orders = null;
+        $allCount = $allCountQuery->count();
 
         $bookings_status_count = [
-            'all_count' => $bookings->count(),
-            'pending_count' => $bookings->where('status', 'pending')->count(),
-            'accepted_count' => $bookings->where('status', 'accepted')->count(),
-            'confirmed_count' => $bookings->where('status', 'confirmed')->count(),
-            'completed_count' => $bookings->where('status', 'completed')->count(),
-            'cancelled_count' => $bookings->where('status', 'cancelled')->count(),
-            'rejected_count' => $bookings->where('status', 'rejected')->count(),
+            'all_count' => $allCount,
+            'pending_count' => $statusCounts['pending'] ?? 0,
+            'accepted_count' => $statusCounts['accepted'] ?? 0, 
+            'confirmed_count' => $statusCounts['confirmed'] ?? 0,
+            'completed_count' => $statusCounts['completed'] ?? 0,
+            'cancelled_count' => $statusCounts['cancelled'] ?? 0,
+            'rejected_count' => $statusCounts['rejected'] ?? 0,
         ];
 
         return [
-            'bookings' => $query->paginate($data['limit'] ?? 20),
+            'bookings' => $query->paginate($filters['limit'] ?? 20),
             'bookings_status_count' => $bookings_status_count,
         ];
     }
