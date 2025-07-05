@@ -55,7 +55,7 @@ class ListingReviewService
 
         ListingReviewNotification::guestCreated($review);
 
-        
+
         $review->load(['user', 'booking']);
 
         return $review;
@@ -66,10 +66,19 @@ class ListingReviewService
 
 
         if (isset($data['block'])) {
-            $data['blocked_at'] = now();
 
-            ListingReviewNotification::blocked($review);
+            if ($data['block'] == true) {
+
+                $data['blocked_at'] = now();
+
+                ListingReviewNotification::blocked($review);
+            }
+
+            if ($data['block'] == false) {
+                $data['blocked_at'] = null;
+            }
         }
+
 
         $review->update($data);
 
