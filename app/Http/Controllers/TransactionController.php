@@ -45,9 +45,12 @@ class TransactionController extends Controller
 
     public function update(UpdateTransactionRequest $request, $id)
     {
+
+        $transaction = $this->transactionService->show($id);
+
         $data = $request->validated();
 
-        $transaction = $this->transactionService->update($id, $data);
+        $transaction = $this->transactionService->update($transaction, $data);
 
         return ResponseService::response([
             'success' => true,
