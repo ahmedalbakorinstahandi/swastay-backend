@@ -1,0 +1,8 @@
+general: /
+booking: /booking/{id}
+listing: /listing/{id}
+user_verification: /verification
+
+
+admin: 
+user: user/{id}

@@ -287,8 +287,8 @@ class BookingNotification
             'role-admin',
             $admin_ids,
             [
-                'notifiable_id' => $transaction->id,
-                'notifiable_type' => 'transaction',
+                'notifiable_id' => $transaction->transactionable_id,
+                'notifiable_type' => 'booking',
             ],
             'notifications.transaction.admin.add_transaction.title',
             'notifications.transaction.admin.add_transaction.body',
