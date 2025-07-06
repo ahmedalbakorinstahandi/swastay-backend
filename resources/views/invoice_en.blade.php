@@ -328,7 +328,7 @@
         <thead>
           <tr>
             <th>Item</th>
-            <th>Details</th>
+            <!-- <th>Details</th> -->
             <th>Amount</th>
           </tr>
         </thead>
@@ -338,7 +338,7 @@
               <tr>
                 <td>{{ $breakdown['description'] ?? 'Night Price' }}</td>
                 <td>{{ $breakdown['nights'] ?? '1' }} nights × {{ $breakdown['price_per_night'] ?? '50' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
-                <td>{{ $breakdown['total'] ?? '50' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
+                <!-- <td>{{ $breakdown['total'] ?? '50' }} {{ $invoice_data['currency'] ?? 'USD' }}</td> -->
               </tr>
             @endforeach
           @else
@@ -351,22 +351,22 @@
           <tr>
             <td>Subtotal</td>
             <td>{{ $invoice_data['subtotal'] ?? '200' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
-            <td>{{ $invoice_data['subtotal'] ?? '200' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
+            <!-- <td>{{ $invoice_data['subtotal'] ?? '200' }} {{ $invoice_data['currency'] ?? 'USD' }}</td> -->
           </tr>
           <tr>
             <td>Service Fee ({{ $invoice_data['service_fee_percentage'] ?? '5' }}%)</td>
             <td>{{ $invoice_data['service_fee'] ?? '10' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
-            <td>{{ $invoice_data['service_fee'] ?? '10' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
+            <!-- <td>{{ $invoice_data['service_fee'] ?? '10' }} {{ $invoice_data['currency'] ?? 'USD' }}</td> -->
           </tr>
           <tr>
             <td>Tax</td>
             <td>{{ $invoice_data['tax_amount'] ?? '0' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
-            <td>{{ $invoice_data['tax_amount'] ?? '0' }} {{ $invoice_data['currency'] ?? 'USD' }}</td>
+            <!-- <td>{{ $invoice_data['tax_amount'] ?? '0' }} {{ $invoice_data['currency'] ?? 'USD' }}</td> -->
           </tr>
           <tr class="total-row">
             <td><strong>Total</strong></td>
             <td><strong>{{ $invoice_data['total_amount'] ?? '210' }} {{ $invoice_data['currency'] ?? 'USD' }}</strong></td>
-            <td><strong>{{ $invoice_data['total_amount'] ?? '210' }} {{ $invoice_data['currency'] ?? 'USD' }}</strong></td>
+            <!-- <td><strong>{{ $invoice_data['total_amount'] ?? '210' }} {{ $invoice_data['currency'] ?? 'USD' }}</strong></td> -->
           </tr>
         </tbody>
       </table>
