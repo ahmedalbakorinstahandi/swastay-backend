@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Permissions\BookingPermission;
 use App\Models\Booking;
 use App\Models\Setting;
+use App\Services\MessageService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -11,9 +13,17 @@ class InvoiceController extends Controller
     public function generateInvoice($booking_id, Request $request)
     {
 
+        
         $language = explode(',', $request->header('Accept-Language', 'en'))[0];
-
+        
         $booking = Booking::find($booking_id);
+
+        if (!$booking) {
+            MessageService::abort(404, 'messages.booking.not_found');
+        }
+
+
+        BookingPermission::canShow($booking);
 
         $phone = Setting::where('key', 'phone')->first()->value;
 
