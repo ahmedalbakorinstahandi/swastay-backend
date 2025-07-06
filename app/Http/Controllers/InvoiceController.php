@@ -158,8 +158,8 @@ class InvoiceController extends Controller
             ]
         ];
 
-        // Generate HTML using the same template
-        $html = view('invoice_' . $language, compact('invoice_data'))->render();
+        // Generate HTML using the PDF-optimized template
+        $html = view('invoice_pdf_' . $language, compact('invoice_data'))->render();
 
         // Configure mPDF
         $mpdf = new Mpdf([
