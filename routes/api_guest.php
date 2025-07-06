@@ -32,6 +32,7 @@ Route::group(['prefix' => 'guest'], function () {
         Route::post('/bookings/{id}/transactions', [BookingController::class, 'addTransaction']);
 
         Route::get('/bookings/{id}/invoice', [InvoiceController::class, 'generateInvoice']);
+        Route::get('/bookings/{id}/invoice/pdf', [InvoiceController::class, 'generateInvoicePdf']);
 
         Route::get('/transactions', [TransactionController::class, 'index']);
         Route::get('/transactions/{id}', [TransactionController::class, 'show']);
