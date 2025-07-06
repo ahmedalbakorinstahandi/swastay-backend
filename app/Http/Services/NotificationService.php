@@ -73,8 +73,8 @@ class NotificationService
                 'user_id' => $user_id,
                 'title' => [],
                 'message' => [],
-                'notificationable_id' => $notificationable['id'] ?? null,
-                'notificationable_type' => $notificationable['type'] ?? 'custom',
+                'notificationable_id' => $notificationable['notifiable_id'] ?? null,
+                'notificationable_type' => $notificationable['notifiable_type'] ?? 'custom',
                 'metadata' => [
                     'data' => $data,
                     'replace' => $replace,

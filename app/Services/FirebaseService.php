@@ -127,8 +127,8 @@ class FirebaseService
             $data,
         );
 
-        $data['notifiable_id'] = $notificationable['notifiable_id'] ?? null;
-        $data['notifiable_type'] = $notificationable['notifiable_type'] ?? 'custom';
+        $data['notificationable_id'] = $notificationable['notifiable_id'] ?? null;
+        $data['notificationable_type'] = $notificationable['notifiable_type'] ?? 'custom';
         // $data['notificationable'] = $notificationable;
 
 
