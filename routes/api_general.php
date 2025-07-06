@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\HouseTypeController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -33,6 +34,9 @@ Route::group(['prefix' => 'general'], function () {
     Route::get('/settings', [SettingController::class, 'index']);
     Route::get('/settings/{id}', [SettingController::class, 'show']);
 
+    // Invoice routes
+    Route::get('/invoices/{booking_id}', [InvoiceController::class, 'generateInvoice']);
+    Route::get('/invoices/{booking_id}/pdf', [InvoiceController::class, 'generateInvoicePdf']);
 
     Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
         Route::get('/', 'index');
