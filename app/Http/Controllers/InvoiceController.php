@@ -31,9 +31,9 @@ class InvoiceController extends Controller
             'check_out_date' => $booking->check_out,
             'nights_count' => $booking->prices->count(),    
             'guests_count' => $booking->adults_count + $booking->children_count + $booking->infants_count,
-            'payment_method' => $booking->transactions->first()->method ?? 'none',
-            'payment_status' => $booking->transactions->first()->status ?? 'pending',
-            'payment_date' => $booking->transactions->first()->created_at->format('Y-m-d') ?? $booking->created_at->format('Y-m-d'),
+            'payment_method' => $booking->transactions->first()?->method ?? 'none',
+            'payment_status' => $booking->transactions->first()?->status ?? 'pending',
+            'payment_date' => $booking->transactions->first()?->created_at->format('Y-m-d') ?? 'none',
             'currency' => 'دولار',
 
             // تفصيل الأسعار حسب نوع اليوم
