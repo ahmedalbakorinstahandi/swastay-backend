@@ -27,9 +27,9 @@ class InvoiceController extends Controller
             'guest_email' => $booking->guest->email,
             'booking_status' => $booking->status,
             'listing_name' => $booking->listing->title[$language],
-            'check_in_date' => $booking->check_in->format('h:i A'),
-            'check_out_date' => $booking->check_out->format('h:i A'),
-            'nights_count' => $booking->prices->count(),
+            'check_in_date' => $booking->check_in,
+            'check_out_date' => $booking->check_out,
+            'nights_count' => $booking->prices->count(),    
             'guests_count' => $booking->adults_count + $booking->children_count + $booking->infants_count,
             'payment_method' => $booking->transactions->first()->method ?? 'none',
             'payment_status' => $booking->transactions->first()->status ?? 'pending',
@@ -54,15 +54,15 @@ class InvoiceController extends Controller
                 [
                     'يرجى الاحتفاظ بهذه الفاتورة لأغراض السكن أو الاسترداد',
                     'تم تأكيد الحجز من قبل إدارة SawaStay',
-                    'يرجى الوصول في الوقت المحدد (عادةً الساعة ' . $booking->check_in->format('h:i A') . ')',
-                    'يرجى المغادرة في الوقت المحدد (عادةً الساعة ' . $booking->check_out->format('h:i A') . ')',
+                    'يرجى الوصول في الوقت المحدد (عادةً الساعة ' . $booking->check_in . ')',
+                    'يرجى المغادرة في الوقت المحدد (عادةً الساعة ' . $booking->check_out . ')',
                     'للاستفسارات، يرجى التواصل معنا على: ' . $phone
                 ] :
                 [
                     'Please keep this invoice for your stay or refund',
                     'The booking has been confirmed by SawaStay',
-                    'Please arrive at the specified time (usually at ' . $booking->check_in->format('h:i A') . ')',
-                    'Please leave at the specified time (usually at ' . $booking->check_out->format('h:i A') . ')',
+                    'Please arrive at the specified time (usually at ' . $booking->check_in . ')',
+                    'Please leave at the specified time (usually at ' . $booking->check_out . ')',
                     'For inquiries, please contact us on: ' . $phone
                 ],
 
