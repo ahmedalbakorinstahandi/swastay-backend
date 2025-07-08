@@ -140,6 +140,13 @@ return [
         ],
     ],
 
-
+    'admin' => [
+        'user' => [
+            'new' => [
+                'title' => 'New User Registered',
+                'body' => 'A new user has registered with the following details: :full_name.',
+            ],
+        ],
+    ],
 
 ];

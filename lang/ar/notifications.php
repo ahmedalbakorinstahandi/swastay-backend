@@ -108,7 +108,6 @@ return [
             ],
         ],
     ],
-
     'user' => [
         'admin' => [
             'verification' => [
@@ -142,6 +141,15 @@ return [
             'add_transaction' => [
                 'title' => 'تم إضافة دفعة جديدة',
                 'body' => 'تم إضافة دفعة جديدة رقم :transaction_id للحجز رقم :booking_id بمبلغ :amount بواسطة :full_name.',
+            ],
+        ],
+    ],
+
+    'admin' => [
+        'user' => [
+            'new' => [
+                'title' => 'مستخدم جديد انضم إلينا',
+                'body' => 'تم إنشاء حساب جديد بواسطة :full_name.',
             ],
         ],
     ],

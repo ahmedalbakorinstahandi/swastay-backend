@@ -130,6 +130,8 @@ class AuthServices
 
         AuthNotification::welcome($user);
 
+        AuthNotification::newUser($user);
+
         return [
             'user' => $user,
             'minutes' => $minutes,

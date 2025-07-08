@@ -71,6 +71,8 @@ class UserVerificationService
         if ($user->isAdmin()) {
             $userVerification->reviewed_by = $user->id;
             $userVerification->reviewed_at = now();
+        }else{
+            
         }
 
         return $userVerification;
