@@ -74,7 +74,7 @@ class Listing extends Model
     {
         $date = $date ?? now();
         if ($date->isWeekend()) {
-            return $this->price_weekend ?? $this->price;
+            return  $this->price_weekend == null || $this->price_weekend == 0 ? $this->price : $this->price_weekend;
         }
 
         return $this->price;
@@ -384,6 +384,57 @@ class Listing extends Model
         // 5. المتاحة = available - blocked
         return array_values(array_diff($available, $blocked));
     }
+
+
+    public function notAvailableBetween(): array
+    {
+        $start = now()->startOfDay();
+        $end = now()->addYear()->startOfDay();
+
+        // 1. التواريخ الممنوعة صراحةً (is_available = false)
+        $explicitBlocked = $this->availableDates()
+            ->whereBetween('available_date', [$start, $end])
+            ->where('is_available', false)
+            ->pluck('available_date')
+            ->map(fn($d) => $d->toDateString())
+            ->toArray();
+
+        // 2. التواريخ المؤكدة
+        $confirmed = $this->bookings()
+            ->where('status', 'confirmed')
+            ->where(function ($q) use ($start, $end) {
+                $q->whereBetween('start_date', [$start, $end])
+                    ->orWhereBetween('end_date', [$start, $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('start_date', '<', $start)->where('end_date', '>', $end);
+                    });
+            })
+            ->get(['start_date', 'end_date'])
+            ->flatMap(fn($booking) => collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                ->map(fn($d) => $d->toDateString()))
+            ->toArray();
+
+        // 3. التواريخ التي تجاوزت السعة في accepted
+        $accepted = $this->bookings()
+            ->where('status', 'accepted')
+            ->where(function ($q) use ($start, $end) {
+                $q->whereBetween('start_date', [$start, $end])
+                    ->orWhereBetween('end_date', [$start, $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('start_date', '<', $start)->where('end_date', '>', $end);
+                    });
+            })
+            ->get(['start_date', 'end_date'])
+            ->flatMap(fn($booking) => collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
+                ->map(fn($d) => $d->toDateString()))
+            ->groupBy()
+            ->filter(fn($group) => count($group) >= $this->booking_capacity)
+            ->keys()
+            ->toArray();
+
+        return array_unique(array_merge($explicitBlocked, $confirmed, $accepted));
+    }
+
 
 
     // public function canReview($userId): bool

@@ -66,7 +66,13 @@ class ListingResource extends JsonResource
             'address'      => $user == null || $user->isGuest() ? new AddressResource($this->addressWithRandomizedCoordinates()) : new AddressResource($this->whenLoaded('address')),
             // 'address'      => new AddressResource($this->whenLoaded('address')),
             'rule' => new ListingRuleResource($this->whenLoaded('rule')),
-            'available_dates_pro' => $this->getAvailableDates(),
+            // when load availableDates
+            'available_dates_pro' =>  $this->whenLoaded('availableDates', function () {
+                return $this->getAvailableDates();
+            }),
+            'not_available_dates' =>  $this->whenLoaded('availableDates', function () {
+                return $this->notAvailableBetween();
+            }),
         ];
     }
 }

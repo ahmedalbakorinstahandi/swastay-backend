@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ListingAvailableDate extends Model
 {
     use SoftDeletes;
-    
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -26,5 +26,11 @@ class ListingAvailableDate extends Model
     public function listing()
     {
         return $this->belongsTo(Listing::class)->withTrashed();
+    }
+
+    // ListingAvailableDate.php
+    public function scopeUnavailable($query)
+    {
+        return $query->where('is_available', false);
     }
 }
