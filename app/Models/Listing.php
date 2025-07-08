@@ -427,7 +427,8 @@ class Listing extends Model
             ->get(['start_date', 'end_date'])
             ->flatMap(fn($booking) => collect(\Carbon\CarbonPeriod::create($booking->start_date, $booking->end_date))
                 ->map(fn($d) => $d->toDateString()))
-            ->groupBy()
+            ->groupBy(fn($date) => $date)
+
             ->filter(fn($group) => count($group) >= $this->booking_capacity)
             ->keys()
             ->toArray();
