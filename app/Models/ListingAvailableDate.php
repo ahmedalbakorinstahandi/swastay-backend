@@ -14,6 +14,7 @@ class ListingAvailableDate extends Model
     protected $fillable = [
         'listing_id',
         'available_date',
+        'is_available',
         'created_at',
     ];
 
