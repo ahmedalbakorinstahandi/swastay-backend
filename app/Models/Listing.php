@@ -6,6 +6,7 @@ use App\Traits\LanguageTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 use Spatie\Translatable\HasTranslations;
 
 class Listing extends Model
@@ -195,6 +196,9 @@ class Listing extends Model
     public function addressWithRandomizedCoordinates()
     {
 
+        Log::info(request()->route()->getName());
+        Log::info(request()->route()->parameters());
+        Log::info(request()->route()->parameter('id'));
         // if route is bookings and id for booking staus is completed then return the address with the same coordinates
         if (request()->routeIs('bookings.show')) {
             $id = request()->route()->parameter('id');
