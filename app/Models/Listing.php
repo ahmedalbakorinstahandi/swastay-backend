@@ -6,7 +6,6 @@ use App\Traits\LanguageTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Log;
 use Spatie\Translatable\HasTranslations;
 
 class Listing extends Model
@@ -195,23 +194,6 @@ class Listing extends Model
 
     public function addressWithRandomizedCoordinates()
     {
-
-        Log::info(request()->route()->getName());
-        Log::info(request()->route()->parameters());
-        Log::info(request()->route()->parameter('id'));
-        Log::info(request()->routeIs('bookings.show'));
-        
-        // إذا كان الرابط هو عرض حجز معين وحالة الحجز مكتملة، إرجع العنوان الأصلي بدون تشويش
-        if (request()->routeIs('bookings.show')) {
-            $id = request()->route()->parameter('id');
-            if ($id) {
-                $booking = Booking::find($id);
-                if ($booking && $booking->status == 'completed') {
-                    return $this->address()->first();
-                }
-            }
-        }
-
         $address = $this->address()->first();
 
         if ($address && $address->latitude && $address->longitude) {

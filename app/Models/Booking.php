@@ -50,7 +50,7 @@ class Booking extends Model
 
     public function getTotalPriceAttribute()
     {
-        return $this->prices()->sum('price') ;
+        return $this->prices()->sum('price');
     }
 
     // get final total price
@@ -93,5 +93,14 @@ class Booking extends Model
     public function prices()
     {
         return $this->hasMany(BookingPrice::class);
+    }
+
+    public function address()
+    {
+        if ($this->status == 'completed') {
+            return $this->listing->address()->first();
+        }
+
+        return $this->listing->addressWithRandomizedCoordinates();
     }
 }
