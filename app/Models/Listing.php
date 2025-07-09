@@ -199,7 +199,9 @@ class Listing extends Model
         Log::info(request()->route()->getName());
         Log::info(request()->route()->parameters());
         Log::info(request()->route()->parameter('id'));
-        // if route is bookings and id for booking staus is completed then return the address with the same coordinates
+        Log::info(request()->routeIs('bookings.show'));
+        
+        // إذا كان الرابط هو عرض حجز معين وحالة الحجز مكتملة، إرجع العنوان الأصلي بدون تشويش
         if (request()->routeIs('bookings.show')) {
             $id = request()->route()->parameter('id');
             if ($id) {
