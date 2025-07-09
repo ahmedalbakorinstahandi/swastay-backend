@@ -323,19 +323,20 @@ class ListingService
     public function updateAvailableDate($listing, $data)
     {
 
-        $newAvailableDates = $data['available_dates'] ?? [];
-        $removedAvailableDates = $data['removed_available_dates'] ?? [];
+        $newNotAvailableDates = $data['not_available_dates'] ?? [];
+        $removedNotAvailableDates = $data['removed_not_available_dates'] ?? [];
 
         // remove available dates
-        $listing->availableDates()->whereIn('available_date', $removedAvailableDates)->delete();
+        $listing->availableDates()->whereIn('available_date', $removedNotAvailableDates)->delete();
 
 
         // add available dates
-        foreach ($newAvailableDates as $date) {
+        foreach ($newNotAvailableDates as $date) {
             $listing->availableDates()->updateOrCreate(
                 [
                     'listing_id' => $listing->id,
                     'available_date' => $date,
+                    'is_available' => 0,
                 ],
                 [
                     'created_at' => now(),
@@ -344,6 +345,7 @@ class ListingService
         }
 
         $listing->load(['host', 'address.cityDetails', 'images', 'categories', 'features', 'reviews.user', 'availableDates', 'rule']);
+        
         return $listing;
     }
 
