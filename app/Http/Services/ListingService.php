@@ -397,7 +397,8 @@ class ListingService
         //     'listings_count' => count($listing_ids),
         // ], 422));
 
-        $listing_selected = Listing::where('orders', $listing_index)->first();
+        // withTrashed
+        $listing_selected = Listing::withTrashed()->where('orders', $listing_index)->first();
 
 
         OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
