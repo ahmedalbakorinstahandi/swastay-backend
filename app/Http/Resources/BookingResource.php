@@ -41,7 +41,7 @@ class BookingResource extends JsonResource
             'transactions' => TransactionResource::collection($this->whenLoaded('transactions')),
             'review' => new ListingReviewResource($this->whenLoaded('review')),
             'prices' => BookingPriceResource::collection($this->whenLoaded('prices')),
-            'address' => new AddressResource($this->whenLoaded('address')),
+            'address' => new AddressResource($this->address()),
         ];
     }
 }
