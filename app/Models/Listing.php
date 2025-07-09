@@ -197,7 +197,7 @@ class Listing extends Model
 
         // if route is bookings and id for booking staus is completed then return the address with the same coordinates
         if (request()->routeIs('bookings.show')) {
-            $id = request()->route()->parameter('booking');
+            $id = request()->route()->parameter('id');
             if ($id) {
                 $booking = Booking::find($id);
                 if ($booking && $booking->status == 'completed') {
