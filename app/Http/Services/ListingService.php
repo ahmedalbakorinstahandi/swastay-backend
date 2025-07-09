@@ -57,6 +57,7 @@ class ListingService
             ['title', 'description', 'houseType.name', 'houseType.description'],
             [
                 'price',
+                'starts',
                 'guests_count',
                 'bedrooms_count',
                 'beds_count',
@@ -66,7 +67,6 @@ class ListingService
                 'min_booking_days',
                 'max_booking_days',
                 'address.city',
-                'starts',
             ],
             [],
             ['host_id', 'house_type_id', 'status', 'is_contains_cameras', 'vip', 'starts', 'bedrooms_count'],
