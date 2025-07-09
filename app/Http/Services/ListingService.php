@@ -388,6 +388,15 @@ class ListingService
         $listing_selected = Listing::withTrashed()->find($listing_selected_id);
 
 
+        abort(response()->json([
+            'message' => 'Listing index is out of range',
+            'status' => 422,
+            'data' => $listing_selected->orders,
+            'listing_index' => $listing_index,
+            'listings_count' => count($listing_ids),
+        ], 422));
+
+
         OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
 
 
