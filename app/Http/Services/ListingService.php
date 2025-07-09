@@ -371,7 +371,7 @@ class ListingService
 
         $listing_index = $data['listing_index'];
 
-        $listing_ids = Listing::withTrashed()->orderBy('id', 'asc')->pluck('id')->toArray();
+        // $listing_ids = Listing::withTrashed()->orderBy('id', 'asc')->pluck('id')->toArray();
 
         // abort(
         //     response()->json([
@@ -383,9 +383,9 @@ class ListingService
         //     ], 422)
         // );
 
-        $listing_selected_id = $listing_ids[$listing_index - 1];
+        // $listing_selected_id = $listing_ids[$listing_index - 1];
 
-        $listing_selected = Listing::withTrashed()->find($listing_selected_id);
+        // $listing_selected = Listing::withTrashed()->find($listing_selected_id);
 
 
         // abort(response()->json([
@@ -396,6 +396,8 @@ class ListingService
         //     'listing_selected' => $listing_selected,
         //     'listings_count' => count($listing_ids),
         // ], 422));
+
+        $listing_selected = Listing::where('orders', $listing_index)->first();
 
 
         OrderHelper::reorder($listing, $listing_selected->orders, 'orders');
