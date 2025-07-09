@@ -194,6 +194,18 @@ class Listing extends Model
 
     public function addressWithRandomizedCoordinates()
     {
+
+        // if route is bookings and id for booking staus is completed then return the address with the same coordinates
+        if (request()->routeIs('bookings.show')) {
+            $id = request()->route()->parameter('booking');
+            if ($id) {
+                $booking = Booking::find($id);
+                if ($booking && $booking->status == 'completed') {
+                    return $this->address()->first();
+                }
+            }
+        }
+
         $address = $this->address()->first();
 
         if ($address && $address->latitude && $address->longitude) {
