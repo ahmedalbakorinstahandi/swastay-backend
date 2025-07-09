@@ -66,7 +66,7 @@ class ListingService
                 'min_booking_days',
                 'max_booking_days',
                 'address.city',
-                'stars',
+                'starts',
             ],
             [],
             ['host_id', 'house_type_id', 'status', 'is_contains_cameras', 'vip', 'starts', 'bedrooms_count'],
