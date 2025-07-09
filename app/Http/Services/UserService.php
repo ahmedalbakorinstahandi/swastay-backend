@@ -82,13 +82,13 @@ class UserService
 
 
 
-        $message2 = __('notifications.welcome.message2', [
-            'first_name' => $user->first_name,
-        ], $user->language);
+        // $message2 = __('notifications.welcome.message2', [
+        //     'first_name' => $user->first_name,
+        // ], $user->language);
 
 
 
-        WhatsappMessageService::send($phone, $message2);
+        // WhatsappMessageService::send($phone, $message2);
 
 
         return $user;
