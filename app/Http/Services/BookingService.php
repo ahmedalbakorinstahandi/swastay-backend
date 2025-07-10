@@ -119,8 +119,7 @@ class BookingService
         $start_date = Carbon::parse($data['start_date']);
         $end_date = Carbon::parse($data['end_date'])->subDay();
 
-        // ex : from 25/7 to 26/7 is one day only 25/7
-        for ($date = $start_date; $date->lte($end_date->subDay()); $date->addDay()) {
+        for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
             $price = $listing->getFinalPriceAttribute($date);
             $booking_prices[] = [
                 'price' => $price,
