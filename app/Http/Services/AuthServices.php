@@ -96,7 +96,7 @@ class AuthServices
         }
 
         $otp = random_int(100000, 999999);
-        $minutes = 10;
+        $minutes = 5;
         $otpExpireAt = now()->addMinutes($minutes);
 
         $user = User::create([
@@ -206,7 +206,7 @@ class AuthServices
         }
 
         $code = random_int(100000, 999999);
-        $minutes = 10;
+        $minutes = 5;
         $otpExpireAt = now()->addMinutes($minutes);
         $user->update([
             'otp' => $code,
