@@ -115,6 +115,7 @@ class AuthServices
             'otp' => $otp,
             'otp_expire_at' => $otpExpireAt,
             'is_verified' => false,
+            'id_verified' => 'approved',
         ]);
 
         // Send OTP to phone number
