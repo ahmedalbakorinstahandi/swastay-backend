@@ -51,6 +51,7 @@ class UserService
         $data['phone_number'] = $phoneParts['national_number'];
         $data['phone_verified'] = true;
         $data['is_verified'] = true;
+        $data['id_verified'] = 'approved';
 
         if (empty($data['email'])) {
             $data['email'] = '';
