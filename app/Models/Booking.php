@@ -97,7 +97,7 @@ class Booking extends Model
 
     public function address()
     {
-        if ($this->status == 'completed') {
+        if ($this->status == 'completed' || $this->status == 'confirmed') {
             return $this->listing->address()->first();
         }
 
