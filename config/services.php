@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'digibankar' => [
+        'key' => env('DIGIBANKAR_KEY'),
+    ],
+
+
 ];
