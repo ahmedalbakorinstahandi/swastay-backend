@@ -132,6 +132,10 @@ return [
     ],
 
 
+    'digibankar' => [
+        'payment_for_booking' => 'دفع للحجز :id - :title',
+        'payment_for_booking_description' => 'دفع للحجز :id - :title',
+    ],
 
-   
+
 ];

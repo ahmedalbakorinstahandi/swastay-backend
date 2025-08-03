@@ -208,8 +208,8 @@ class BookingService
                 'orderItems' => [
                     [
                         'id' => $transaction->id,
-                        'name' => __('booking_payment'),
-                        'description' => __('payment_for_booking', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
+                        'name' => __('messages.digibankar.payment_for_booking'),
+                        'description' => __('messages.digibankar.payment_for_booking_description', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
                         'price' => $data['amount'],
                         'quantity' => 1,
                     ]

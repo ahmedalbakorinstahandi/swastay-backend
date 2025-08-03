@@ -129,4 +129,9 @@ return [
         'item_deleted_successfully' => 'Setting deleted successfully.',
     ],
 
+    'digibankar' => [
+        'payment_for_booking' => 'Payment for booking :id - :title',
+        'payment_for_booking_description' => 'Payment for booking :id - :title',
+    ],
+
 ];
