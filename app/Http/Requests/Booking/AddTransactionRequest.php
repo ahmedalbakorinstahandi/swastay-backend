@@ -14,7 +14,7 @@ class AddTransactionRequest extends BaseFormRequest
 
         $rules = [
             'amount' => 'required|numeric|min:0',
-            'method' => 'required|string|in:wallet,shamcash,alharam,cash',
+            'method' => 'required|string|in:wallet,shamcash,alharam,cash,crypto',
             'attached' => 'nullable|string|max:100',
         ];
 

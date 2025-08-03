@@ -110,12 +110,13 @@ class BookingController extends Controller
 
         BookingPermission::canUpdate($booking);
 
-        $booking = $this->bookingService->addTransaction($booking, $data);
+        $data = $this->bookingService->addTransaction($booking, $data);
 
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.transaction.add_transaction',
-            'data'    => $booking,
+            'data'    => $data['booking'],
+            'payment_link' => $data['payment_link'] ?? null,
             'resource' => BookingResource::class,
             'status'  => 200,
         ]);

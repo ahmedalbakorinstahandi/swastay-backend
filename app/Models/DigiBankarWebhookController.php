@@ -1,27 +1,50 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers\Payments;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Transaction;
 
-class DigiBankarWebhookController extends Model
+class DigiBankarWebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        Log::info('DigiBankar Webhook:', $request->all());
+        Log::info('DigiBankar Webhook Payload:', $request->all());
 
-        $status = $request->input('status');
-        $orderId = $request->input('orderId');
-        $requestId = $request->input('requestId');
+        $eventType = $request->input('EventType');
+        $data = $request->input('Data', []);
 
-        // Example: update your booking/order
-        if ($status === 'SUCCESS') {
-            // mark as paid
-            // Order::where('order_id', $orderId)->update(['status' => 'paid']);
-        } elseif ($status === 'FAILED') {
-            // handle failed
+        if ($eventType === 'PaymentRequestStatusChanged') {
+            $newStatus = strtolower($data['NewStatus'] ?? '');
+            $oldStatus = strtolower($data['OldStatus'] ?? '');
+            $orderId   = $data['OrderId'] ?? null;
+
+            Log::info("PaymentRequestStatusChanged: OrderId={$orderId}, OldStatus={$oldStatus}, NewStatus={$newStatus}");
+
+            $successStatuses = ['paid', 'confirmed', 'success'];
+            $failedStatuses  = ['canceled', 'deleted', 'failed'];
+
+            if (in_array($newStatus, $successStatuses)) {
+                Transaction::where('id', $orderId)
+                    ->update(['status' => 'completed']);
+
+                Log::info("Transaction {$orderId} marked as completed.");
+
+                // TODO : send notification to user
+
+                // TODO : send notification to admin
+            } elseif (in_array($newStatus, $failedStatuses)) {
+                Transaction::where('id', $orderId)
+                    ->update(['status' => 'failed']);
+
+                Log::warning("Transaction {$orderId} marked as failed.");
+
+                // TODO : send notification to user
+
+                // TODO : send notification to admin
+            }
         }
 
         return response()->json(['message' => 'ok']);

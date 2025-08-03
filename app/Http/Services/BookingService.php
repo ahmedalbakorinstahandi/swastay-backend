@@ -10,6 +10,7 @@ use App\Models\BookingPrice;
 use App\Models\Listing;
 use App\Models\Setting;
 use App\Models\User;
+use App\Services\DigiBankarPaymentService;
 use App\Services\FilterService;
 use App\Services\MessageService;
 use Illuminate\Support\Carbon;
@@ -194,10 +195,38 @@ class BookingService
             'transactionable_type' => Booking::class,
         ]);
 
+
+        if ($data['method'] == 'crypto') {
+            $paymentService = new DigiBankarPaymentService();
+
+            $response = $paymentService->createRequest([
+                'orderId' => $transaction->id,
+                'total' => $booking->final_total_price,
+                'currency' => $booking->currency,
+                'customerEmail' => $user->email,
+                'validityPeriod' => 3600,
+                'orderItems' => [
+                    [
+                        'id' => $transaction->id,
+                        'name' => __('booking_payment'),
+                        'description' => __('payment_for_booking', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
+                        'price' => $booking->final_total_price,
+                        'quantity' => 1,
+                    ]
+                ],
+            ]);
+
+
+            $paymentLink = $response['paymentLink'] ?? null;
+        }
+
         BookingNotification::addTransaction($transaction);
 
         $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 
-        return $booking;
+        return [
+            'booking' => $booking,
+            'payment_link' => $paymentLink,
+        ];
     }
 }
