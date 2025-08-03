@@ -201,8 +201,8 @@ class BookingService
 
             $response = $paymentService->createRequest([
                 'orderId' => $transaction->id,
-                'total' => $booking->final_total_price,
-                'currency' => $data['amount'],
+                'total' => $data['amount'],
+                'currency' => $booking->currency,
                 'customerEmail' => $user->email,
                 'validityPeriod' => 3600,
                 'orderItems' => [
@@ -210,7 +210,7 @@ class BookingService
                         'id' => $transaction->id,
                         'name' => __('booking_payment'),
                         'description' => __('payment_for_booking', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
-                        'price' => $booking->final_total_price,
+                        'price' => $data['amount'],
                         'quantity' => 1,
                     ]
                 ],
