@@ -131,7 +131,7 @@ return [
 
     'digibankar' => [
         'payment_for_booking' => 'Payment for booking :id - :title',
-        'payment_for_booking_description' => 'Payment for booking :id - :title',
+        'payment_for_booking_description' => 'Payment for booking :id - :title. Please check the amount and booking details before completing the payment. If you have any questions, please contact the customer service.',
     ],
 
 ];

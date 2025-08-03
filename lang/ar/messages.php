@@ -133,8 +133,8 @@ return [
 
 
     'digibankar' => [
-        'payment_for_booking' => 'دفع للحجز :id - :title',
-        'payment_for_booking_description' => 'دفع للحجز :id - :title',
+        'payment_for_booking' => 'الدفع للحجز رقم :id - :title',
+        'payment_for_booking_description' => 'دفع مبلغ الحجز رقم :id الخاص بـ :title. يرجى التأكد من المبلغ وتفاصيل الحجز قبل إتمام عملية الدفع. في حال وجود أي استفسار يرجى التواصل مع خدمة العملاء.',
     ],
 
 
