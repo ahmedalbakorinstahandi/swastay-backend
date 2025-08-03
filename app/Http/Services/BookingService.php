@@ -220,7 +220,9 @@ class BookingService
             $paymentLink = $response['paymentLink'] ?? null;
         }
 
-        BookingNotification::addTransaction($transaction);
+        if ($data['method'] != 'crypto') {
+            BookingNotification::addTransaction($transaction);
+        }
 
         $booking->load(['host', 'guest', 'listing', 'transactions', 'prices', 'review.user']);
 

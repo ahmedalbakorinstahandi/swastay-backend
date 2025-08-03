@@ -115,8 +115,8 @@ class BookingController extends Controller
         return ResponseService::response([
             'success' => true,
             'message' => 'messages.transaction.add_transaction',
-            'data'    => $data['booking'],
             'payment_link' => $data['payment_link'] ?? null,
+            'data'    => $data['booking'],
             'resource' => BookingResource::class,
             'status'  => 200,
         ]);
