@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Transaction;
@@ -29,6 +30,12 @@ class DigiBankarWebhookController extends Controller
             if (in_array($newStatus, $successStatuses)) {
                 Transaction::where('id', $orderId)
                     ->update(['status' => 'completed']);
+
+                $transaction = Transaction::find($orderId);
+
+                $booking = Booking::find($transaction->transactionable_id);
+
+                $booking->update(['status' => 'confirmed']);
 
                 Log::info("Transaction {$orderId} marked as completed.");
 
