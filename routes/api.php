@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\DigiBankarWebhookController;
 use App\Http\Middleware\SetLocaleMiddleware;
-use App\Models\DigiBankarWebhookController;
 use Illuminate\Support\Facades\Route;
 
 
