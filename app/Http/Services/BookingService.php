@@ -201,7 +201,7 @@ class BookingService
 
             $response = $paymentService->createRequest([
                 'orderId' => $transaction->id,
-                'total' => $data['amount'],
+                'total' => 0.01,
                 'currency' => $booking->currency,
                 'customerEmail' => $user->email,
                 'validityPeriod' => 3600,
@@ -210,7 +210,7 @@ class BookingService
                         'id' => $transaction->id,
                         'name' => __('messages.digibankar.payment_for_booking', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
                         'description' => __('messages.digibankar.payment_for_booking_description', ['id' => $booking->id, 'title' => $booking->listing->title[app()->getLocale()]]),
-                        'price' => $data['amount'],
+                        'price' => 0.01,
                         'quantity' => 1,
                     ]
                 ],
@@ -228,7 +228,7 @@ class BookingService
 
         return [
             'booking' => $booking,
-            'payment_link' => $paymentLink,
+            'payment_link' => $paymentLink ?? null,
         ];
     }
 }
