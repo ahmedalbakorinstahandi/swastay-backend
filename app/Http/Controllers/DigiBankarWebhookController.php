@@ -24,7 +24,7 @@ class DigiBankarWebhookController extends Controller
 
             Log::info("PaymentRequestStatusChanged: OrderId={$orderId}, OldStatus={$oldStatus}, NewStatus={$newStatus}");
 
-            $successStatuses = ['paid', 'confirmed', 'success'];
+            $successStatuses = ['paid', 'confirmed', 'success', 'completed'];
             $failedStatuses  = ['canceled', 'deleted', 'failed'];
 
             if (in_array($newStatus, $successStatuses)) {
