@@ -27,7 +27,7 @@ class DigiBankarWebhookController extends Controller
             $successStatuses = ['paid', 'confirmed', 'success', 'completed'];
             $failedStatuses  = ['canceled', 'deleted', 'failed'];
 
-            if (in_array($newStatus, $successStatuses)) {
+            if ($newStatus === 'Completed') {
                 Transaction::where('id', $orderId)
                     ->update(['status' => 'completed']);
 
