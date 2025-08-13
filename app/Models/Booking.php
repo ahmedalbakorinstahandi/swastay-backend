@@ -119,7 +119,9 @@ class Booking extends Model
 
             $fees[$method->key] = [
                 'name' => $method->key,
+                'percentage' => $method->value,
                 'value' => $this->final_total_price * $method->value / 100,
+                'total' => $this->final_total_price + $this->final_total_price * ($method->value / 100),
             ];
         }
         return $fees;
