@@ -175,13 +175,23 @@ class BookingService
 
     public function addTransaction(Booking $booking, array $data)
     {
-
-
         $user = User::auth();
+
+        $booking_price = $booking->final_total_price;
+
+
+        $amount = $booking_price;
+
+        $methodFeesSetting = Setting::where('key', $data['method'] . '_fees')->first();
+
+        if ($methodFeesSetting) {
+            $amount = $amount + ($amount * ($methodFeesSetting->value / 100));
+        }
+
 
         $transaction = $booking->transactions()->create([
             'user_id' => $user->id,
-            'amount' => $data['amount'],
+            'amount' => $amount,
             'description' => [
                 'ar' => 'دفع رصيد للحجز ' . $booking->id,
                 'en' => 'Pay for booking ' . $booking->id,
@@ -201,7 +211,8 @@ class BookingService
 
             $response = $paymentService->createRequest([
                 'orderId' => $transaction->id,
-                'total' => 0.01,
+                // 'total' => 0.01,
+                'total' => $amount,
                 'currency' => $booking->currency,
                 'customerEmail' => $user->email,
                 'validityPeriod' => 3600,

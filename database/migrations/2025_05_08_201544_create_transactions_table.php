@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('status', ["pending", "completed", "failed", "refund"]);
             $table->string('type');
             $table->enum('direction', ["in", "out"]);
-            $table->enum('method', ["wallet", "shamcash", "alharam", "cash", "crypto"]);
+            $table->enum('method', ["wallet", "shamcash", "alharam", "cash", "crypto", "western_union"]);
             $table->unsignedBigInteger('transactionable_id')->nullable();
             $table->string('transactionable_type')->nullable();
             $table->string('attached', 100)->nullable();

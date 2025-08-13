@@ -103,4 +103,25 @@ class Booking extends Model
 
         return $this->listing->addressWithRandomizedCoordinates();
     }
+
+
+    public function getMethodFeesSettingAttribute()
+    {
+        return Setting::where('key', 'like', '%_fees')->get();
+    }
+
+    // calculate fees for all methods
+    public function calculateFeesForAllMethods()
+    {
+        $methods = $this->method_fees_setting;
+        $fees = [];
+        foreach ($methods as $method) {
+
+            $fees[$method->key] = [
+                'name' => $method->name,
+                'value' => $this->final_total_price * $method->value / 100,
+            ];
+        }
+        return $fees;
+    }
 }
