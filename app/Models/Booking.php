@@ -118,7 +118,7 @@ class Booking extends Model
         foreach ($methods as $method) {
 
             $fees[$method->key] = [
-                'name' => $method->name,
+                'name' => $method->key,
                 'value' => $this->final_total_price * $method->value / 100,
             ];
         }

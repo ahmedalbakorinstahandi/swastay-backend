@@ -42,7 +42,7 @@ class BookingResource extends JsonResource
             'review' => new ListingReviewResource($this->whenLoaded('review')),
             'prices' => BookingPriceResource::collection($this->whenLoaded('prices')),
             'address' => new AddressResource($this->address()),
-            'method_fees_setting' => $this->method_fees_setting,
+            // 'method_fees_setting' => $this->method_fees_setting,
             'fees' => $this->calculateFeesForAllMethods(),
         ];
     }
