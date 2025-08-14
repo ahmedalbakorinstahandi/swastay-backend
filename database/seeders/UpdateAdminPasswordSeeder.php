@@ -15,7 +15,9 @@ class UpdateAdminPasswordSeeder extends Seeder
     public function run(): void
     {
         $user = User::where('email', 'admin@gmail.com')->first();
-        $user->password = Hash::make('SAWA-A3e4PdfVD0!U');
+        $user->country_code = '+963';
+        $user->phone = '965737371';
+        $user->password = Hash::make('Sawa.Stay_SYR2025!');
         $user->save();
 
         $user->tokens()->delete();
