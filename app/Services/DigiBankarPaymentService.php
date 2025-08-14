@@ -32,11 +32,11 @@ class DigiBankarPaymentService
 
         // if (!$response->successful()) {
         // }
-        Log::error('DigiBankar Payment Service Error:', [
-            'status' => $response->status(),
-            'body' => $response->body(),
-        ]);
-        abort($response->status(), $response->body());
+        // Log::error('DigiBankar Payment Service Error:', [
+        //     'status' => $response->status(),
+        //     'body' => $response->body(),
+        // ]);
+        // abort($response->status(), $response->body());
 
         Log::info('DigiBankar Payment Service Response:', [
             'status' => $response->status(), 
