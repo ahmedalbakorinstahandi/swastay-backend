@@ -30,6 +30,19 @@ class DigiBankarPaymentService
         $response = Http::withHeaders($this->headers())
             ->post("{$this->baseUrl}/request/create", $data);
 
+        // if (!$response->successful()) {
+        // }
+        Log::error('DigiBankar Payment Service Error:', [
+            'status' => $response->status(),
+            'body' => $response->body(),
+        ]);
+        abort($response->status(), $response->body());
+
+        Log::info('DigiBankar Payment Service Response:', [
+            'status' => $response->status(), 
+            'body' => $response->body(),
+        ]);
+
         return $response->json();
     }
 
