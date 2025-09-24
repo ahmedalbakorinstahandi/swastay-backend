@@ -97,12 +97,20 @@ class User extends Model
 
     public static function auth()
     {
-        if (Auth::guard('sanctum')->check()) {
-            $user =  Auth::guard('sanctum')->user();
-            return User::where('id', $user->id)->first();
+        // Check if user is authenticated
+        if (!Auth::guard('sanctum')->check()) {
+            return null;
         }
 
-        return null;
+        $token = request()->bearerToken();
+        if (!$token) {
+            return null;
+        }
+
+        $cacheKey = 'request_user_' . $token;
+        
+        // Get user from cache (stored by SetLocaleMiddleware)
+        return cache()->get($cacheKey);
     }
 
     // public static function auth()
