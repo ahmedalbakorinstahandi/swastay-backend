@@ -13,7 +13,8 @@ class LocationService
     public static function getLocationData($latitude, $longitude)
     {
         // $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $apiKey = 'AIzaSyDTAx0G9OAlxWCUJJD33MpeESiAnbBJUF0';
+        // $apiKey = 'AIzaSyDTAx0G9OAlxWCUJJD33MpeESiAnbBJUF0';
+        $apiKey = 'AIzaSyD_Rj4KPhidZXLDdlYgJz4NKUXseDw-hcs';
 
         $language = request()->header('Accept-Language') ?? 'en';
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}&language={$language}";
