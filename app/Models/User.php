@@ -95,33 +95,33 @@ class User extends Model
         return $isFromGuestEndpoint && $this->role === 'user';
     }
 
-    // public static function auth()
-    // {
-    //     // Check if user is authenticated
-    //     if (!Auth::guard('sanctum')->check()) {
-    //         return null;
-    //     }
-
-    //     $token = request()->bearerToken();
-    //     if (!$token) {
-    //         return null;
-    //     }
-
-    //     $cacheKey = 'request_user_' . $token;
-        
-    //     // Get user from cache (stored by SetLocaleMiddleware)
-    //     return cache()->get($cacheKey);
-    // }
-
     public static function auth()
     {
-        if (Auth::check()) {
-            return User::find(Auth::user()->id);
+        // Check if user is authenticated
+        if (!Auth::guard('sanctum')->check()) {
+            return null;
         }
 
+        $token = request()->bearerToken();
+        if (!$token) {
+            return null;
+        }
 
-        return null;
+        $cacheKey = 'request_user_' . $token;
+        
+        // Get user from cache (stored by SetLocaleMiddleware)
+        return cache()->get($cacheKey);
     }
+
+    // public static function auth()
+    // {
+    //     if (Auth::check()) {
+    //         return User::find(Auth::user()->id);
+    //     }
+
+
+    //     return null;
+    // }
 
     public function isAdmin()
     {
