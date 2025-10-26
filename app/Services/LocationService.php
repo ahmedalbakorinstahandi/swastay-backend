@@ -14,7 +14,7 @@ class LocationService
     {
         // $apiKey = env('GOOGLE_MAPS_API_KEY');
         // $apiKey = 'AIzaSyDTAx0G9OAlxWCUJJD33MpeESiAnbBJUF0';
-        $apiKey = 'AIzaSyD_Rj4KPhidZXLDdlYgJz4NKUXseDw-hcs';
+        $apiKey = 'AIzaSyCyPs5O4SMUDu7bV5Tif-9yng_eVPv-Klc';
 
         $language = request()->header('Accept-Language') ?? 'en';
         $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$apiKey}&language={$language}";
